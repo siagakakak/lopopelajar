@@ -19,32 +19,8 @@
     .q-tab.answered { border-left: 4px solid var(--success); }
     .q-tab.needs-reupload { border-left: 4px solid var(--danger); animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-
-    /* ==========================================
-       CONTAINER LEBIH LEBAR UNTUK 2 KOLOM
-       ========================================== */
-    .container { max-width: 1400px; margin: 20px auto; padding: 0 15px; }
-
-    /* ==========================================
-       LAYOUT 2 KOLOM: MATERI (KIRI) + PERTANYAAN (KANAN)
-       ========================================== */
-    .two-column-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-      margin-bottom: 20px;
-    }
-    /* Responsif: HP/Tablet jadi 1 kolom */
-    @media (max-width: 900px) {
-      .two-column-layout {
-        grid-template-columns: 1fr;
-      }
-      .container { max-width: 900px; }
-    }
-
+    .container { width: 100%; margin: 20px auto; padding: 0 20px; box-sizing: border-box; }
     .card { background: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-    .two-column-layout .card { margin-bottom: 0; height: 100%; box-sizing: border-box; }
     .login-card { max-width: 400px; margin: 60px auto; }
     .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
     .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
@@ -114,6 +90,22 @@
     .recorder-status.recording { color: var(--danger); }
     .recorder-status.done { color: var(--success); }
     .audio-playback-custom { width: 100%; margin-top: 15px; display: none; }
+    /* ====== LAYOUT DUA KOLOM ====== */
+    .two-column-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+      align-items: start;
+    }
+    .two-column-layout > .card {
+      margin-bottom: 0;
+    }
+    @media (max-width: 900px) {
+      .two-column-layout {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -146,33 +138,17 @@
 <div id="main-app" style="display: none;">
   <div class="nav-bar" id="navTabs"></div>
   <div class="container">
-
-    <!-- ==========================================
-         LAYOUT 2 KOLOM: MATERI (KIRI) + PERTANYAAN (KANAN)
-         ========================================== -->
     <div class="two-column-layout">
-
-      <!-- KOLOM KIRI: MATERI PEMBELAJARAN -->
       <div class="card no-copy">
         <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
         <div id="materi-content-area"></div>
       </div>
-
-      <!-- KOLOM KANAN: SLIDE PERTANYAAN -->
       <div class="card no-copy">
         <h2 class="section-title">Slide Pertanyaan</h2>
         <div class="question-tabs-container" id="questionTabs"></div>
         <div id="pertanyaan-content-area"></div>
       </div>
-
     </div>
-    <!-- ==========================================
-         AKHIR LAYOUT 2 KOLOM
-         ========================================== -->
-
-    <!-- ==========================================
-         BAGIAN BAWAH (FULL WIDTH): JAWABAN & FEEDBACK
-         ========================================== -->
     <div class="card">
       <h2 class="section-title" id="answerSectionTitle">Jawaban & Feedback Guru</h2>
       <div id="submissionDisplay" style="display: none;">
