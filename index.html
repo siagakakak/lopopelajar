@@ -20,7 +20,19 @@
     .q-tab.needs-reupload { border-left: 4px solid var(--danger); animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
     .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+    /* ==========================================
+       LAYOUT 2 KOLOM: KIRI = MATERI, KANAN = PERTANYAAN
+       ========================================== */
+    .container-wide { max-width: 1500px; margin: 20px auto; padding: 0 20px; }
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .left-column, .right-column { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+    /* Responsif: layar kecil (<900px) jadi 1 kolom */
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; gap: 20px; }
+      .container-wide { padding: 0 15px; }
+    }
     .card { background: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+    .card:last-child { margin-bottom: 0; }
     .login-card { max-width: 400px; margin: 60px auto; }
     .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
     .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
@@ -121,101 +133,113 @@
 
 <div id="main-app" style="display: none;">
   <div class="nav-bar" id="navTabs"></div>
-  <div class="container">
-    <div class="card no-copy">
-      <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
-      <div id="materi-content-area"></div>
-    </div>
-    <div class="card no-copy">
-      <h2 class="section-title">Slide Pertanyaan</h2>
-      <div class="question-tabs-container" id="questionTabs"></div>
-      <div id="pertanyaan-content-area"></div>
-    </div>
-    <div class="card">
-      <h2 class="section-title" id="answerSectionTitle">Jawaban & Feedback Guru</h2>
-      <div id="submissionDisplay" style="display: none;">
-        <div class="saved-answer-preview">
-          <h3 style="color: var(--primary); margin-top:0;">✅ Jawaban Anda (Bahasa Indonesia):</h3>
-          <div id="ans-id-area" class="formatted-paragraph"></div>
-          <h3 style="color: var(--primary); margin-top:20px;">🌐 Terjemahan Bahasa Inggris:</h3>
-          <div id="ans-en-area" class="formatted-paragraph"></div>
-        </div>
-        <div id="speaking-display-area" class="speaking-result" style="display:none;">
-          <h4 style="margin-top:0; color: var(--accent);">🎙️ Ulasan Pengucapan Audio dari Guru:</h4>
-          <div id="descriptive-feedback-area" class="descriptive-feedback" style="display:none;"></div>
-          <div style="text-align: center; margin: 20px 0;">
-            <button id="btnListenAudio" class="btn-submit" onclick="openAudioModal()" style="display: none; background: var(--accent); max-width: 300px; margin: 0 auto;">🎧 Dengarkan Suara Kamu!</button>
-          </div>
-        </div>
-        <div class="teacher-feedback" id="teacher-feedback-area" style="display:none;">
-          <h3 id="teacher-feedback-title">🏫 Feedback Konstruktif & Apresiasi Guru untuk Jawaban Anda:</h3>
-          <div id="teacher-feedback-content"></div>
-        </div>
-        <div id="reupload-section" class="reupload-section" style="display:none;">
-          <h3>⚠️ Perhatian Khusus dari Guru</h3>
-          <div id="reupload-message" class="reupload-required"></div>
-          <p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p>
-          <button class="btn-submit btn-reupload" onclick="showReuploadForm()">🔄 Kirim Ulang Audio</button>
+  <div class="container-wide">
+    <div class="main-grid">
+      <!-- ==========================================
+           KOLOM KIRI: MATERI PEMBELAJARAN
+           ========================================== -->
+      <div class="left-column">
+        <div class="card no-copy">
+          <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
+          <div id="materi-content-area"></div>
         </div>
       </div>
-      <div id="formAnswerContainer">
-        <form onsubmit="event.preventDefault(); requestTranslation();">
-          <div class="form-group">
-            <label>Tuliskan Jawaban Anda (Bahasa Indonesia - Minimal 300 Karakter):</label>
-            <textarea id="answerInput" oninput="checkLength()" onpaste="handlePasteBlock(event)" placeholder="Ketik jawaban analitis Anda tentang materi deskriptif..."></textarea>
-            <div id="charCounter" class="char-count">0 / 300 Karakter Minimum</div>
-          </div>
-          <button type="submit" class="btn-submit" id="btnGetTranslation" disabled style="background-color: var(--secondary);">📤 Kirimkan Jawaban Kamu!</button>
-        </form>
-        <div id="answerHistory" style="margin-top: 20px;"></div>
-        <div id="speakingPracticeArea" style="display: none; margin-top: 25px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
-          <h3 style="color: var(--primary); margin-top:0;">📖 Terjemahan Bahasa Inggris (Baca ini dengan lantang):</h3>
-          <div id="preview-en-area" style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-bottom: 10px;"></div>
-          <div id="preview-pronounce-area" class="pronounce-block"></div>
-          <div class="recorder-box">
-            <label style="color: #c2410c; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
-            <p style="font-size: 0.95rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik tombol <b>🎙️ MULAI REKAM</b> di bawah<br>2. Bacalah teks Bahasa Inggris di atas dengan lantang dan jelas<br>3. Transkrip suara Anda akan muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b> setelah selesai membaca<br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
-            <div style="text-align: center; margin: 20px 0;">
-              <button type="button" id="btnRecordToggle" class="btn-record" onclick="toggleRecording()">🎙️ MULAI REKAM</button>
-            </div>
-            <div id="recorderStatus" class="recorder-status" style="text-align: center;">Siap merekam. Klik tombol di atas.</div>
-            <div id="liveTranscriptBox" class="live-transcript-box" style="display: none;">
-              <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
-              <div id="liveTranscriptText" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
-            </div>
-            <audio id="audioPlayback" controls class="audio-playback-custom"></audio>
-            <input type="hidden" id="audioDataUrl">
-            <input type="hidden" id="audioMimeType">
-            <input type="hidden" id="audioFileName">
-            <input type="hidden" id="audioDuration">
-            <input type="hidden" id="speechTranscript">
-          </div>
-          <button type="button" class="btn-submit" id="btnSubmitFinal" onclick="submitFinalAnswer(false)" disabled style="background-color: var(--primary);">✅ Kirim Jawaban & Penilaian ke Guru</button>
+      <!-- ==========================================
+           KOLOM KANAN: SLIDE PERTANYAAN + JAWABAN & FEEDBACK
+           ========================================== -->
+      <div class="right-column">
+        <div class="card no-copy">
+          <h2 class="section-title">Slide Pertanyaan</h2>
+          <div class="question-tabs-container" id="questionTabs"></div>
+          <div id="pertanyaan-content-area"></div>
         </div>
-        <div id="reuploadFormArea" style="display: none; margin-top: 25px; border-top: 2px dashed var(--danger); padding-top: 20px;">
-          <h3 style="color: var(--danger); margin-top:0;">🔄 Form Kirim Ulang Audio</h3>
-          <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
-          <div class="recorder-box" style="background: #fef2f2; border: 1px solid #fecaca;">
-            <label style="color: #991b1b; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Ulang Suara Anda</label>
-            <p style="font-size: 0.95rem; color: #7c2d12; margin-top:0;"><strong>Langkah:</strong> Klik tombol <b>🎙️ MULAI REKAM ULANG</b>, baca teks Bahasa Inggris dengan lantang, lalu klik <b>⏹ SELESAI REKAM</b>. Setelah itu kirim ulang.</p>
-            <div style="text-align: center; margin: 20px 0;">
-              <button type="button" id="btnRecordToggleReupload" class="btn-record" onclick="toggleRecordingReupload()">🎙️ MULAI REKAM ULANG</button>
+        <div class="card">
+          <h2 class="section-title" id="answerSectionTitle">Jawaban & Feedback Guru</h2>
+          <div id="submissionDisplay" style="display: none;">
+            <div class="saved-answer-preview">
+              <h3 style="color: var(--primary); margin-top:0;">✅ Jawaban Anda (Bahasa Indonesia):</h3>
+              <div id="ans-id-area" class="formatted-paragraph"></div>
+              <h3 style="color: var(--primary); margin-top:20px;">🌐 Terjemahan Bahasa Inggris:</h3>
+              <div id="ans-en-area" class="formatted-paragraph"></div>
             </div>
-            <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang. Klik tombol di atas.</div>
-            <div id="liveTranscriptBoxReupload" class="live-transcript-box" style="display: none;">
-              <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
-              <div id="liveTranscriptTextReupload" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
+            <div id="speaking-display-area" class="speaking-result" style="display:none;">
+              <h4 style="margin-top:0; color: var(--accent);">🎙️ Ulasan Pengucapan Audio dari Guru:</h4>
+              <div id="descriptive-feedback-area" class="descriptive-feedback" style="display:none;"></div>
+              <div style="text-align: center; margin: 20px 0;">
+                <button id="btnListenAudio" class="btn-submit" onclick="openAudioModal()" style="display: none; background: var(--accent); max-width: 300px; margin: 0 auto;">🎧 Dengarkan Suara Kamu!</button>
+              </div>
             </div>
-            <audio id="reuploadAudioPlayback" controls class="audio-playback-custom"></audio>
-            <input type="hidden" id="reuploadAudioDataUrl">
-            <input type="hidden" id="reuploadAudioMimeType">
-            <input type="hidden" id="reuploadAudioFileName">
-            <input type="hidden" id="reuploadAudioDuration">
-            <input type="hidden" id="reuploadSpeechTranscript">
+            <div class="teacher-feedback" id="teacher-feedback-area" style="display:none;">
+              <h3 id="teacher-feedback-title">🏫 Feedback Konstruktif & Apresiasi Guru untuk Jawaban Anda:</h3>
+              <div id="teacher-feedback-content"></div>
+            </div>
+            <div id="reupload-section" class="reupload-section" style="display:none;">
+              <h3>⚠️ Perhatian Khusus dari Guru</h3>
+              <div id="reupload-message" class="reupload-required"></div>
+              <p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p>
+              <button class="btn-submit btn-reupload" onclick="showReuploadForm()">🔄 Kirim Ulang Audio</button>
+            </div>
           </div>
-          <button type="button" class="btn-submit btn-reupload" id="btnSubmitReupload" onclick="submitReuploadAnswer()" disabled style="background-color: var(--accent);">🔄 Kirim Ulang Audio untuk Diperiksa</button>
+          <div id="formAnswerContainer">
+            <form onsubmit="event.preventDefault(); requestTranslation();">
+              <div class="form-group">
+                <label>Tuliskan Jawaban Anda (Bahasa Indonesia - Minimal 300 Karakter):</label>
+                <textarea id="answerInput" oninput="checkLength()" onpaste="handlePasteBlock(event)" placeholder="Ketik jawaban analitis Anda tentang materi deskriptif..."></textarea>
+                <div id="charCounter" class="char-count">0 / 300 Karakter Minimum</div>
+              </div>
+              <button type="submit" class="btn-submit" id="btnGetTranslation" disabled style="background-color: var(--secondary);">📤 Kirimkan Jawaban Kamu!</button>
+            </form>
+            <div id="answerHistory" style="margin-top: 20px;"></div>
+            <div id="speakingPracticeArea" style="display: none; margin-top: 25px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
+              <h3 style="color: var(--primary); margin-top:0;">📖 Terjemahan Bahasa Inggris (Baca ini dengan lantang):</h3>
+              <div id="preview-en-area" style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-bottom: 10px;"></div>
+              <div id="preview-pronounce-area" class="pronounce-block"></div>
+              <div class="recorder-box">
+                <label style="color: #c2410c; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
+                <p style="font-size: 0.95rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik tombol <b>🎙️ MULAI REKAM</b> di bawah<br>2. Bacalah teks Bahasa Inggris di atas dengan lantang dan jelas<br>3. Transkrip suara Anda akan muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b> setelah selesai membaca<br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <button type="button" id="btnRecordToggle" class="btn-record" onclick="toggleRecording()">🎙️ MULAI REKAM</button>
+                </div>
+                <div id="recorderStatus" class="recorder-status" style="text-align: center;">Siap merekam. Klik tombol di atas.</div>
+                <div id="liveTranscriptBox" class="live-transcript-box" style="display: none;">
+                  <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
+                  <div id="liveTranscriptText" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
+                </div>
+                <audio id="audioPlayback" controls class="audio-playback-custom"></audio>
+                <input type="hidden" id="audioDataUrl">
+                <input type="hidden" id="audioMimeType">
+                <input type="hidden" id="audioFileName">
+                <input type="hidden" id="audioDuration">
+                <input type="hidden" id="speechTranscript">
+              </div>
+              <button type="button" class="btn-submit" id="btnSubmitFinal" onclick="submitFinalAnswer(false)" disabled style="background-color: var(--primary);">✅ Kirim Jawaban & Penilaian ke Guru</button>
+            </div>
+            <div id="reuploadFormArea" style="display: none; margin-top: 25px; border-top: 2px dashed var(--danger); padding-top: 20px;">
+              <h3 style="color: var(--danger); margin-top:0;">🔄 Form Kirim Ulang Audio</h3>
+              <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
+              <div class="recorder-box" style="background: #fef2f2; border: 1px solid #fecaca;">
+                <label style="color: #991b1b; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Ulang Suara Anda</label>
+                <p style="font-size: 0.95rem; color: #7c2d12; margin-top:0;"><strong>Langkah:</strong> Klik tombol <b>🎙️ MULAI REKAM ULANG</b>, baca teks Bahasa Inggris dengan lantang, lalu klik <b>⏹ SELESAI REKAM</b>. Setelah itu kirim ulang.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <button type="button" id="btnRecordToggleReupload" class="btn-record" onclick="toggleRecordingReupload()">🎙️ MULAI REKAM ULANG</button>
+                </div>
+                <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang. Klik tombol di atas.</div>
+                <div id="liveTranscriptBoxReupload" class="live-transcript-box" style="display: none;">
+                  <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
+                  <div id="liveTranscriptTextReupload" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
+                </div>
+                <audio id="reuploadAudioPlayback" controls class="audio-playback-custom"></audio>
+                <input type="hidden" id="reuploadAudioDataUrl">
+                <input type="hidden" id="reuploadAudioMimeType">
+                <input type="hidden" id="reuploadAudioFileName">
+                <input type="hidden" id="reuploadAudioDuration">
+                <input type="hidden" id="reuploadSpeechTranscript">
+              </div>
+              <button type="button" class="btn-submit btn-reupload" id="btnSubmitReupload" onclick="submitReuploadAnswer()" disabled style="background-color: var(--accent);">🔄 Kirim Ulang Audio untuk Diperiksa</button>
+            </div>
+            <div id="ansError" class="alert alert-danger"></div>
+          </div>
         </div>
-        <div id="ansError" class="alert alert-danger"></div>
       </div>
     </div>
   </div>
@@ -235,9 +259,6 @@
 </div>
 
 <script>
-  // ==========================================
-  // GANTI DENGAN URL WEB APP GAS PAK
-  // ==========================================
   const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbww_eDl2hXqE44UQe7A1wRR19dtiFW3gLp-lWg1Te7URmLSb8yrfGrx3nAdQv7GsLLDGw/exec';
 
   let activeUser = { nama: '', password: '' };
