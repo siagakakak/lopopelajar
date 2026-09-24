@@ -90,6 +90,11 @@
     .recorder-status.recording { color: var(--danger); }
     .recorder-status.done { color: var(--success); }
     .audio-playback-custom { width: 100%; margin-top: 15px; display: none; }
+        .container-wide { max-width: 1700px; margin: 15px auto; padding: 0 20px; }
+    .two-column-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+    .column-left, .column-right { min-width: 0; }
+    .two-column-layout .card { padding: 18px; margin-bottom: 18px; }
+    @media (max-width: 900px) { .two-column-layout { grid-template-columns: 1fr; } }
     /* ====== LAYOUT DUA KOLOM ====== */
     .two-column-layout {
       display: grid;
@@ -137,19 +142,21 @@
 
 <div id="main-app" style="display: none;">
   <div class="nav-bar" id="navTabs"></div>
-  <div class="container">
+  <div class="container-wide">
     <div class="two-column-layout">
-      <div class="card no-copy">
-        <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
-        <div id="materi-content-area"></div>
+      <div class="column-left">
+        <div class="card no-copy">
+          <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
+          <div id="materi-content-area"></div>
+        </div>
       </div>
-      <div class="card no-copy">
-        <h2 class="section-title">Slide Pertanyaan</h2>
-        <div class="question-tabs-container" id="questionTabs"></div>
-        <div id="pertanyaan-content-area"></div>
-      </div>
-    </div>
-    <div class="card">
+      <div class="column-right">
+        <div class="card no-copy">
+          <h2 class="section-title">Slide Pertanyaan</h2>
+          <div class="question-tabs-container" id="questionTabs"></div>
+          <div id="pertanyaan-content-area"></div>
+        </div>
+        <div class="card">
       <h2 class="section-title" id="answerSectionTitle">Jawaban & Feedback Guru</h2>
       <div id="submissionDisplay" style="display: none;">
         <div class="saved-answer-preview">
@@ -234,6 +241,8 @@
           <button type="button" class="btn-submit btn-reupload" id="btnSubmitReupload" onclick="submitReuploadAnswer()" disabled style="background-color: var(--accent);">🔄 Kirim Ulang Audio untuk Diperiksa</button>
         </div>
         <div id="ansError" class="alert alert-danger"></div>
+      </div>
+    </div>
       </div>
     </div>
   </div>
