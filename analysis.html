@@ -9,52 +9,54 @@
     body { font-family: 'Segoe UI', System-UI, sans-serif; line-height: 1.7; color: var(--text); background-color: var(--bg); margin: 0; padding: 0; }
     .no-copy { -webkit-user-select: none; user-select: none; }
     .header-banner { background-color: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .header-banner h1 { margin: 0; font-size: 1.6rem; }
+    .header-banner h1 { margin: 0; font-size: 1.8rem; }
     .header-banner h2 { margin: 5px 0 0; font-size: 1.05rem; font-weight: 400; opacity: 0.9; }
-    .nav-bar { display: flex; background: #0f172a; overflow-x: auto; padding: 0 10px; position: sticky; top: 0; z-index: 100; }
-    .nav-tab { padding: 14px 20px; color: #94a3b8; cursor: pointer; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; transition: 0.2s; }
-    .nav-tab.active { color: #ffffff; border-bottom-color: var(--secondary); background: rgba(255,255,255,0.05); }
     .profile-bar { background: #e0f2fe; padding: 8px 20px; text-align: center; font-size: 0.9rem; color: #0c4a6e; border-bottom: 1px solid #bae6fd; }
     .profile-bar strong { color: var(--primary); }
+    .nav-bar { display: flex; background: #0f172a; overflow-x: auto; padding: 0 10px; position: sticky; top: 0; z-index: 100; }
+    .nav-tab { padding: 14px 20px; color: #94a3b8; text-decoration: none; cursor: pointer; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; transition: 0.2s; }
+    .nav-tab.active { color: #ffffff; border-bottom-color: var(--secondary); background: rgba(255,255,255,0.05); }
+    .question-tabs-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
+    .q-tab { padding: 8px 16px; background-color: #e2e8f0; color: #334155; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; white-space: nowrap; transition: all 0.2s; }
+    .q-tab.active { background-color: var(--secondary); color: white; }
+    .q-tab.answered { border-left: 4px solid var(--success); }
+    .q-tab.needs-reupload { border-left: 4px solid var(--danger); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
     .container { max-width: 900px; margin: 20px auto; padding: 0 20px; box-sizing: border-box; }
     .container-wide { width: 100%; max-width: 100%; margin: 15px 0; padding: 0 15px; box-sizing: border-box; }
     .two-column-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
     .column-left, .column-right { min-width: 0; }
+    .two-column-layout .card { padding: 18px; }
     @media (max-width: 900px) { .two-column-layout { grid-template-columns: 1fr; } }
-    .card { background: var(--card-bg); padding: 22px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-    .login-card { max-width: 420px; margin: 50px auto; }
-    .section-title { color: var(--primary); font-size: 1.2rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
-    .formatted-paragraph { font-size: 1.02rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
-    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 10px 14px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; font-size: 0.95rem; }
-    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 10px 14px; color: #15803d; border-radius: 4px; margin-bottom: 16px; line-height: 1.6; }
-    .audio-controls { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+    .card { background: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+    .login-card { max-width: 400px; margin: 60px auto; }
+    .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+    .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
+    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; }
+    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; }
+    .audio-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; margin-top: 15px; flex-wrap: wrap; }
     .btn-audio { border: none; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; color: white; }
     .btn-play-en { background-color: var(--secondary); }
     .btn-play-id { background-color: var(--success); }
     .btn-stop { background-color: var(--danger); }
     .speed-tag { font-size: 0.75rem; background-color: #e2e8f0; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
     .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.95rem; }
-    input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 0.95rem; }
-    textarea { height: 160px; resize: vertical; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
     .password-wrapper { position: relative; display: flex; align-items: center; }
     .password-wrapper input { padding-right: 45px; }
     .toggle-password { position: absolute; right: 12px; cursor: pointer; font-size: 1.2rem; color: #64748b; }
+    textarea { height: 140px; resize: vertical; }
     .char-count { font-size: 0.85rem; text-align: right; color: #64748b; margin-top: 4px; }
     .char-count.valid { color: var(--success); font-weight: bold; }
-    .btn-submit { background-color: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .btn-submit { background-color: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
     .btn-submit:disabled { background-color: #cbd5e1; cursor: not-allowed; }
     .btn-reupload { background-color: var(--accent); }
     .alert { padding: 12px; border-radius: 8px; margin-top: 15px; display: none; }
     .alert-danger { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
     .alert-success { background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-    .question-tabs-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
-    .q-tab { padding: 8px 14px; background-color: #e2e8f0; color: #334155; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; white-space: nowrap; transition: all 0.2s; }
-    .q-tab.active { background-color: var(--secondary); color: white; }
-    .q-tab.answered { border-left: 4px solid var(--success); }
-    .q-tab.needs-reupload { border-left: 4px solid var(--danger); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
+    .speaking-result { background: #fff7ed; border: 1px solid #fdba74; padding: 15px; border-radius: 8px; margin-top: 15px; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 700px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
@@ -98,14 +100,14 @@
 </head>
 <body>
 <div class="header-banner">
-  <h1>🚀 Interactive English Learning Platform Lopopelajar.com</h1>
-  <h2>Analysis of Descriptive Text "People" — HOTS Module</h2>
+  <h1>Interactive English Learning Platform Lopopelajar.com</h1>
+  <h2 id="pageSubtitle">Analysis of Descriptive Text "People"</h2>
 </div>
 
 <!-- LOGIN -->
 <div id="login-container" class="container">
   <div class="card login-card">
-    <h2 class="section-title">🔐 Masuk / Daftar Portal Siswa</h2>
+    <h2 class="section-title">Masuk / Daftar Portal Siswa</h2>
     <form onsubmit="executeLogin(event)">
       <div class="form-group">
         <label>Nama Lengkap</label>
@@ -132,7 +134,7 @@
         </select>
         <small style="color:#64748b;font-size:0.8rem;">⚠️ Kelas hanya diisi saat pendaftaran pertama. Nama tidak bisa didaftarkan 2x.</small>
       </div>
-      <button type="submit" class="btn-submit" id="btnLogin">🚀 Masuk / Daftar</button>
+      <button type="submit" class="btn-submit" id="btnLogin">Enter / Masuk</button>
     </form>
     <div id="loginError" class="alert alert-danger"></div>
     <div id="loginSuccess" class="alert alert-success"></div>
@@ -149,6 +151,7 @@
 
   <div class="container-wide">
     <div class="two-column-layout">
+      <!-- LEFT: MATERI -->
       <div class="column-left">
         <div class="card no-copy">
           <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
@@ -156,9 +159,10 @@
         </div>
       </div>
 
+      <!-- RIGHT: SLIDE PERTANYAAN + JAWABAN -->
       <div class="column-right">
         <div class="card no-copy">
-          <h2 class="section-title">📋 Analisis & Pertanyaan</h2>
+          <h2 class="section-title">Slide Pertanyaan</h2>
           <div class="question-tabs-container" id="questionTabs"></div>
           <div id="pertanyaan-content-area"></div>
         </div>
@@ -168,14 +172,14 @@
 
           <div id="submissionDisplay" style="display: none;">
             <div class="saved-answer-preview">
-              <h4>✅ Jawaban Anda (Bahasa Indonesia):</h4>
+              <h3 style="color: var(--primary); margin-top:0;">✅ Jawaban Anda (Bahasa Indonesia):</h3>
               <div id="ans-id-area" class="formatted-paragraph"></div>
-              <h4 style="color: var(--primary); margin-top: 20px;">🌐 Terjemahan Bahasa Inggris:</h4>
+              <h3 style="color: var(--primary); margin-top:20px;">🌐 Terjemahan Bahasa Inggris:</h3>
               <div id="ans-en-area" class="formatted-paragraph"></div>
             </div>
-            <div id="speaking-display-area" class="descriptive-feedback" style="display:none;">
+            <div id="speaking-display-area" class="speaking-result" style="display:none;">
               <h4 style="margin-top:0; color: var(--accent);">🎙️ Ulasan Pengucapan Audio dari Guru:</h4>
-              <div id="descriptive-feedback-area"></div>
+              <div id="descriptive-feedback-area" class="descriptive-feedback"></div>
             </div>
             <div class="teacher-feedback" id="teacher-feedback-area" style="display:none;">
               <h3 id="teacher-feedback-title">🏫 Feedback Konstruktif & Apresiasi Guru:</h3>
@@ -184,7 +188,7 @@
             <div id="reupload-section" class="reupload-section" style="display:none;">
               <h3>⚠️ Perhatian Khusus dari Guru</h3>
               <div id="reupload-message" class="reupload-required"></div>
-              <p style="font-size: 0.92rem;">Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
+              <p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p>
               <button class="btn-submit btn-reupload" onclick="showReuploadForm()">🔄 Kirim Ulang Audio</button>
             </div>
           </div>
@@ -192,21 +196,20 @@
           <div id="formAnswerContainer">
             <form onsubmit="event.preventDefault(); requestTranslation();">
               <div class="form-group">
-                <label>Tuliskan Jawaban Analisis Anda (Bahasa Indonesia - Minimal 400 Karakter):</label>
+                <label>Tuliskan Jawaban Anda (Bahasa Indonesia - Minimal 400 Karakter):</label>
                 <textarea id="answerInput" oninput="checkLength()" onpaste="handlePasteBlock(event)" placeholder="Ketik jawaban analitis Anda tentang materi deskriptif..."></textarea>
                 <div id="charCounter" class="char-count">0 / 400 Karakter Minimum</div>
               </div>
               <button type="submit" class="btn-submit" id="btnGetTranslation" disabled style="background-color: var(--secondary);">📤 Kirimkan Jawaban Kamu!</button>
             </form>
             <div id="answerHistory" style="margin-top: 20px;"></div>
-
             <div id="speakingPracticeArea" style="display: none; margin-top: 25px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
               <h3 style="color: var(--primary); margin-top:0;">📖 Terjemahan Bahasa Inggris (Baca ini dengan lantang):</h3>
               <div id="preview-en-area" style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-bottom: 10px;"></div>
               <div id="preview-pronounce-area" class="pronounce-block"></div>
               <div class="recorder-box">
-                <label style="color: #c2410c; font-weight: bold; font-size: 1.05rem;">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
-                <p style="font-size: 0.92rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik <b>🎙️ MULAI REKAM</b><br>2. Baca teks EN di atas dengan lantang<br>3. Transkrip muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b><br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
+                <label style="color: #c2410c; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
+                <p style="font-size: 0.95rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik tombol <b>🎙️ MULAI REKAM</b> di bawah<br>2. Bacalah teks Bahasa Inggris di atas dengan lantang dan jelas<br>3. Transkrip suara Anda akan muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b> setelah selesai membaca<br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
                 <div style="text-align: center; margin: 20px 0;">
                   <button type="button" id="btnRecordToggle" class="btn-record" onclick="toggleRecording()">🎙️ MULAI REKAM</button>
                 </div>
@@ -227,13 +230,13 @@
 
             <div id="reuploadFormArea" style="display: none; margin-top: 25px; border-top: 2px dashed var(--danger); padding-top: 20px;">
               <h3 style="color: var(--danger); margin-top:0;">🔄 Form Kirim Ulang Audio</h3>
-              <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p>
+              <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
               <div class="recorder-box" style="background: #fef2f2; border: 1px solid #fecaca;">
-                <label style="color: #991b1b; font-weight: bold; font-size: 1.05rem;">🎙️ Rekam Ulang Suara Anda</label>
+                <label style="color: #991b1b; font-weight: bold; font-size: 1.1rem;">🎙️ Rekam Ulang Suara Anda</label>
                 <div style="text-align: center; margin: 20px 0;">
                   <button type="button" id="btnRecordToggleReupload" class="btn-record" onclick="toggleRecordingReupload()">🎙️ MULAI REKAM ULANG</button>
                 </div>
-                <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang.</div>
+                <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang. Klik tombol di atas.</div>
                 <div id="liveTranscriptBoxReupload" class="live-transcript-box" style="display: none;">
                   <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
                   <div id="liveTranscriptTextReupload" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
@@ -380,7 +383,7 @@
     err.style.display = 'none'; suc.style.display = 'none';
 
     const res = await callGas('login', { nama: nama, password: pass, kelas: kelas });
-    btn.disabled = false; btn.innerText = '🚀 Masuk / Daftar';
+    btn.disabled = false; btn.innerText = 'Enter / Masuk';
 
     if (res.success) {
       activeUser.nama = res.nama; activeUser.kelas = res.kelas;
@@ -404,6 +407,7 @@
     }
   }
 
+  // ================== LOAD MATERIAL LIST (NAMA SHEET LENGKAP) ==================
   async function loadMaterialList() {
     const res = await callGas('getMaterialList', {});
     if (!res.success) { alert('Gagal memuat daftar materi: ' + res.message); return; }
@@ -413,7 +417,8 @@
     materialList.forEach((m, i) => {
       const tab = document.createElement('div');
       tab.className = 'nav-tab' + (i === 0 ? ' active' : '');
-      tab.innerText = '📖 ' + shortenSheetName(m.name);
+      // TAMPILKAN NAMA SHEET LENGKAP
+      tab.innerText = m.name;
       tab.dataset.sheetName = m.name;
       tab.onclick = function() {
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -426,16 +431,11 @@
     if (materialList.length > 0) await loadSheetContent(materialList[0].name);
   }
 
-  function shortenSheetName(fullName) {
-    var match = fullName.match(/^(My [A-Za-z]+)/);
-    if (match) return match[1];
-    return fullName.length > 30 ? fullName.substring(0, 30) + '...' : fullName;
-  }
-
   // ================== LOAD SHEET CONTENT ==================
   async function loadSheetContent(sheetName) {
     currentSheet = sheetName;
-    document.getElementById('sheetTitle').innerText = sheetName;
+    document.getElementById('sheetTitle').innerText = 'Materi Pembelajaran';
+    document.getElementById('pageSubtitle').innerText = sheetName;
     speechStop();
     stopRecordingSilently();
     stopRecordingReuploadSilently();
@@ -444,6 +444,8 @@
     document.getElementById('pertanyaan-content-area').innerHTML = '';
     document.getElementById('questionTabs').innerHTML = '';
     document.getElementById('hotsQuizArea').style.display = 'none';
+    document.getElementById('formAnswerContainer').style.display = 'none';
+    document.getElementById('submissionDisplay').style.display = 'none';
 
     const data = await callGas('getSheetData', { sheetName: sheetName, studentName: activeUser.nama });
     if (!data || !data.success) {
@@ -462,9 +464,6 @@
       if (data.analysisBlocks && data.analysisBlocks.length > 0) {
         switchBlock(data.analysisBlocks[0].key);
       }
-    } else {
-      // Fallback for module 1 in case of mixed sheets (tidak digunakan di analysis.html)
-      parseAndRenderStructuredContent('materi-content-area', data.materi);
     }
   }
 
@@ -485,7 +484,7 @@
       }
       btn.className = 'q-tab' + (b.key === activeBlockKey ? ' active' : '') + (isAnswered ? ' answered' : '') + (needsReupload ? ' needs-reupload' : '');
       btn.id = 'btab-' + b.key;
-      btn.innerText = b.index + '. ' + b.name + (needsReupload ? ' ⚠️' : (isAnswered ? ' ✓' : ''));
+      btn.innerText = 'Pertanyaan ' + b.index + ': ' + b.name + (needsReupload ? ' ⚠️' : (isAnswered ? ' ✓' : ''));
       btn.onclick = () => switchBlock(b.key);
       container.appendChild(btn);
     });
@@ -532,7 +531,7 @@
       materiId: blk.instructionId
     });
 
-    document.getElementById('answerSectionTitle').innerText = 'Jawaban & Feedback — ' + blk.name;
+    document.getElementById('answerSectionTitle').innerText = 'Jawaban & Feedback (Pertanyaan ' + blk.index + ': ' + blk.name + ')';
 
     const sub = currentSheetData.submissions[key];
     if (sub && sub.jawabanId) { showSavedSubmission(sub); }
@@ -702,25 +701,14 @@
     }
   }
 
-  // ================== BROWSER CHECK (WAJIB Chrome/Edge) ==================
   function checkBrowserSupport() {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
-      alert('⚠️ Browser Anda tidak mendukung Web Speech API. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
-      return false;
-    }
-    if (!window.MediaRecorder) {
-      alert('⚠️ Browser Anda tidak mendukung MediaRecorder. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
-      return false;
-    }
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert('⚠️ Browser Anda tidak mendukung akses mikrofon. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
-      return false;
-    }
+    if (!SR) { alert('Browser Anda tidak mendukung Web Speech API. Silakan gunakan Google Chrome atau Microsoft Edge terbaru.'); return false; }
+    if (!window.MediaRecorder) { alert('Browser Anda tidak mendukung MediaRecorder. Silakan gunakan Google Chrome atau Microsoft Edge terbaru.'); return false; }
     return true;
   }
 
-  // ================== RECORDING (UTAMA) ==================
+  // ================== RECORDING ==================
   function startRecording() {
     if (!checkBrowserSupport()) return;
     finalTranscript = ''; audioChunks = []; isRecording = true; recordStartTime = Date.now();
@@ -794,7 +782,7 @@
     isRecording = false;
     if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
     if (recognition) { try { recognition.stop(); } catch (e) {} }
-    document.getElementById('recorderStatus').innerText = '✅ Rekaman selesai. Dengarkan ulang, lalu klik "Kirim Jawaban & Penilaian ke Guru".';
+    document.getElementById('recorderStatus').innerText = '✅ Rekaman selesai. Dengarkan ulang, lalu klik tombol Kirim.';
     document.getElementById('recorderStatus').className = 'recorder-status done';
     document.getElementById('btnRecordToggle').innerText = '🎙️ REKAM ULANG';
     document.getElementById('btnRecordToggle').classList.remove('recording');
@@ -808,7 +796,6 @@
     if (recognition) try { recognition.stop(); } catch(e){}
   }
 
-  // ================== RECORDING (REUPLOAD) ==================
   function startRecordingReupload() {
     if (!checkBrowserSupport()) return;
     finalTranscriptReupload = ''; audioChunksReupload = []; isRecordingReupload = true; recordStartTimeReupload = Date.now();
@@ -882,7 +869,7 @@
     isRecordingReupload = false;
     if (mediaRecorderReupload && mediaRecorderReupload.state !== 'inactive') mediaRecorderReupload.stop();
     if (recognitionReupload) { try { recognitionReupload.stop(); } catch (e) {} }
-    document.getElementById('recorderStatusReupload').innerText = '✅ Rekaman ulang selesai. Klik tombol kirim ulang.';
+    document.getElementById('recorderStatusReupload').innerText = '✅ Rekaman ulang selesai. Klik tombol kirim ulang di bawah.';
     document.getElementById('recorderStatusReupload').className = 'recorder-status done';
     document.getElementById('btnRecordToggleReupload').innerText = '🎙️ REKAM ULANG LAGI';
     document.getElementById('btnRecordToggleReupload').classList.remove('recording');
@@ -1053,19 +1040,16 @@
     const h = currentSheetData.hots.mc;
     if (!h || !h.length) { c.innerHTML = '<p>Soal tidak tersedia.</p>'; return; }
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = '<div style="background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:14px;border-left:4px solid var(--accent);"><strong>📝 Pilihan Ganda:</strong> Pilih satu jawaban paling tepat (A/B/C/D) untuk setiap soal.</div>';
+    wrapper.innerHTML = '<div style="background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:14px;border-left:4px solid var(--accent);"><strong>📝 Pilihan Ganda:</strong> Pilih satu jawaban paling tepat (A/B/C/D).</div>';
 
     h.forEach(q => {
       const blk = document.createElement('div');
       blk.className = 'quiz-q';
-      blk.id = 'mc-q-' + q.num;
       const fb = (hotsResults && hotsResults.results && hotsResults.results.mc[q.num - 1]) || null;
-
       let html = '<span class="q-num">Soal ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.questionEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.questionEn) + ', "en-US", 0.75)\'>▶ Play Soal</button></div>';
       if (q.questionId) html += '<div style="font-size:.85rem;color:#64748b;font-style:italic;margin-bottom:10px;">🇮🇩 ' + q.questionId + '</div>';
-
       const optTexts = extractMCOptions(q.questionEn);
       ['A','B','C','D'].forEach(opt => {
         const isSel = hotsAnswers.mc[q.num] === opt;
@@ -1076,16 +1060,13 @@
         } else if (isSel) cls += ' selected';
         html += '<div class="' + cls + '" onclick="selectMC(' + q.num + ', \'' + opt + '\')">';
         html += '<input type="radio" name="mc-' + q.num + '" ' + (isSel ? 'checked' : '') + ' ' + (fb ? 'disabled' : '') + '>';
-        html += '<div class="opt-text"><strong>' + opt + '.</strong> ' + (optTexts[opt] || '') + '</div>';
-        html += '</div>';
+        html += '<div class="opt-text"><strong>' + opt + '.</strong> ' + (optTexts[opt] || '') + '</div></div>';
       });
-
       if (fb) {
         html += '<div style="margin-top:12px;padding:12px;background:' + (fb.isCorrect ? '#f0fdf4' : '#fef2f2') + ';border-left:4px solid ' + (fb.isCorrect ? 'var(--success)' : 'var(--danger)') + ';border-radius:8px;">';
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Salah. Jawaban benar: ' + fb.correctAnswer) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
-
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
@@ -1118,12 +1099,10 @@
       const blk = document.createElement('div');
       blk.className = 'quiz-q';
       const fb = (hotsResults && hotsResults.results && hotsResults.results.mcma[q.num-1]) || null;
-
       let html = '<span class="q-num">Soal ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.questionEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.questionEn) + ', "en-US", 0.75)\'>▶ Play Soal</button></div>';
       if (q.questionId) html += '<div style="font-size:.85rem;color:#64748b;font-style:italic;margin-bottom:10px;">🇮🇩 ' + q.questionId + '</div>';
-
       const optTexts = extractMCOptions(q.questionEn);
       const selectedArr = hotsAnswers.mcma[q.num] || [];
       ['A','B','C','D','E'].forEach(opt => {
@@ -1137,13 +1116,11 @@
         html += '<input type="checkbox" ' + (selected ? 'checked' : '') + ' ' + (fb ? 'disabled' : '') + '>';
         html += '<div class="opt-text"><strong>' + opt + '.</strong> ' + (optTexts[opt] || '') + '</div></div>';
       });
-
       if (fb) {
         html += '<div style="margin-top:12px;padding:12px;background:' + (fb.isCorrect ? '#f0fdf4' : '#fef2f2') + ';border-left:4px solid ' + (fb.isCorrect ? 'var(--success)' : 'var(--danger)') + ';border-radius:8px;">';
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Belum tepat. Jawaban benar: ' + fb.correctAnswer.join(', ')) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
-
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
@@ -1180,7 +1157,6 @@
       blk.className = 'quiz-q';
       const fb = (hotsResults && hotsResults.results && hotsResults.results.tf[q.num-1]) || null;
       const ans = hotsAnswers.tf[q.num];
-
       let html = '<span class="q-num">Statement ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.statementEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.statementEn) + ', "en-US", 0.75)\'>▶ Play Statement</button></div>';
@@ -1196,7 +1172,6 @@
         if (ans === true) tCls += ' selected';
         if (ans === false) fCls += ' selected';
       }
-
       html += '<div class="' + tCls + '" onclick="selectTF(' + q.num + ', true)">';
       html += '<input type="radio" name="tf-' + q.num + '" ' + (ans === true ? 'checked' : '') + ' ' + (fb ? 'disabled' : '') + '>';
       html += '<div class="opt-text"><strong>T (True / Benar)</strong></div></div>';
@@ -1209,7 +1184,6 @@
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Salah. Jawaban benar: ' + (fb.correctAnswer ? 'True' : 'False')) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
-
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
