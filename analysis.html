@@ -81,7 +81,6 @@
     .recorder-status.recording { color: var(--danger); }
     .recorder-status.done { color: var(--success); }
     .audio-playback-custom { width: 100%; margin-top: 15px; display: none; }
-    /* Quiz */
     .quiz-q { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
     .q-num { display: inline-block; background: var(--primary); color: white; padding: 3px 12px; border-radius: 20px; font-weight: bold; font-size: 0.82rem; margin-bottom: 8px; }
     .q-text { font-weight: 600; margin-bottom: 10px; font-size: 0.98rem; line-height: 1.6; }
@@ -150,7 +149,6 @@
 
   <div class="container-wide">
     <div class="two-column-layout">
-      <!-- LEFT: MATERI -->
       <div class="column-left">
         <div class="card no-copy">
           <h2 class="section-title" id="sheetTitle">Materi Pembelajaran</h2>
@@ -158,7 +156,6 @@
         </div>
       </div>
 
-      <!-- RIGHT: TABS + KONTEN -->
       <div class="column-right">
         <div class="card no-copy">
           <h2 class="section-title">📋 Analisis & Pertanyaan</h2>
@@ -169,7 +166,6 @@
         <div class="card">
           <h2 class="section-title" id="answerSectionTitle">Jawaban & Feedback Guru</h2>
 
-          <!-- SAVED SUBMISSION -->
           <div id="submissionDisplay" style="display: none;">
             <div class="saved-answer-preview">
               <h4>✅ Jawaban Anda (Bahasa Indonesia):</h4>
@@ -188,12 +184,11 @@
             <div id="reupload-section" class="reupload-section" style="display:none;">
               <h3>⚠️ Perhatian Khusus dari Guru</h3>
               <div id="reupload-message" class="reupload-required"></div>
-              <p style="font-size: 0.92rem;">Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p>
+              <p style="font-size: 0.92rem;">Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
               <button class="btn-submit btn-reupload" onclick="showReuploadForm()">🔄 Kirim Ulang Audio</button>
             </div>
           </div>
 
-          <!-- FORM ANSWER -->
           <div id="formAnswerContainer">
             <form onsubmit="event.preventDefault(); requestTranslation();">
               <div class="form-group">
@@ -205,14 +200,13 @@
             </form>
             <div id="answerHistory" style="margin-top: 20px;"></div>
 
-            <!-- SPEAKING PRACTICE -->
             <div id="speakingPracticeArea" style="display: none; margin-top: 25px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
               <h3 style="color: var(--primary); margin-top:0;">📖 Terjemahan Bahasa Inggris (Baca ini dengan lantang):</h3>
               <div id="preview-en-area" style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-bottom: 10px;"></div>
               <div id="preview-pronounce-area" class="pronounce-block"></div>
               <div class="recorder-box">
                 <label style="color: #c2410c; font-weight: bold; font-size: 1.05rem;">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
-                <p style="font-size: 0.92rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik tombol <b>🎙️ MULAI REKAM</b><br>2. Bacalah teks Bahasa Inggris di atas dengan lantang<br>3. Transkrip suara Anda muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b><br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
+                <p style="font-size: 0.92rem; color: #7c2d12; margin-top:0;"><strong>Cara Menggunakan:</strong><br>1. Klik <b>🎙️ MULAI REKAM</b><br>2. Baca teks EN di atas dengan lantang<br>3. Transkrip muncul otomatis (real-time)<br>4. Klik <b>⏹ SELESAI REKAM</b><br>5. Klik <b>✅ Kirim Jawaban & Penilaian ke Guru</b></p>
                 <div style="text-align: center; margin: 20px 0;">
                   <button type="button" id="btnRecordToggle" class="btn-record" onclick="toggleRecording()">🎙️ MULAI REKAM</button>
                 </div>
@@ -231,16 +225,15 @@
               <button type="button" class="btn-submit" id="btnSubmitFinal" onclick="submitFinalAnswer(false)" disabled style="background-color: var(--primary);">✅ Kirim Jawaban & Penilaian ke Guru</button>
             </div>
 
-            <!-- REUPLOAD FORM -->
             <div id="reuploadFormArea" style="display: none; margin-top: 25px; border-top: 2px dashed var(--danger); padding-top: 20px;">
               <h3 style="color: var(--danger); margin-top:0;">🔄 Form Kirim Ulang Audio</h3>
-              <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas.</p>
+              <p style="color: var(--danger); font-weight: bold;">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p>
               <div class="recorder-box" style="background: #fef2f2; border: 1px solid #fecaca;">
                 <label style="color: #991b1b; font-weight: bold; font-size: 1.05rem;">🎙️ Rekam Ulang Suara Anda</label>
                 <div style="text-align: center; margin: 20px 0;">
                   <button type="button" id="btnRecordToggleReupload" class="btn-record" onclick="toggleRecordingReupload()">🎙️ MULAI REKAM ULANG</button>
                 </div>
-                <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang. Klik tombol di atas.</div>
+                <div id="recorderStatusReupload" class="recorder-status" style="text-align: center;">Siap merekam ulang.</div>
                 <div id="liveTranscriptBoxReupload" class="live-transcript-box" style="display: none;">
                   <span class="label">📝 TRANSKRIP SUARA ANDA (REAL-TIME):</span>
                   <div id="liveTranscriptTextReupload" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
@@ -257,7 +250,6 @@
             <div id="ansError" class="alert alert-danger"></div>
           </div>
 
-          <!-- HOTS QUIZ AREA -->
           <div id="hotsQuizArea" style="display: none;">
             <div class="sub-tabs">
               <div class="sub-tab active" data-hots="mc" onclick="switchHotsTab('mc')">📝 Pilihan Ganda (10)</div>
@@ -272,7 +264,6 @@
   </div>
 </div>
 
-<!-- AUDIO MODAL -->
 <div id="audioModal" class="modal-overlay" onclick="closeAudioModalOnOverlay(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -294,7 +285,7 @@
   // ================== STATE ==================
   let activeUser = { nama: '', kelas: '' };
   let currentSheet = '';
-  let materialList = [];         // daftar sheet dari server
+  let materialList = [];
   let currentSheetData = null;
   let activeBlockKey = null;
   let activeHotsTab = 'mc';
@@ -304,13 +295,9 @@
   let submittedAnswerText = '';
   let currentAudioUrl = '';
   let availableVoices = [];
-
-  // Recording (form normal)
   let mediaRecorder = null, audioChunks = [], recognition = null;
   let finalTranscript = '', isRecording = false, recordStartTime = 0;
   let audioBlobGlobal = null;
-
-  // Recording (reupload)
   let mediaRecorderReupload = null, audioChunksReupload = [];
   let recognitionReupload = null, finalTranscriptReupload = '';
   let isRecordingReupload = false, recordStartTimeReupload = 0;
@@ -400,7 +387,6 @@
       suc.innerText = res.message; suc.style.display = 'block';
       document.getElementById('profileName').innerText = res.nama;
       document.getElementById('profileKelas').innerText = res.kelas;
-
       setTimeout(async () => {
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
@@ -418,7 +404,6 @@
     }
   }
 
-  // ================== LOAD MATERIAL LIST (DINAMIS) ==================
   async function loadMaterialList() {
     const res = await callGas('getMaterialList', {});
     if (!res.success) { alert('Gagal memuat daftar materi: ' + res.message); return; }
@@ -438,13 +423,10 @@
       nav.appendChild(tab);
     });
 
-    if (materialList.length > 0) {
-      await loadSheetContent(materialList[0].name);
-    }
+    if (materialList.length > 0) await loadSheetContent(materialList[0].name);
   }
 
   function shortenSheetName(fullName) {
-    // "My Grandmother, the Warmest Heart in Our Home" → "My Grandmother"
     var match = fullName.match(/^(My [A-Za-z]+)/);
     if (match) return match[1];
     return fullName.length > 30 ? fullName.substring(0, 30) + '...' : fullName;
@@ -470,19 +452,19 @@
     }
     currentSheetData = data;
 
-    // Render Materi (Zona A)
-    parseAndRenderStructuredContent('materi-content-area', {
-      materiEn: data.materi.textEn,
-      materiPronounce: data.materi.textPronounce,
-      materiId: data.materi.textId
-    });
-
-    // Render tabs blok analisis + HOTS
-    renderBlockTabs();
-
-    // Default ke blok pertama
-    if (data.analysisBlocks && data.analysisBlocks.length > 0) {
-      switchBlock(data.analysisBlocks[0].key);
+    if (data.isModule2) {
+      parseAndRenderStructuredContent('materi-content-area', {
+        materiEn: data.materi.textEn,
+        materiPronounce: data.materi.textPronounce,
+        materiId: data.materi.textId
+      });
+      renderBlockTabs();
+      if (data.analysisBlocks && data.analysisBlocks.length > 0) {
+        switchBlock(data.analysisBlocks[0].key);
+      }
+    } else {
+      // Fallback for module 1 in case of mixed sheets (tidak digunakan di analysis.html)
+      parseAndRenderStructuredContent('materi-content-area', data.materi);
     }
   }
 
@@ -508,7 +490,6 @@
       container.appendChild(btn);
     });
 
-    // HOTS tab
     if (currentSheetData.hots) {
       const hotsBtn = document.createElement('div');
       hotsBtn.className = 'q-tab' + (activeBlockKey === 'HOTS' ? ' active' : '');
@@ -528,7 +509,6 @@
     document.querySelectorAll('#questionTabs .q-tab').forEach(t => t.classList.remove('active'));
     const tab = document.getElementById('btab-' + key); if (tab) tab.classList.add('active');
 
-    // Reset
     document.getElementById('hotsQuizArea').style.display = 'none';
     document.getElementById('formAnswerContainer').style.display = 'none';
     document.getElementById('submissionDisplay').style.display = 'none';
@@ -546,7 +526,6 @@
     const blk = currentSheetData.analysisBlocks.find(b => b.key === key);
     if (!blk) return;
 
-    // Render instruksi analisis
     parseAndRenderStructuredContent('pertanyaan-content-area', {
       materiEn: blk.instructionEn,
       materiPronounce: blk.instructionPronounce,
@@ -723,20 +702,25 @@
     }
   }
 
-  // ================== RECORDING (FORM UTAMA) ==================
+  // ================== BROWSER CHECK (WAJIB Chrome/Edge) ==================
   function checkBrowserSupport() {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      alert('Browser Anda tidak mendukung Web Speech API. Gunakan Google Chrome atau Microsoft Edge terbaru untuk pengalaman terbaik.');
+      alert('⚠️ Browser Anda tidak mendukung Web Speech API. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
       return false;
     }
     if (!window.MediaRecorder) {
-      alert('Browser Anda tidak mendukung MediaRecorder. Gunakan Google Chrome atau Microsoft Edge terbaru.');
+      alert('⚠️ Browser Anda tidak mendukung MediaRecorder. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
+      return false;
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert('⚠️ Browser Anda tidak mendukung akses mikrofon. Silakan gunakan Google Chrome atau Microsoft Edge terbaru untuk melanjutkan.');
       return false;
     }
     return true;
   }
 
+  // ================== RECORDING (UTAMA) ==================
   function startRecording() {
     if (!checkBrowserSupport()) return;
     finalTranscript = ''; audioChunks = []; isRecording = true; recordStartTime = Date.now();
@@ -816,7 +800,6 @@
     document.getElementById('btnRecordToggle').classList.remove('recording');
     document.getElementById('speechTranscript').value = (finalTranscript || '').trim();
   }
-
   function toggleRecording() { if (isRecording) stopRecording(); else startRecording(); }
   function stopRecordingSilently() {
     if (!isRecording) return;
@@ -899,13 +882,12 @@
     isRecordingReupload = false;
     if (mediaRecorderReupload && mediaRecorderReupload.state !== 'inactive') mediaRecorderReupload.stop();
     if (recognitionReupload) { try { recognitionReupload.stop(); } catch (e) {} }
-    document.getElementById('recorderStatusReupload').innerText = '✅ Rekaman ulang selesai. Klik tombol kirim ulang di bawah.';
+    document.getElementById('recorderStatusReupload').innerText = '✅ Rekaman ulang selesai. Klik tombol kirim ulang.';
     document.getElementById('recorderStatusReupload').className = 'recorder-status done';
     document.getElementById('btnRecordToggleReupload').innerText = '🎙️ REKAM ULANG LAGI';
     document.getElementById('btnRecordToggleReupload').classList.remove('recording');
     document.getElementById('reuploadSpeechTranscript').value = (finalTranscriptReupload || '').trim();
   }
-
   function toggleRecordingReupload() { if (isRecordingReupload) stopRecordingReupload(); else startRecordingReupload(); }
   function stopRecordingReuploadSilently() {
     if (!isRecordingReupload) return;
@@ -970,7 +952,6 @@
       else if (!res.requiresReupload) alert('✅ Kerja bagus! Audio Anda sudah sesuai.');
     } else { err.innerText = res.message; err.style.display = 'block'; }
   }
-
   function submitReuploadAnswer() { submitFinalAnswer(true); }
 
   function showReuploadForm() {
@@ -1019,7 +1000,7 @@
       if (sub.feedbackPronounce) teacherHtml += '<div class="pronounce-block" style="margin-bottom: 18px;">' + sub.feedbackPronounce + '</div>';
       if (sub.feedbackId) {
         teacherHtml += '<div style="margin-bottom: 18px;"><strong style="color: var(--success);">🇮🇩 Terjemahan Bahasa Indonesia:</strong>';
-        teacherHtml += '<div class="audio-controls"><button class="btn-audio btn-play-id" onclick=\'playIndonesianFeedbackWithName(' + JSON.stringify(sub.feedbackId) + ', ' + JSON.stringify(activeUser.nama) + ')\'>▶ Play ID</button>';
+        teacherHtml += '<div class="audio-controls"><button class="btn-audio btn-play-id" onclick=\'playIndonesianFeedbackWithName(' + JSON.stringify(sub.feedbackId) + ')\'>▶ Play ID</button>';
         teacherHtml += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button></div>';
         teacherHtml += '<div class="translation-block" style="margin-top: 8px;">' + sub.feedbackId + '</div></div>';
       }
@@ -1038,27 +1019,14 @@
   }
 
   // ================== HOTS QUIZ ==================
-  function getHotsCacheKey() {
-    return 'hots_' + currentSheet + '_' + activeUser.nama;
-  }
-
+  function getHotsCacheKey() { return 'hots_' + currentSheet + '_' + activeUser.nama; }
   function loadHotsAnswersFromCache() {
     var cached = localStorage.getItem(getHotsCacheKey());
-    if (cached) {
-      try { hotsAnswers = JSON.parse(cached); }
-      catch(e) { hotsAnswers = { mc: {}, mcma: {}, tf: {} }; }
-    } else {
-      hotsAnswers = { mc: {}, mcma: {}, tf: {} };
-    }
+    if (cached) { try { hotsAnswers = JSON.parse(cached); } catch(e) { hotsAnswers = { mc: {}, mcma: {}, tf: {} }; } }
+    else { hotsAnswers = { mc: {}, mcma: {}, tf: {} }; }
   }
-
-  function saveHotsAnswersToCache() {
-    try { localStorage.setItem(getHotsCacheKey(), JSON.stringify(hotsAnswers)); } catch(e) {}
-  }
-
-  function clearHotsAnswersCache() {
-    try { localStorage.removeItem(getHotsCacheKey()); } catch(e) {}
-  }
+  function saveHotsAnswersToCache() { try { localStorage.setItem(getHotsCacheKey(), JSON.stringify(hotsAnswers)); } catch(e) {} }
+  function clearHotsAnswersCache() { try { localStorage.removeItem(getHotsCacheKey()); } catch(e) {} }
 
   function switchHotsTab(tab) {
     activeHotsTab = tab;
@@ -1068,7 +1036,6 @@
     });
     const c = document.getElementById('hotsContent'); c.innerHTML = '';
     if (!currentSheetData || !currentSheetData.hots) { c.innerHTML = '<p>⏳ Memuat soal...</p>'; return; }
-
     if (tab === 'mc') renderMCQuiz(c);
     else if (tab === 'mcma') renderMCMAQuiz(c);
     else if (tab === 'tf') renderTFQuiz(c);
@@ -1078,9 +1045,7 @@
     const result = {};
     const regex = /([A-E])\.\s*([^\n]+?)(?=(?:\s+[A-E]\.)|$)/g;
     let match;
-    while ((match = regex.exec(qText)) !== null) {
-      result[match[1]] = match[2].trim();
-    }
+    while ((match = regex.exec(qText)) !== null) { result[match[1]] = match[2].trim(); }
     return result;
   }
 
@@ -1301,16 +1266,10 @@
       let match = currentAudioUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match) fileId = match[1];
       else { match = currentAudioUrl.match(/id=([a-zA-Z0-9_-]+)/); if (match) fileId = match[1]; }
-      if (fileId) {
-        driveFrame.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
-        modal.classList.add('active');
-      }
+      if (fileId) { driveFrame.src = 'https://drive.google.com/file/d/' + fileId + '/preview'; modal.classList.add('active'); }
     }
   }
-  function closeAudioModal() {
-    document.getElementById('audioModal').classList.remove('active');
-    document.getElementById('driveAudioFrame').src = '';
-  }
+  function closeAudioModal() { document.getElementById('audioModal').classList.remove('active'); document.getElementById('driveAudioFrame').src = ''; }
   function closeAudioModalOnOverlay(e) { if (e.target === e.currentTarget) closeAudioModal(); }
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAudioModal(); });
 
