@@ -10,7 +10,7 @@
     .no-copy { -webkit-user-select: none; user-select: none; }
     .header-banner { background-color: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .header-banner h1 { margin: 0; font-size: 1.6rem; }
-    .header-banner h2 { margin: 5px 0 0; font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+    .header-banner h2 { margin: 5px 0 0; font-size: 1.05rem; font-weight: 400; opacity: 0.9; }
     .nav-bar { display: flex; background: #0f172a; overflow-x: auto; padding: 0 10px; position: sticky; top: 0; z-index: 100; }
     .nav-tab { padding: 14px 20px; color: #94a3b8; cursor: pointer; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; transition: 0.2s; }
     .nav-tab.active { color: #ffffff; border-bottom-color: var(--secondary); background: rgba(255,255,255,0.05); }
@@ -177,12 +177,9 @@
               <h4 style="color: var(--primary); margin-top: 20px;">🌐 Terjemahan Bahasa Inggris:</h4>
               <div id="ans-en-area" class="formatted-paragraph"></div>
             </div>
-            <div id="speaking-display-area" class="speaking-result" style="display:none;">
+            <div id="speaking-display-area" class="descriptive-feedback" style="display:none;">
               <h4 style="margin-top:0; color: var(--accent);">🎙️ Ulasan Pengucapan Audio dari Guru:</h4>
-              <div id="descriptive-feedback-area" class="descriptive-feedback"></div>
-              <div style="text-align: center; margin: 20px 0;">
-                <button id="btnListenAudio" class="btn-submit" onclick="openAudioModal()" style="display: none; background: var(--accent); max-width: 300px; margin: 0 auto;">🎧 Dengarkan Suara Kamu!</button>
-              </div>
+              <div id="descriptive-feedback-area"></div>
             </div>
             <div class="teacher-feedback" id="teacher-feedback-area" style="display:none;">
               <h3 id="teacher-feedback-title">🏫 Feedback Konstruktif & Apresiasi Guru:</h3>
@@ -200,7 +197,7 @@
           <div id="formAnswerContainer">
             <form onsubmit="event.preventDefault(); requestTranslation();">
               <div class="form-group">
-                <label id="answerLabel">Tuliskan Jawaban Analisis Anda (Bahasa Indonesia - Minimal 400 Karakter):</label>
+                <label>Tuliskan Jawaban Analisis Anda (Bahasa Indonesia - Minimal 400 Karakter):</label>
                 <textarea id="answerInput" oninput="checkLength()" onpaste="handlePasteBlock(event)" placeholder="Ketik jawaban analitis Anda tentang materi deskriptif..."></textarea>
                 <div id="charCounter" class="char-count">0 / 400 Karakter Minimum</div>
               </div>
@@ -295,9 +292,9 @@
   const MIN_CHAR = 400;
 
   // ================== STATE ==================
-  let activeUser = { nama: '', password: '', kelas: '' };
+  let activeUser = { nama: '', kelas: '' };
   let currentSheet = '';
-  let availableVoices = [];
+  let materialList = [];         // daftar sheet dari server
   let currentSheetData = null;
   let activeBlockKey = null;
   let activeHotsTab = 'mc';
@@ -306,9 +303,14 @@
   let originalEnglishText = '';
   let submittedAnswerText = '';
   let currentAudioUrl = '';
+  let availableVoices = [];
+
+  // Recording (form normal)
   let mediaRecorder = null, audioChunks = [], recognition = null;
   let finalTranscript = '', isRecording = false, recordStartTime = 0;
   let audioBlobGlobal = null;
+
+  // Recording (reupload)
   let mediaRecorderReupload = null, audioChunksReupload = [];
   let recognitionReupload = null, finalTranscriptReupload = '';
   let isRecordingReupload = false, recordStartTimeReupload = 0;
@@ -318,6 +320,7 @@
   function loadVoices() { availableVoices = window.speechSynthesis.getVoices(); }
   loadVoices();
   if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = loadVoices;
+
   function getIndonesianVoice() {
     let v = availableVoices.find(x => x.lang === 'id-ID' && x.name.toLowerCase().includes('google'));
     if (!v) v = availableVoices.find(x => x.lang === 'id-ID');
@@ -397,11 +400,12 @@
       suc.innerText = res.message; suc.style.display = 'block';
       document.getElementById('profileName').innerText = res.nama;
       document.getElementById('profileKelas').innerText = res.kelas;
+
       setTimeout(async () => {
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
         await loadProfile();
-        await loadSheetContent('My Grandmother, the Warmest Heart in Our Home');
+        await loadMaterialList();
       }, 700);
     } else { err.innerText = res.message; err.style.display = 'block'; }
   }
@@ -414,43 +418,75 @@
     }
   }
 
-  // ================== LOAD SHEET ==================
+  // ================== LOAD MATERIAL LIST (DINAMIS) ==================
+  async function loadMaterialList() {
+    const res = await callGas('getMaterialList', {});
+    if (!res.success) { alert('Gagal memuat daftar materi: ' + res.message); return; }
+    materialList = res.sheets || [];
+
+    const nav = document.getElementById('navTabs'); nav.innerHTML = '';
+    materialList.forEach((m, i) => {
+      const tab = document.createElement('div');
+      tab.className = 'nav-tab' + (i === 0 ? ' active' : '');
+      tab.innerText = '📖 ' + shortenSheetName(m.name);
+      tab.dataset.sheetName = m.name;
+      tab.onclick = function() {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        loadSheetContent(m.name);
+      };
+      nav.appendChild(tab);
+    });
+
+    if (materialList.length > 0) {
+      await loadSheetContent(materialList[0].name);
+    }
+  }
+
+  function shortenSheetName(fullName) {
+    // "My Grandmother, the Warmest Heart in Our Home" → "My Grandmother"
+    var match = fullName.match(/^(My [A-Za-z]+)/);
+    if (match) return match[1];
+    return fullName.length > 30 ? fullName.substring(0, 30) + '...' : fullName;
+  }
+
+  // ================== LOAD SHEET CONTENT ==================
   async function loadSheetContent(sheetName) {
     currentSheet = sheetName;
     document.getElementById('sheetTitle').innerText = sheetName;
     speechStop();
-    stopRecordingSilently(); stopRecordingReuploadSilently();
+    stopRecordingSilently();
+    stopRecordingReuploadSilently();
+
+    document.getElementById('materi-content-area').innerHTML = '<p style="color:#94a3b8;font-style:italic;">⏳ Memuat materi...</p>';
+    document.getElementById('pertanyaan-content-area').innerHTML = '';
+    document.getElementById('questionTabs').innerHTML = '';
+    document.getElementById('hotsQuizArea').style.display = 'none';
 
     const data = await callGas('getSheetData', { sheetName: sheetName, studentName: activeUser.nama });
-    if (!data || !data.materi) return;
+    if (!data || !data.success) {
+      document.getElementById('materi-content-area').innerHTML = '<p style="color:#dc2626;">❌ Gagal memuat data sheet.</p>';
+      return;
+    }
     currentSheetData = data;
 
-    // Render Materi
+    // Render Materi (Zona A)
     parseAndRenderStructuredContent('materi-content-area', {
       materiEn: data.materi.textEn,
       materiPronounce: data.materi.textPronounce,
       materiId: data.materi.textId
     });
 
-    // Render Nav Tabs (2 teks)
-    const nav = document.getElementById('navTabs'); nav.innerHTML = '';
-    const sheetsList = ['My Grandmother, the Warmest Heart in Our Home', 'My Father, the Quiet Hero of Our Family'];
-    sheetsList.forEach((sName, i) => {
-      const tab = document.createElement('div');
-      tab.className = 'nav-tab' + (sName === sheetName ? ' active' : '');
-      tab.innerText = sName.includes('Grandmother') ? '📖 Nenek (Grandmother)' : '📖 Ayah (Father)';
-      tab.onclick = () => loadSheetContent(sName);
-      nav.appendChild(tab);
-    });
-
+    // Render tabs blok analisis + HOTS
     renderBlockTabs();
-    // Default: blok 1
+
+    // Default ke blok pertama
     if (data.analysisBlocks && data.analysisBlocks.length > 0) {
       switchBlock(data.analysisBlocks[0].key);
     }
   }
 
-  // ================== RENDER TABS ==================
+  // ================== RENDER BLOCK TABS ==================
   function renderBlockTabs() {
     const container = document.getElementById('questionTabs'); container.innerHTML = '';
     if (!currentSheetData || !currentSheetData.analysisBlocks) return;
@@ -467,50 +503,56 @@
       }
       btn.className = 'q-tab' + (b.key === activeBlockKey ? ' active' : '') + (isAnswered ? ' answered' : '') + (needsReupload ? ' needs-reupload' : '');
       btn.id = 'btab-' + b.key;
-      btn.innerText = b.index + '. ' + b.short + (needsReupload ? ' ⚠️' : (isAnswered ? ' ✓' : ''));
+      btn.innerText = b.index + '. ' + b.name + (needsReupload ? ' ⚠️' : (isAnswered ? ' ✓' : ''));
       btn.onclick = () => switchBlock(b.key);
       container.appendChild(btn);
     });
 
     // HOTS tab
-    const hotsBtn = document.createElement('div');
-    hotsBtn.className = 'q-tab' + (activeBlockKey === 'HOTS' ? ' active' : '');
-    hotsBtn.id = 'btab-HOTS';
-    hotsBtn.innerText = '🎯 HOTS Quiz';
-    hotsBtn.onclick = () => switchBlock('HOTS');
-    container.appendChild(hotsBtn);
+    if (currentSheetData.hots) {
+      const hotsBtn = document.createElement('div');
+      hotsBtn.className = 'q-tab' + (activeBlockKey === 'HOTS' ? ' active' : '');
+      hotsBtn.id = 'btab-HOTS';
+      hotsBtn.innerText = '🎯 HOTS Quiz';
+      hotsBtn.onclick = () => switchBlock('HOTS');
+      container.appendChild(hotsBtn);
+    }
   }
 
   function switchBlock(key) {
     activeBlockKey = key;
     speechStop();
-    stopRecordingSilently(); stopRecordingReuploadSilently();
+    stopRecordingSilently();
+    stopRecordingReuploadSilently();
+
     document.querySelectorAll('#questionTabs .q-tab').forEach(t => t.classList.remove('active'));
     const tab = document.getElementById('btab-' + key); if (tab) tab.classList.add('active');
 
-    // Hide HOTS
+    // Reset
     document.getElementById('hotsQuizArea').style.display = 'none';
     document.getElementById('formAnswerContainer').style.display = 'none';
     document.getElementById('submissionDisplay').style.display = 'none';
 
     if (key === 'HOTS') {
       document.getElementById('pertanyaan-content-area').innerHTML = '';
+      document.getElementById('answerSectionTitle').innerText = '🎯 HOTS Quiz';
       document.getElementById('hotsQuizArea').style.display = 'block';
       hotsResults = null;
-      hotsAnswers = { mc: {}, mcma: {}, tf: {} };
-      switchHotsTab('mc');
+      loadHotsAnswersFromCache();
+      switchHotsTab(activeHotsTab);
       return;
     }
 
     const blk = currentSheetData.analysisBlocks.find(b => b.key === key);
     if (!blk) return;
 
-    // Render instruksi
+    // Render instruksi analisis
     parseAndRenderStructuredContent('pertanyaan-content-area', {
       materiEn: blk.instructionEn,
       materiPronounce: blk.instructionPronounce,
       materiId: blk.instructionId
     });
+
     document.getElementById('answerSectionTitle').innerText = 'Jawaban & Feedback — ' + blk.name;
 
     const sub = currentSheetData.submissions[key];
@@ -518,47 +560,80 @@
     else { resetFormView(); }
   }
 
-  // ================== RENDER MATERI (SAMA SEPERTI APLIKASI SEBELUMNYA) ==================
+  // ================== RENDER STRUCTURED CONTENT ==================
   function parseAndRenderStructuredContent(targetAreaId, rawData) {
     const area = document.getElementById(targetAreaId); if (!area) return; area.innerHTML = '';
     let textEN = rawData.materiEn || '';
     let textPRON = rawData.materiPronounce || '';
     let textID = rawData.materiId || '';
+
     let enParas = textEN ? textEN.split(/\n+/).filter(p => p.trim() !== '') : [];
     let pronParas = textPRON ? textPRON.split(/\n+/).filter(p => p.trim() !== '') : [];
     let idParas = textID ? textID.split(/\n+/).filter(p => p.trim() !== '') : [];
-    let maxParas = Math.max(enParas.length, idParas.length);
-    if (maxParas === 0) { area.innerHTML = '<p style="color:#94a3b8;font-style:italic;">Tidak ada konten.</p>'; return; }
+    let maxParas = Math.max(enParas.length, idParas.length, pronParas.length);
+
+    if (maxParas === 0) {
+      area.innerHTML = '<p style="color:#94a3b8;font-style:italic;">Tidak ada konten.</p>';
+      return;
+    }
+
     for (let i = 0; i < maxParas; i++) {
-      let paraContainer = document.createElement('div'); paraContainer.style.marginBottom = "16px";
+      let paraContainer = document.createElement('div');
+      paraContainer.style.marginBottom = "16px";
+
       if (enParas[i]) {
-        const audioControlEN = document.createElement('div'); audioControlEN.className = 'audio-controls';
-        const btnEN = document.createElement('button'); btnEN.className = 'btn-audio btn-play-en'; btnEN.innerHTML = '▶ Play EN';
+        const audioControlEN = document.createElement('div');
+        audioControlEN.className = 'audio-controls';
+        const btnEN = document.createElement('button');
+        btnEN.className = 'btn-audio btn-play-en';
+        btnEN.innerHTML = '▶ Play EN';
         btnEN.onclick = () => playText(enParas[i], 'en-US', 0.75);
-        const btnStop = document.createElement('button'); btnStop.className = 'btn-audio btn-stop'; btnStop.innerHTML = '⏹ Stop';
+        const btnStop = document.createElement('button');
+        btnStop.className = 'btn-audio btn-stop';
+        btnStop.innerHTML = '⏹ Stop';
         btnStop.onclick = speechStop;
-        audioControlEN.appendChild(btnEN); audioControlEN.appendChild(btnStop);
-        audioControlEN.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.75x'}));
+        audioControlEN.appendChild(btnEN);
+        audioControlEN.appendChild(btnStop);
+        audioControlEN.appendChild(Object.assign(document.createElement('span'), {
+          className: 'speed-tag', innerText: 'Kecepatan: 0.75x'
+        }));
         paraContainer.appendChild(audioControlEN);
-        const p = document.createElement('div'); p.className = 'formatted-paragraph'; p.innerText = enParas[i];
+        const p = document.createElement('div');
+        p.className = 'formatted-paragraph';
+        p.innerText = enParas[i];
         paraContainer.appendChild(p);
       }
+
       if (pronParas[i]) {
-        const pPRON = document.createElement('div'); pPRON.className = 'pronounce-block'; pPRON.innerText = pronParas[i];
+        const pPRON = document.createElement('div');
+        pPRON.className = 'pronounce-block';
+        pPRON.innerText = pronParas[i];
         paraContainer.appendChild(pPRON);
       }
+
       if (idParas[i]) {
-        const audioControlID = document.createElement('div'); audioControlID.className = 'audio-controls';
-        const btnID = document.createElement('button'); btnID.className = 'btn-audio btn-play-id'; btnID.innerHTML = '▶ Play ID';
+        const audioControlID = document.createElement('div');
+        audioControlID.className = 'audio-controls';
+        const btnID = document.createElement('button');
+        btnID.className = 'btn-audio btn-play-id';
+        btnID.innerHTML = '▶ Play ID';
         btnID.onclick = () => playText(idParas[i], 'id-ID', 0.85);
-        const btnStop2 = document.createElement('button'); btnStop2.className = 'btn-audio btn-stop'; btnStop2.innerHTML = '⏹ Stop';
+        const btnStop2 = document.createElement('button');
+        btnStop2.className = 'btn-audio btn-stop';
+        btnStop2.innerHTML = '⏹ Stop';
         btnStop2.onclick = speechStop;
-        audioControlID.appendChild(btnID); audioControlID.appendChild(btnStop2);
-        audioControlID.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.85x'}));
+        audioControlID.appendChild(btnID);
+        audioControlID.appendChild(btnStop2);
+        audioControlID.appendChild(Object.assign(document.createElement('span'), {
+          className: 'speed-tag', innerText: 'Kecepatan: 0.85x'
+        }));
         paraContainer.appendChild(audioControlID);
-        const pID = document.createElement('div'); pID.className = 'translation-block'; pID.innerText = idParas[i];
+        const pID = document.createElement('div');
+        pID.className = 'translation-block';
+        pID.innerText = idParas[i];
         paraContainer.appendChild(pID);
       }
+
       area.appendChild(paraContainer);
     }
   }
@@ -602,7 +677,10 @@
     const text = document.getElementById('answerInput').value;
     const btn = document.getElementById('btnGetTranslation');
     const err = document.getElementById('ansError');
-    if (text.length < MIN_CHAR) { err.innerText = 'Jawaban wajib minimal ' + MIN_CHAR + ' karakter!'; err.style.display = 'block'; return; }
+    if (text.length < MIN_CHAR) {
+      err.innerText = 'Jawaban wajib minimal ' + MIN_CHAR + ' karakter!';
+      err.style.display = 'block'; return;
+    }
     btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
     submittedAnswerText = text;
 
@@ -618,26 +696,44 @@
 
       const previewEnArea = document.getElementById('preview-en-area');
       previewEnArea.innerHTML = '';
-      const pEn = document.createElement('div'); pEn.className = 'formatted-paragraph'; pEn.innerText = res.jawabanEn;
+      const pEn = document.createElement('div');
+      pEn.className = 'formatted-paragraph';
+      pEn.innerText = res.jawabanEn;
       previewEnArea.appendChild(pEn);
-      const audioCtrl = document.createElement('div'); audioCtrl.className = 'audio-controls';
-      const btnPlay = document.createElement('button'); btnPlay.className = 'btn-audio btn-play-en'; btnPlay.innerHTML = '▶ Dengarkan Pengucapan';
+      const audioCtrl = document.createElement('div');
+      audioCtrl.className = 'audio-controls';
+      const btnPlay = document.createElement('button');
+      btnPlay.className = 'btn-audio btn-play-en';
+      btnPlay.innerHTML = '▶ Dengarkan Pengucapan';
       btnPlay.onclick = () => playText(res.jawabanEn, 'en-US', 0.75);
-      const btnStop = document.createElement('button'); btnStop.className = 'btn-audio btn-stop'; btnStop.innerHTML = '⏹ Stop';
+      const btnStop = document.createElement('button');
+      btnStop.className = 'btn-audio btn-stop';
+      btnStop.innerHTML = '⏹ Stop';
       btnStop.onclick = speechStop;
-      audioCtrl.appendChild(btnPlay); audioCtrl.appendChild(btnStop);
-      audioCtrl.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.75x'}));
+      audioCtrl.appendChild(btnPlay);
+      audioCtrl.appendChild(btnStop);
+      audioCtrl.appendChild(Object.assign(document.createElement('span'), {
+        className: 'speed-tag', innerText: 'Kecepatan: 0.75x'
+      }));
       previewEnArea.appendChild(audioCtrl);
       document.getElementById('preview-pronounce-area').innerText = res.jawabanPronounce;
       document.getElementById('speakingPracticeArea').scrollIntoView({ behavior: 'smooth' });
-    } else { err.innerText = res.message; err.style.display = 'block'; }
+    } else {
+      err.innerText = res.message; err.style.display = 'block';
+    }
   }
 
-  // ================== RECORDING ==================
+  // ================== RECORDING (FORM UTAMA) ==================
   function checkBrowserSupport() {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { alert('Browser Anda tidak mendukung Web Speech API. Gunakan Google Chrome atau Microsoft Edge terbaru.'); return false; }
-    if (!window.MediaRecorder) { alert('Browser Anda tidak mendukung MediaRecorder. Gunakan Google Chrome atau Microsoft Edge terbaru.'); return false; }
+    if (!SR) {
+      alert('Browser Anda tidak mendukung Web Speech API. Gunakan Google Chrome atau Microsoft Edge terbaru untuk pengalaman terbaik.');
+      return false;
+    }
+    if (!window.MediaRecorder) {
+      alert('Browser Anda tidak mendukung MediaRecorder. Gunakan Google Chrome atau Microsoft Edge terbaru.');
+      return false;
+    }
     return true;
   }
 
@@ -691,7 +787,9 @@
         var displayText = (finalTranscript + ' ' + interim).trim();
         if (displayText) {
           var box = document.getElementById('liveTranscriptText');
-          box.innerText = displayText; box.style.color = '#0c4a6e'; box.style.fontStyle = 'normal';
+          box.innerText = displayText;
+          box.style.color = '#0c4a6e';
+          box.style.fontStyle = 'normal';
         }
       };
       recognition.onerror = function(event) { console.warn('SpeechRecognition error:', event.error); };
@@ -718,6 +816,7 @@
     document.getElementById('btnRecordToggle').classList.remove('recording');
     document.getElementById('speechTranscript').value = (finalTranscript || '').trim();
   }
+
   function toggleRecording() { if (isRecording) stopRecording(); else startRecording(); }
   function stopRecordingSilently() {
     if (!isRecording) return;
@@ -726,6 +825,7 @@
     if (recognition) try { recognition.stop(); } catch(e){}
   }
 
+  // ================== RECORDING (REUPLOAD) ==================
   function startRecordingReupload() {
     if (!checkBrowserSupport()) return;
     finalTranscriptReupload = ''; audioChunksReupload = []; isRecordingReupload = true; recordStartTimeReupload = Date.now();
@@ -776,7 +876,9 @@
         var displayText = (finalTranscriptReupload + ' ' + interim).trim();
         if (displayText) {
           var box = document.getElementById('liveTranscriptTextReupload');
-          box.innerText = displayText; box.style.color = '#0c4a6e'; box.style.fontStyle = 'normal';
+          box.innerText = displayText;
+          box.style.color = '#0c4a6e';
+          box.style.fontStyle = 'normal';
         }
       };
       recognitionReupload.onerror = function(event) { console.warn('SR err:', event.error); };
@@ -803,6 +905,7 @@
     document.getElementById('btnRecordToggleReupload').classList.remove('recording');
     document.getElementById('reuploadSpeechTranscript').value = (finalTranscriptReupload || '').trim();
   }
+
   function toggleRecordingReupload() { if (isRecordingReupload) stopRecordingReupload(); else startRecordingReupload(); }
   function stopRecordingReuploadSilently() {
     if (!isRecordingReupload) return;
@@ -867,6 +970,7 @@
       else if (!res.requiresReupload) alert('✅ Kerja bagus! Audio Anda sudah sesuai.');
     } else { err.innerText = res.message; err.style.display = 'block'; }
   }
+
   function submitReuploadAnswer() { submitFinalAnswer(true); }
 
   function showReuploadForm() {
@@ -883,6 +987,7 @@
     document.getElementById('submissionDisplay').style.display = 'block';
     parseAndRenderStructuredContent('ans-id-area', { materiEn: sub.jawabanId });
     parseAndRenderStructuredContent('ans-en-area', { materiEn: sub.jawabanEn, materiPronounce: sub.jawabanPronounce });
+
     var accuracy = parseAccuracy(sub.akurasi);
     var category = determineCategory(accuracy);
     var isBad = (category === 1 || category === 2);
@@ -897,7 +1002,9 @@
         reviewHtml += '<div style="text-align: center; margin-top: 20px;"><button class="btn-submit" onclick="openAudioModal()" style="background: var(--accent); max-width: 300px; margin: 0 auto;">🎧 Dengarkan Suara Kamu!</button></div>';
       }
       document.getElementById('descriptive-feedback-area').innerHTML = reviewHtml;
-    } else { document.getElementById('speaking-display-area').style.display = 'none'; }
+    } else {
+      document.getElementById('speaking-display-area').style.display = 'none';
+    }
 
     if (isGood && (sub.feedbackEn || sub.feedbackPronounce || sub.feedbackId)) {
       document.getElementById('teacher-feedback-area').style.display = 'block';
@@ -917,16 +1024,42 @@
         teacherHtml += '<div class="translation-block" style="margin-top: 8px;">' + sub.feedbackId + '</div></div>';
       }
       document.getElementById('teacher-feedback-content').innerHTML = teacherHtml;
-    } else { document.getElementById('teacher-feedback-area').style.display = 'none'; }
+    } else {
+      document.getElementById('teacher-feedback-area').style.display = 'none';
+    }
 
     if (isBad) {
       document.getElementById('reupload-section').style.display = 'block';
       var rerecordMsg = sub.rerecordMessage || 'Audio Anda belum sesuai. Silakan rekam ulang dengan membaca teks secara perlahan dan jelas.';
       document.getElementById('reupload-message').innerText = '⚠️ REKAM ULANG DIPERLUKAN (Kategori ' + category + '/4): ' + rerecordMsg;
-    } else { document.getElementById('reupload-section').style.display = 'none'; }
+    } else {
+      document.getElementById('reupload-section').style.display = 'none';
+    }
   }
 
   // ================== HOTS QUIZ ==================
+  function getHotsCacheKey() {
+    return 'hots_' + currentSheet + '_' + activeUser.nama;
+  }
+
+  function loadHotsAnswersFromCache() {
+    var cached = localStorage.getItem(getHotsCacheKey());
+    if (cached) {
+      try { hotsAnswers = JSON.parse(cached); }
+      catch(e) { hotsAnswers = { mc: {}, mcma: {}, tf: {} }; }
+    } else {
+      hotsAnswers = { mc: {}, mcma: {}, tf: {} };
+    }
+  }
+
+  function saveHotsAnswersToCache() {
+    try { localStorage.setItem(getHotsCacheKey(), JSON.stringify(hotsAnswers)); } catch(e) {}
+  }
+
+  function clearHotsAnswersCache() {
+    try { localStorage.removeItem(getHotsCacheKey()); } catch(e) {}
+  }
+
   function switchHotsTab(tab) {
     activeHotsTab = tab;
     document.querySelectorAll('.sub-tab').forEach(t => {
@@ -935,9 +1068,20 @@
     });
     const c = document.getElementById('hotsContent'); c.innerHTML = '';
     if (!currentSheetData || !currentSheetData.hots) { c.innerHTML = '<p>⏳ Memuat soal...</p>'; return; }
+
     if (tab === 'mc') renderMCQuiz(c);
     else if (tab === 'mcma') renderMCMAQuiz(c);
     else if (tab === 'tf') renderTFQuiz(c);
+  }
+
+  function extractMCOptions(qText) {
+    const result = {};
+    const regex = /([A-E])\.\s*([^\n]+?)(?=(?:\s+[A-E]\.)|$)/g;
+    let match;
+    while ((match = regex.exec(qText)) !== null) {
+      result[match[1]] = match[2].trim();
+    }
+    return result;
   }
 
   function renderMCQuiz(c) {
@@ -945,11 +1089,13 @@
     if (!h || !h.length) { c.innerHTML = '<p>Soal tidak tersedia.</p>'; return; }
     const wrapper = document.createElement('div');
     wrapper.innerHTML = '<div style="background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:14px;border-left:4px solid var(--accent);"><strong>📝 Pilihan Ganda:</strong> Pilih satu jawaban paling tepat (A/B/C/D) untuk setiap soal.</div>';
+
     h.forEach(q => {
       const blk = document.createElement('div');
       blk.className = 'quiz-q';
       blk.id = 'mc-q-' + q.num;
       const fb = (hotsResults && hotsResults.results && hotsResults.results.mc[q.num - 1]) || null;
+
       let html = '<span class="q-num">Soal ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.questionEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.questionEn) + ', "en-US", 0.75)\'>▶ Play Soal</button></div>';
@@ -968,35 +1114,29 @@
         html += '<div class="opt-text"><strong>' + opt + '.</strong> ' + (optTexts[opt] || '') + '</div>';
         html += '</div>';
       });
+
       if (fb) {
         html += '<div style="margin-top:12px;padding:12px;background:' + (fb.isCorrect ? '#f0fdf4' : '#fef2f2') + ';border-left:4px solid ' + (fb.isCorrect ? 'var(--success)' : 'var(--danger)') + ';border-radius:8px;">';
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Salah. Jawaban benar: ' + fb.correctAnswer) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
+
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
+
     const actionBtn = document.createElement('div');
     actionBtn.style.marginTop = '20px';
     if (!hotsResults) actionBtn.innerHTML = '<button class="btn-submit" onclick="submitQuiz()">🎯 Kumpulkan Jawaban & Lihat Hasil</button>';
-    else actionBtn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor MC: ' + hotsResults.results.mc.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.mc.length + '</h3></div>';
+    else actionBtn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor MC: ' + hotsResults.results.mc.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.mc.length + '</h3><button class="btn-submit" onclick="resetQuiz()" style="margin-top:10px;background:var(--accent);">🔄 Kerjakan Ulang</button></div>';
     wrapper.appendChild(actionBtn);
     c.appendChild(wrapper);
-  }
-
-  function extractMCOptions(qText) {
-    const result = {};
-    const regex = /([A-E])\.\s*([^\n]+?)(?=(?:\s+[A-E]\.)|$)/g;
-    let match;
-    while ((match = regex.exec(qText)) !== null) {
-      result[match[1]] = match[2].trim();
-    }
-    return result;
   }
 
   function selectMC(qNum, opt) {
     if (hotsResults) return;
     hotsAnswers.mc[qNum] = opt;
+    saveHotsAnswersToCache();
     switchHotsTab('mc');
   }
 
@@ -1013,6 +1153,7 @@
       const blk = document.createElement('div');
       blk.className = 'quiz-q';
       const fb = (hotsResults && hotsResults.results && hotsResults.results.mcma[q.num-1]) || null;
+
       let html = '<span class="q-num">Soal ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.questionEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.questionEn) + ', "en-US", 0.75)\'>▶ Play Soal</button></div>';
@@ -1031,18 +1172,21 @@
         html += '<input type="checkbox" ' + (selected ? 'checked' : '') + ' ' + (fb ? 'disabled' : '') + '>';
         html += '<div class="opt-text"><strong>' + opt + '.</strong> ' + (optTexts[opt] || '') + '</div></div>';
       });
+
       if (fb) {
         html += '<div style="margin-top:12px;padding:12px;background:' + (fb.isCorrect ? '#f0fdf4' : '#fef2f2') + ';border-left:4px solid ' + (fb.isCorrect ? 'var(--success)' : 'var(--danger)') + ';border-radius:8px;">';
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Belum tepat. Jawaban benar: ' + fb.correctAnswer.join(', ')) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
+
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
+
     const btn = document.createElement('div');
     btn.style.marginTop = '20px';
     if (!hotsResults) btn.innerHTML = '<button class="btn-submit" onclick="submitQuiz()">🎯 Kumpulkan Jawaban & Lihat Hasil</button>';
-    else btn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor MCMA: ' + hotsResults.results.mcma.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.mcma.length + '</h3></div>';
+    else btn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor MCMA: ' + hotsResults.results.mcma.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.mcma.length + '</h3><button class="btn-submit" onclick="resetQuiz()" style="margin-top:10px;background:var(--accent);">🔄 Kerjakan Ulang</button></div>';
     wrapper.appendChild(btn);
     c.appendChild(wrapper);
   }
@@ -1053,6 +1197,7 @@
     const arr = hotsAnswers.mcma[qNum];
     const idx = arr.indexOf(opt);
     if (idx === -1) arr.push(opt); else arr.splice(idx, 1);
+    saveHotsAnswersToCache();
     switchHotsTab('mcma');
   }
 
@@ -1070,6 +1215,7 @@
       blk.className = 'quiz-q';
       const fb = (hotsResults && hotsResults.results && hotsResults.results.tf[q.num-1]) || null;
       const ans = hotsAnswers.tf[q.num];
+
       let html = '<span class="q-num">Statement ' + q.num + '</span>';
       html += '<div class="q-text">' + (q.statementEn || '') + '</div>';
       html += '<div style="margin:8px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(q.statementEn) + ', "en-US", 0.75)\'>▶ Play Statement</button></div>';
@@ -1085,6 +1231,7 @@
         if (ans === true) tCls += ' selected';
         if (ans === false) fCls += ' selected';
       }
+
       html += '<div class="' + tCls + '" onclick="selectTF(' + q.num + ', true)">';
       html += '<input type="radio" name="tf-' + q.num + '" ' + (ans === true ? 'checked' : '') + ' ' + (fb ? 'disabled' : '') + '>';
       html += '<div class="opt-text"><strong>T (True / Benar)</strong></div></div>';
@@ -1097,13 +1244,15 @@
         html += '<strong>' + (fb.isCorrect ? '✅ Benar!' : '❌ Salah. Jawaban benar: ' + (fb.correctAnswer ? 'True' : 'False')) + '</strong>';
         html += '<div style="margin-top:8px;font-size:.92rem;">' + (fb.feedbackId || fb.feedbackEn || '') + '</div></div>';
       }
+
       blk.innerHTML = html;
       wrapper.appendChild(blk);
     });
+
     const btn = document.createElement('div');
     btn.style.marginTop = '20px';
     if (!hotsResults) btn.innerHTML = '<button class="btn-submit" onclick="submitQuiz()">🎯 Kumpulkan Jawaban & Lihat Hasil</button>';
-    else btn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor T/F: ' + hotsResults.results.tf.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.tf.length + '</h3></div>';
+    else btn.innerHTML = '<div style="background:#f0fdf4;padding:14px;border-radius:10px;text-align:center;"><h3 style="margin:0;color:var(--success);">Skor T/F: ' + hotsResults.results.tf.filter(r => r.isCorrect).length + ' / ' + hotsResults.results.tf.length + '</h3><button class="btn-submit" onclick="resetQuiz()" style="margin-top:10px;background:var(--accent);">🔄 Kerjakan Ulang</button></div>';
     wrapper.appendChild(btn);
     c.appendChild(wrapper);
   }
@@ -1111,6 +1260,7 @@
   function selectTF(qNum, val) {
     if (hotsResults) return;
     hotsAnswers.tf[qNum] = val;
+    saveHotsAnswersToCache();
     switchHotsTab('tf');
   }
 
@@ -1134,6 +1284,14 @@
     switchHotsTab(activeHotsTab);
   }
 
+  function resetQuiz() {
+    if (!confirm('Kerjakan ulang kuis? Jawaban dan hasil sebelumnya akan dihapus.')) return;
+    hotsResults = null;
+    hotsAnswers = { mc: {}, mcma: {}, tf: {} };
+    clearHotsAnswersCache();
+    switchHotsTab('mc');
+  }
+
   // ================== MODAL AUDIO ==================
   function openAudioModal() {
     const modal = document.getElementById('audioModal');
@@ -1143,10 +1301,16 @@
       let match = currentAudioUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match) fileId = match[1];
       else { match = currentAudioUrl.match(/id=([a-zA-Z0-9_-]+)/); if (match) fileId = match[1]; }
-      if (fileId) { driveFrame.src = 'https://drive.google.com/file/d/' + fileId + '/preview'; modal.classList.add('active'); }
+      if (fileId) {
+        driveFrame.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+        modal.classList.add('active');
+      }
     }
   }
-  function closeAudioModal() { document.getElementById('audioModal').classList.remove('active'); document.getElementById('driveAudioFrame').src = ''; }
+  function closeAudioModal() {
+    document.getElementById('audioModal').classList.remove('active');
+    document.getElementById('driveAudioFrame').src = '';
+  }
   function closeAudioModalOnOverlay(e) { if (e.target === e.currentTarget) closeAudioModal(); }
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAudioModal(); });
 
@@ -1157,15 +1321,19 @@
     const greetingRegex = new RegExp('^(Excellent work,\\s+' + escapeRegex(studentName) + '!)\\s*', 'i');
     const match = feedbackText.match(greetingRegex);
     if (match) {
-      const greeting = match[1]; const rest = feedbackText.substring(greeting.length).trim();
+      const greeting = match[1];
+      const rest = feedbackText.substring(greeting.length).trim();
       if (!rest) {
-        const u = new SpeechSynthesisUtterance(greeting); u.rate = 0.85; u.lang = 'id-ID';
+        const u = new SpeechSynthesisUtterance(greeting);
+        u.rate = 0.85; u.lang = 'id-ID';
         const v = getIndonesianVoice(); if (v) u.voice = v;
         window.speechSynthesis.speak(u); return;
       }
-      const u1 = new SpeechSynthesisUtterance(greeting); u1.rate = 0.85; u1.lang = 'id-ID';
+      const u1 = new SpeechSynthesisUtterance(greeting);
+      u1.rate = 0.85; u1.lang = 'id-ID';
       const v1 = getIndonesianVoice(); if (v1) u1.voice = v1;
-      const u2 = new SpeechSynthesisUtterance(rest); u2.rate = 0.75; u2.lang = 'en-US';
+      const u2 = new SpeechSynthesisUtterance(rest);
+      u2.rate = 0.75; u2.lang = 'en-US';
       const v2 = getEnglishVoice(); if (v2) u2.voice = v2;
       u1.onend = function() { window.speechSynthesis.speak(u2); };
       window.speechSynthesis.speak(u1);
