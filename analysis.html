@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learning Platform - English Interactive - Lopo Pelajar (Analisis)</title>
+  <title>Analisis Descriptive Text - Lopo Pelajar</title>
   <style>
     :root { --primary: #1b365d; --secondary: #0066cc; --accent: #d97706; --danger: #dc2626; --success: #16a34a; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; }
     body { font-family: 'Segoe UI', System-UI, sans-serif; line-height: 1.7; color: var(--text); background-color: var(--bg); margin: 0; padding: 0; }
     .header-banner { background-color: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .header-banner h1 { margin: 0; font-size: 1.8rem; }
     .nav-bar { display: flex; background: #0f172a; overflow-x: auto; padding: 0 10px; }
     .nav-tab { padding: 14px 20px; color: #94a3b8; text-decoration: none; cursor: pointer; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; transition: 0.2s; }
     .nav-tab.active { color: #ffffff; border-bottom-color: var(--secondary); background: rgba(255,255,255,0.05); }
     .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; box-sizing: border-box; }
-    .two-column-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-    @media (max-width: 900px) { .two-column-layout { grid-template-columns: 1fr; } }
     .card { background: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
     .login-card { max-width: 400px; margin: 60px auto; }
     .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+    
+    .two-column-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; align-items: start; }
+    @media (max-width: 900px) { .two-column-layout { grid-template-columns: 1fr; } }
+    
     .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; white-space: pre-wrap; }
     .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; }
     .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; white-space: pre-wrap; }
@@ -28,16 +29,15 @@
     .password-wrapper { position: relative; display: flex; align-items: center; }
     .password-wrapper input { padding-right: 45px; }
     .toggle-password { position: absolute; right: 12px; cursor: pointer; font-size: 1.2rem; color: #64748b; }
-    textarea { height: 120px; resize: vertical; }
+    
     .btn-submit { background-color: var(--success); color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
     .btn-submit:disabled { background-color: #cbd5e1; cursor: not-allowed; }
     .alert { padding: 12px; border-radius: 8px; margin-top: 15px; display: none; }
     .alert-danger { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
-    /* Accordion Styles for Right Column */
+    /* Accordion untuk Bagian Kanan */
     .accordion-item { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
-    .accordion-header { background: #f1f5f9; padding: 15px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
-    .accordion-header:hover { background: #e2e8f0; }
+    .accordion-header { background: #f1f5f9; padding: 15px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
     .accordion-header.active { background: var(--secondary); color: white; }
     .accordion-content { display: none; padding: 20px; background: white; border-top: 1px solid #e2e8f0; }
     .accordion-content.show { display: block; }
@@ -51,280 +51,41 @@
     .live-transcript-box { background: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; margin-top: 15px; border-radius: 4px; min-height: 50px; font-size: 0.95rem; color: #0c4a6e; line-height: 1.6; display: none; }
     .recorder-status { font-size: 0.9rem; margin-top: 10px; color: #7c2d12; font-weight: 600; text-align: center; }
     .recorder-status.recording { color: var(--danger); }
-    .feedback-display { background: #f0fdf4; border: 1px solid #86efac; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid var(--success); white-space: pre-wrap; }
-    .mcma-options label, .tf-options label { display: block; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
-    .mcma-options label:hover, .tf-options label:hover { background: #f8fafc; border-color: var(--secondary); }
-    .mcma-options input, .tf-options input { margin-right: 10px; transform: scale(1.2); }
-  </style>
-</head>
-<body>
-<div class="header-banner">
-  <h1>Interactive English Learning Platform</h1>
-  <h2 id="sheetTitleDisplay">Descriptive Text Analysis</h2>
-</div>
-
-<!-- LOGIN CONTAINER -->
-<div id="login-container" class="container">
-  <div class="card login-card">
-    <h2 class="section-title">Masuk Portal Siswa</h2>
-    <form onsubmit="executeLogin(event)">
-      <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input type="text" id="inputNama" required placeholder="Masukkan nama lengkap Anda">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="password-wrapper">
-          <input type="password" id="inputPass" required placeholder="Masukkan password">
-          <span class="toggle-password" id="toggleEye" onclick="togglePasswordVisibility()">👁️</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Kelas</label>
-        <select id="inputKelas" required>
-          <option value="" disabled selected>-- Pilih Kelas Anda --</option>
-        </select>
-      </div>
-      <button type="submit" class="btn-submit" id="btnLogin">Enter / Masuk</button>
-    </form>
-    <div id="loginError" class="alert alert-danger"></div>
-  </div>
-</div>
-
-<!-- MAIN APP CONTAINER -->
-<div id="main-app" style="display: none;">
-  <div class="nav-bar" id="navTabs"></div>
-  <div class="container">
-    <div class="two-column-layout">
-      <!-- LEFT COLUMN: MATERI -->
-      <div class="column-left">
-        <div class="card">
-          <h2 class="section-title">📖 Materi Pembelajaran</h2>
-          <div id="materi-content-area"></div>
-        </div>
-      </div>
-      <!-- RIGHT COLUMN: ANALISIS & SOAL -->
-      <div class="column-right">
-        <h2 class="section-title">📝 Lembar Analisis & Diskusi</h2>
-        <div id="dynamic-content-area"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // ⚠️ GANTI URL INI DENGAN URL DEPLOYMENT WEB APP ANDA
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyF2XbR1zb9EciDflExYkcirUVtfB_6dfu9J1Yir567Ds5WnHAEAYVx87N8bxmkx4Zj9Q/exec';
-
-  let activeUser = { nama: '', kelas: '' };
-  let currentSheet = '';
-  let currentSheetData = null;
-  let mediaRecorder = null, audioChunks = [], recognition = null, finalTranscript = '', isRecording = false;
-  let activeRecordingId = '';
-
-  // Generate Dropdown Kelas 7A - 7Z
-  const kelasSelect = document.getElementById('inputKelas');
-  for (let i = 65; i <= 90; i++) {
-    const option = document.createElement('option');
-    option.value = `7${String.fromCharCode(i)}`;
-    option.textContent = `7${String.fromCharCode(i)}`;
-    kelasSelect.appendChild(option);
-  }
-
-  function togglePasswordVisibility() {
-    const passInput = document.getElementById('inputPass');
-    const eyeIcon = document.getElementById('toggleEye');
-    if (passInput.type === 'password') { passInput.type = 'text'; eyeIcon.innerText = '🙈'; }
-    else { passInput.type = 'password'; eyeIcon.innerText = '👁️'; }
-  }
-
-  async function callGas(action, payload) {
-    try {
-      const res = await fetch(GAS_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, payload }) });
-      return await res.json();
-    } catch (err) { return { success: false, message: 'Koneksi gagal: ' + err.message }; }
-  }
-
-  async function executeLogin(e) {
-    e.preventDefault();
-    const nama = document.getElementById('inputNama').value;
-    const password = document.getElementById('inputPass').value;
-    const kelas = document.getElementById('inputKelas').value;
-    const btn = document.getElementById('btnLogin');
-    const err = document.getElementById('loginError');
     
-    btn.disabled = true; btn.innerText = 'Memproses...'; err.style.display = 'none';
+    .feedback-display { background: #f0fdf4; border: 1px solid #86efac; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid var(--success); }
+    .feedback-display p { margin: 8px 0; white-space: pre-wrap; }
+  else { counter.className = 'char-count'; btn.disabled = true; }
+  }
+
+  async function prepareRecording(secId) {
+    const text = document.getElementById(`ans_${secId}`).value;
+    if (text.length < 30) { alert('Jawaban minimal 30 karakter!'); return; }
     
-    const res = await callGas('login', { nama, password, kelas });
-    btn.disabled = false; btn.innerText = 'Enter / Masuk';
-    
-    if (res.success) {
-      activeUser = { nama: res.nama, kelas: res.kelas };
-      document.getElementById('login-container').style.display = 'none';
-      document.getElementById('main-app').style.display = 'block';
-      buildTabs(res.availableSheets || ['My Grandmother, the Warmest Heart in Our Home', 'My Father, the Quiet Hero of Our Family']);
-    } else {
-      err.innerText = res.message;
-      err.style.display = 'block';
-    }
-  }
-
-  function buildTabs(sheets) {
-    const nav = document.getElementById('navTabs');
-    nav.innerHTML = '';
-    sheets.forEach((sheetName, index) => {
-      const tab = document.createElement('div');
-      tab.className = 'nav-tab' + (index === 0 ? ' active' : '');
-      tab.innerText = sheetName;
-      tab.onclick = function() {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        loadSheetContent(sheetName);
-      };
-      nav.appendChild(tab);
-    });
-    if (sheets.length > 0) loadSheetContent(sheets[0]);
-  }
-
-  async function loadSheetContent(sheetName) {
-    currentSheet = sheetName;
-    document.getElementById('sheetTitleDisplay').innerText = sheetName;
-    const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
-    if (!data || !data.success) return;
-    
-    currentSheetData = data;
-    renderMateri(data.materi);
-    renderDynamicSections(data);
-  }
-
-  function renderMateri(materi) {
-    document.getElementById('materi-content-area').innerHTML = `
-      <div class="pronounce-block">${materi.pronounce}</div>
-      <div class="formatted-paragraph">${materi.en}</div>
-      <div class="translation-block">${materi.id}</div>
-    `;
-  }
-
-  function renderDynamicSections(data) {
-    const container = document.getElementById('dynamic-content-area');
-    container.innerHTML = '';
-
-    // 1. Render 10 Blok Analisis
-    if (data.analysisBlocks && data.analysisBlocks.length > 0) {
-      data.analysisBlocks.forEach((blk, idx) => {
-        const sub = data.submissions[blk.id];
-        const statusBadge = sub ? '<span class="status-badge done">✅ Selesai</span>' : '<span class="status-badge">⏳ Belum</span>';
-        
-        let html = `
-          <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>${idx + 1}. Analisis: ${blk.title}</span>
-              <span>${statusBadge} ▼</span>
-            </div>
-            <div class="accordion-content">
-              <!-- VERTIKAL: Instruksi -->
-              <div class="pronounce-block">${blk.instrPron}</div>
-              <div class="formatted-paragraph">${blk.instrEn}</div>
-              <div class="translation-block">${blk.instrId}</div>
-              
-              ${sub ? renderSubmissionView(sub) : renderAnalysisForm(blk)}
-            </div>
-          </div>
-        `;
-        container.innerHTML += html;
-      });
-    }
-
-    // 2. Render HOTS, MCMA, TF (Disederhanakan untuk fokus pada struktur vertikal yang diminta)
-    // (Logika serupa dapat ditambahkan di sini mengikuti pola accordion di atas)
-  }
-
-  function toggleAccordion(header) {
-    if (isRecording) stopRecording();
-    header.classList.toggle('active');
-    const content = header.nextElementSibling;
-    content.classList.toggle('show');
-  }
-
-  function renderAnalysisForm(blk) {
-    return `
-      <div style="margin-top: 20px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
-        <h4 style="color: var(--primary);">Jawaban & Rekaman Anda</h4>
-        <div class="form-group">
-          <label>Jawaban Anda (Bahasa Indonesia):</label>
-          <textarea id="ans_${blk.id}" oninput="checkLength('${blk.id}')" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
-          <div id="char_${blk.id}" style="font-size: 0.85rem; text-align: right; color: #64748b;">0 / 50 Karakter Minimum</div>
-          <button class="btn-submit" id="btn_trans_${blk.id}" disabled onclick="prepareRecording('${blk.id}')">Terjemahkan & Rekam</button>
-        </div>
-        
-        <div id="rec_area_${blk.id}" style="display: none;">
-          <div class="recorder-box">
-            <p><strong>Teks Bahasa Inggris (Baca dengan lantang):</strong></p>
-            <div class="pronounce-block" id="en_text_${blk.id}"></div>
-            <div style="text-align: center; margin: 15px 0;">
-              <button class="btn-record" id="btn_rec_${blk.id}" onclick="toggleRecording('${blk.id}')">🎙️ MULAI REKAM</button>
-            </div>
-            <div id="rec_status_${blk.id}" class="recorder-status">Siap merekam.</div>
-            <div id="trans_box_${blk.id}" class="live-transcript-box">
-              <strong>Transkrip Real-time:</strong>
-              <div id="live_trans_${blk.id}" style="color: #64748b; font-style: italic;">Mulai bicara...</div>
-            </div>
-            <audio id="audio_play_${blk.id}" controls style="width: 100%; margin-top: 15px; display: none;"></audio>
-          </div>
-          <button class="btn-submit" id="btn_sub_${blk.id}" disabled onclick="submitAnalysis('${blk.id}')">✅ Kirim Jawaban & Penilaian</button>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderSubmissionView(sub) {
-    return `
-      <div class="feedback-display">
-        <p><strong>Jawaban Anda:</strong> ${sub.jawabanId}</p>
-        <p><strong>Terjemahan:</strong> ${sub.jawabanEn}</p>
-        <p><strong>Akurasi Pengucapan:</strong> <span style="color: var(--secondary); font-weight: bold;">${sub.akurasi}</span></p>
-        <p><strong>Feedback Guru:</strong> ${sub.feedbackId}</p>
-        ${sub.audioUrl ? `<a href="${sub.audioUrl}" target="_blank" class="btn-submit" style="text-decoration: none; display: inline-block; width: auto; margin-top: 10px; background: var(--accent);">🎧 Dengarkan Rekaman</a>` : ''}
-      </div>
-    `;
-  }
-
-  function checkLength(id) {
-    const val = document.getElementById(`ans_${id}`).value;
-    const counter = document.getElementById(`char_${id}`);
-    const btn = document.getElementById(`btn_trans_${id}`);
-    counter.innerText = `${val.length} / 50 Karakter Minimum`;
-    if (val.length >= 50) { counter.style.color = 'var(--success)'; counter.style.fontWeight = 'bold'; btn.disabled = false; }
-    else { counter.style.color = '#64748b'; counter.style.fontWeight = 'normal'; btn.disabled = true; }
-  }
-
-  async function prepareRecording(blkId) {
-    const text = document.getElementById(`ans_${blkId}`).value;
-    const btn = document.getElementById(`btn_trans_${blkId}`);
-    btn.disabled = true; btn.innerText = 'Memproses...';
+    const btn = document.getElementById(`btn_trans_${secId}`);
+    btn.disabled = true; btn.innerText = 'Menerjemahkan...';
     
     const res = await callGas('getInstantTranslation', { text });
     btn.disabled = false; btn.innerText = 'Terjemahkan & Rekam';
     
     if (res.success) {
-      document.getElementById(`en_text_${blkId}`).innerText = res.jawabanEn;
-      document.getElementById(`rec_area_${blkId}`).style.display = 'block';
-      document.getElementById(`rec_area_${blkId}`).scrollIntoView({ behavior: 'smooth' });
+      document.getElementById(`en_text_${secId}`).innerText = res.jawabanEn;
+      document.getElementById(`rec_area_${secId}`).style.display = 'block';
+      document.getElementById(`rec_area_${secId}`).scrollIntoView({ behavior: 'smooth' });
     }
   }
 
-  function toggleRecording(blkId) {
-    if (isRecording) { stopRecording(); } else { startRecording(blkId); }
+  function toggleRecording(secId) {
+    if (isRecording) { stopRecording(); } else { startRecording(secId); }
   }
 
-  function startRecording(blkId) {
-    activeRecordingId = blkId;
+  function startRecording(secId) {
+    activeRecordingId = secId;
     finalTranscript = ''; audioChunks = []; isRecording = true;
     
-    const btn = document.getElementById(`btn_rec_${blkId}`);
-    const status = document.getElementById(`rec_status_${blkId}`);
-    const transBox = document.getElementById(`trans_box_${blkId}`);
-    const liveTrans = document.getElementById(`live_trans_${blkId}`);
+    const btn = document.getElementById(`btn_rec_${secId}`);
+    const status = document.getElementById(`rec_status_${secId}`);
+    const transBox = document.getElementById(`trans_box_${secId}`);
+    const liveTrans = document.getElementById(`live_trans_${secId}`);
 
     btn.innerText = '⏹ SELESAI REKAM';
     btn.classList.add('recording');
@@ -338,14 +99,14 @@
       mediaRecorder.onstop = function() {
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const url = URL.createObjectURL(audioBlob);
-        const playback = document.getElementById(`audio_play_${blkId}`);
+        const playback = document.getElementById(`audio_play_${secId}`);
         playback.src = url; playback.style.display = 'block';
         stream.getTracks().forEach(t => t.stop());
         
         const reader = new FileReader();
         reader.onload = function(e) {
           playback.dataset.base64 = e.target.result.split(',')[1];
-          document.getElementById(`btn_sub_${blkId}`).disabled = false;
+          document.getElementById(`btn_sub_${secId}`).disabled = false;
         };
         reader.readAsDataURL(audioBlob);
       };
@@ -365,8 +126,7 @@
           const displayText = (finalTranscript + ' ' + interim).trim();
           if (displayText) {
             liveTrans.innerText = displayText;
-            liveTrans.style.color = '#0c4a6e';
-            liveTrans.style.fontStyle = 'normal';
+            liveTrans.style.color = '#0c4a6e'; liveTrans.style.fontStyle = 'normal';
           }
         };
         recognition.onend = function() { if (isRecording) { try { recognition.start(); } catch (e) {} } };
@@ -375,10 +135,8 @@
     }).catch(function(err) {
       alert('Tidak bisa mengakses mikrofon: ' + err.message);
       isRecording = false;
-      btn.innerText = '🎙️ MULAI REKAM';
-      btn.classList.remove('recording');
-      status.innerText = 'Gagal mengakses mikrofon.';
-      status.classList.remove('recording');
+      btn.innerText = '🎙️ MULAI REKAM'; btn.classList.remove('recording');
+      status.innerText = 'Gagal mengakses mikrofon.'; status.classList.remove('recording');
     });
   }
 
@@ -388,45 +146,57 @@
     if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
     if (recognition) { try { recognition.stop(); } catch (e) {} }
 
-    const blkId = activeRecordingId;
-    const btn = document.getElementById(`btn_rec_${blkId}`);
-    const status = document.getElementById(`rec_status_${blkId}`);
+    const secId = activeRecordingId;
+    const btn = document.getElementById(`btn_rec_${secId}`);
+    const status = document.getElementById(`rec_status_${secId}`);
     
-    btn.innerText = '🎙️ REKAM ULANG';
-    btn.classList.remove('recording');
-    status.innerText = '✅ Rekaman selesai. Silakan kirim.';
-    status.classList.remove('recording');
+    btn.innerText = '🎙️ REKAM ULANG'; btn.classList.remove('recording');
+    status.innerText = '✅ Rekaman selesai. Silakan kirim.'; status.classList.remove('recording');
   }
 
-  async function submitAnalysis(blkId) {
-    const btn = document.getElementById(`btn_sub_${blkId}`);
-    btn.disabled = true; btn.innerText = 'Mengunggah & Menganalisis...';
+  async function submitAnalysis(secId) {
+    const btn = document.getElementById(`btn_sub_${secId}`);
+    btn.disabled = true; btn.innerText = 'Mengunggah & Menyimpan...';
 
-    const playback = document.getElementById(`audio_play_${blkId}`);
+    const playback = document.getElementById(`audio_play_${secId}`);
     const base64 = playback.dataset.base64;
     const transcript = finalTranscript.trim();
-    const indonesianText = document.getElementById(`ans_${blkId}`).value;
-    const blk = currentSheetData.analysisBlocks.find(b => b.id === blkId);
+    const indonesianText = document.getElementById(`ans_${secId}`).value;
+    
+    const sec = currentSheetData.analysisSections.find(s => s.id === secId);
 
-    const audioRes = await callGas('uploadAudioToDrive', { base64Data: base64, fileName: `${activeUser.nama}_${blkId}_${Date.now()}.webm`, mimeType: 'audio/webm' });
+    const audioRes = await callGas('uploadAudioToDrive', { 
+      base64Data: base64, 
+      fileName: `${activeUser.nama}_${sec.title.replace(/\s+/g, '_')}_${Date.now()}.webm`, 
+      mimeType: 'audio/webm' 
+    });
+    
     if (!audioRes.success) { alert('Gagal upload audio'); btn.disabled = false; btn.innerText = '✅ Kirim Jawaban & Penilaian'; return; }
 
-    // Simulasi skor AI (Anda bisa mengganti ini dengan fungsi Levenshtein dari App 1 jika diinginkan)
-    const mockScore = Math.floor(Math.random() * (100 - 70) + 70); 
+    // Simulasi skor (bisa diganti dengan logika AI Anda)
+    const mockScore = Math.floor(Math.random() * (100 - 75) + 75); 
 
     const payload = {
-      sheetName: currentSheet, studentName: activeUser.nama, itemType: 'analysis',
-      colIndices: { jawabId: blk.colJawabId, jawabEn: blk.colJawabEn, audio: blk.colAudio, transkrip: blk.colTranskrip, penilaian: blk.colPenilaian, akurasi: blk.colAkurasi, feedbackEn: blk.colFeedbackEn, feedbackId: blk.colFeedbackId },
-      jawabanText: indonesianText, jawabanEn: document.getElementById(`en_text_${blkId}`).innerText,
-      audioUrl: audioRes.downloadUrl, speechTranscript: transcript, akurasi: mockScore,
-      penilaianAI: 'Analisis baik. Terus tingkatkan pengucapan.',
+      sheetName: currentSheet, studentName: activeUser.nama,
+      colMap: sec.cols,
+      jawabId: indonesianText,
+      jawabEn: document.getElementById(`en_text_${secId}`).innerText,
+      audioUrl: audioRes.downloadUrl,
+      transkrip: transcript,
+      akurasi: mockScore,
+      penilaian: 'Analisis baik. Terus tingkatkan pengucapan.',
       feedbackEn: 'Good job! Keep practicing your pronunciation.',
       feedbackId: 'Kerja bagus! Terus latih pengucapan Anda.'
     };
 
-    const res = await callGas('submitStudentAnswer', payload);
-    if (res.success) { alert('✅ Jawaban berhasil dikirim!'); loadSheetContent(currentSheet); }
-    else { alert('Gagal: ' + res.message); btn.disabled = false; btn.innerText = '✅ Kirim Jawaban & Penilaian'; }
+    const res = await callGas('submitAnalysis', payload);
+    if (res.success) { 
+      alert('✅ Jawaban berhasil dikirim dan disimpan di Sheet!'); 
+      loadSheetContent(currentSheet); 
+    } else { 
+      alert('Gagal: ' + res.message); 
+      btn.disabled = false; btn.innerText = '✅ Kirim Jawaban & Penilaian'; 
+    }
   }
 </script>
 </body>
