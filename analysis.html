@@ -100,14 +100,14 @@
 </head>
 <body>
 <div class="header-banner">
-  <h1>🚀 Interactive English Learning Platform Lopopelajar.com</h1>
+  <h1>Interactive English Learning Platform Lopopelajar.com</h1>
   <h2 id="pageSubtitle">Analysis of Descriptive Text "People" — HOTS Module</h2>
 </div>
 
 <!-- LOGIN -->
 <div id="login-container" class="container">
   <div class="card login-card">
-    <h2 class="section-title">🔐 Masuk / Daftar Portal Siswa</h2>
+    <h2 class="section-title">Masuk / Daftar Portal Siswa</h2>
     <form onsubmit="executeLogin(event)">
       <div class="form-group">
         <label>Nama Lengkap</label>
@@ -407,7 +407,7 @@
     }
   }
 
-  // ================== LOAD MATERIAL LIST (NAMA SHEET LENGKAP) ==================
+  // ================== LOAD MATERIAL LIST ==================
   async function loadMaterialList() {
     const res = await callGas('getMaterialList', {});
     if (!res.success) { alert('Gagal memuat daftar materi: ' + res.message); return; }
@@ -417,7 +417,6 @@
     materialList.forEach((m, i) => {
       const tab = document.createElement('div');
       tab.className = 'nav-tab' + (i === 0 ? ' active' : '');
-      // TAMPILKAN NAMA SHEET LENGKAP
       tab.innerText = m.name;
       tab.dataset.sheetName = m.name;
       tab.onclick = function() {
