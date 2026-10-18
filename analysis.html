@@ -28,9 +28,9 @@
     .card { background: var(--card-bg); padding: 25px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
     .login-card { max-width: 400px; margin: 60px auto; }
     .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
-    .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
-    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; }
-    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; }
+    .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; white-space: pre-wrap; }
+    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; white-space: pre-wrap; font-size: 0.95rem;}
+    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; white-space: pre-wrap; }
     .audio-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; margin-top: 15px; flex-wrap: wrap; }
     .btn-audio { border: none; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; color: white; }
     .btn-play-en { background-color: var(--secondary); }
@@ -277,7 +277,7 @@
   // ==========================================
   // GANTI DENGAN URL WEB APP GAS ANDA
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzLMA6BqrTbgfroZaQkjThw7lXDy8qP2rAVxFvxpQE552vgPepCUOBbxOuPWRPSAh1b2g/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzjAkFyvBCqQ9BSE4sNyE_jCKpdNjUupCC2NmfMZMvNhdyhfhYkQat1Og4HcXezObJaag/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -302,7 +302,6 @@
   let recordStartTimeReupload = 0;
   let audioBlobGlobalReupload = null;
 
-  // Variabel untuk TTS Pause/Resume
   let currentUtterance = null;
   let isSpeaking = false;
   let isPaused = false;
@@ -415,7 +414,6 @@
   function renderParagraphOrMedia(textParagraph) {
     const trimmed = textParagraph.trim(); if (!trimmed) return null;
     
-    // Cek URL (Video/Gambar)
     const isUrl = /^(https?:\/\/[^\s]+)$/i.test(trimmed);
     if (isUrl) {
       const mediaWrapper = document.createElement('div'); mediaWrapper.className = 'media-embed-container';
@@ -436,7 +434,6 @@
       }
     }
     
-    // Jika bukan URL, render sebagai Teks Utuh dengan mempertahankan baris baru
     const p = document.createElement('div'); 
     p.className = 'formatted-paragraph'; 
     p.style.whiteSpace = 'pre-wrap'; 
@@ -444,60 +441,55 @@
     return p;
   }
 
-  function parseAndRenderStructuredContent(targetAreaId, rawData) {
+  // FUNGSI BARU: Menampilkan teks utuh berurutan (EN -> PRON -> ID) tanpa dipotong
+  function renderStructuredBlock(targetAreaId, en, pron, id) {
     const area = document.getElementById(targetAreaId);
     area.innerHTML = '';
 
-    let textEN = rawData.materiEn || rawData.pertanyaanEn || rawData.feedbackEn || rawData.jawabanEn || '';
-    let textPRON = rawData.materiPronounce || rawData.pertanyaanPronounce || rawData.feedbackPronounce || rawData.jawabanPronounce || '';
-    let textID = rawData.materiId || rawData.pertanyaanId || rawData.feedbackId || rawData.jawabanId || '';
-
     // 1. Tampilkan Teks Bahasa Inggris (Utuh)
-    if (textEN) {
-      const isUrl = /^(https?:\/\/[^\s]+)$/i.test(textEN.trim());
+    if (en) {
+      const isUrl = /^(https?:\/\/[^\s]+)$/i.test(en.trim());
       if (!isUrl) {
-        const audioControlEN = document.createElement('div'); audioControlEN.className = 'audio-controls';
-        const btnEN = document.createElement('button'); btnEN.className = 'btn-audio btn-play-en'; btnEN.innerHTML = '▶ Play EN';
-        btnEN.onclick = function() { playText(textEN, 'en-US', 0.75); };
-        const btnPauseEN = document.createElement('button'); btnPauseEN.className = 'btn-audio btn-stop'; btnPauseEN.innerHTML = '⏸ Pause';
-        btnPauseEN.onclick = function() { pauseSpeech(); };
-        const btnStopEN = document.createElement('button'); btnStopEN.className = 'btn-audio btn-stop'; btnStopEN.innerHTML = '⏹ Stop';
-        btnStopEN.onclick = speechStop;
-        audioControlEN.appendChild(btnEN); audioControlEN.appendChild(btnPauseEN); audioControlEN.appendChild(btnStopEN);
-        audioControlEN.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.75x'}));
-        area.appendChild(audioControlEN);
+        const ctrl = document.createElement('div'); ctrl.className = 'audio-controls';
+        ctrl.innerHTML = `<button class="btn-audio btn-play-en">▶ Play EN</button>
+                          <button class="btn-audio btn-stop">⏸ Pause</button>
+                          <button class="btn-audio btn-stop">⏹ Stop</button>
+                          <span class="speed-tag">Kecepatan: 0.75x</span>`;
+        ctrl.children[0].onclick = function() { playText(en, 'en-US', 0.75); };
+        ctrl.children[1].onclick = function() { pauseSpeech(); };
+        ctrl.children[2].onclick = speechStop;
+        area.appendChild(ctrl);
       }
-      const renderedElement = renderParagraphOrMedia(textEN);
-      if (renderedElement) area.appendChild(renderedElement);
+      const element = renderParagraphOrMedia(en);
+      if (element) area.appendChild(element);
     }
 
     // 2. Tampilkan Cara Pengucapan (Utuh)
-    if (textPRON) {
-      const pPRON = document.createElement('div'); 
-      pPRON.className = 'pronounce-block'; 
-      pPRON.style.whiteSpace = 'pre-wrap';
-      pPRON.innerText = textPRON; 
-      area.appendChild(pPRON);
+    if (pron) {
+      const p = document.createElement('div');
+      p.className = 'pronounce-block';
+      p.style.whiteSpace = 'pre-wrap';
+      p.innerText = pron;
+      area.appendChild(p);
     }
 
     // 3. Tampilkan Terjemahan Bahasa Indonesia (Utuh)
-    if (textID) {
-      const audioControlID = document.createElement('div'); audioControlID.className = 'audio-controls';
-      const btnID = document.createElement('button'); btnID.className = 'btn-audio btn-play-id'; btnID.innerHTML = '▶ Play ID';
-      btnID.onclick = function() { playText(textID, 'id-ID', 0.85); };
-      const btnPauseID = document.createElement('button'); btnPauseID.className = 'btn-audio btn-stop'; btnPauseID.innerHTML = '⏸ Pause';
-      btnPauseID.onclick = function() { pauseSpeech(); };
-      const btnStopID = document.createElement('button'); btnStopID.className = 'btn-audio btn-stop'; btnStopID.innerHTML = '⏹ Stop';
-      btnStopID.onclick = speechStop;
-      audioControlID.appendChild(btnID); audioControlID.appendChild(btnPauseID); audioControlID.appendChild(btnStopID);
-      audioControlID.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.85x'}));
-      area.appendChild(audioControlID);
+    if (id) {
+      const ctrl = document.createElement('div'); ctrl.className = 'audio-controls';
+      ctrl.innerHTML = `<button class="btn-audio btn-play-id">▶ Play ID</button>
+                        <button class="btn-audio btn-stop">⏸ Pause</button>
+                        <button class="btn-audio btn-stop">⏹ Stop</button>
+                        <span class="speed-tag">Kecepatan: 0.85x</span>`;
+      ctrl.children[0].onclick = function() { playText(id, 'id-ID', 0.85); };
+      ctrl.children[1].onclick = function() { pauseSpeech(); };
+      ctrl.children[2].onclick = speechStop;
+      area.appendChild(ctrl);
 
-      const pID = document.createElement('div'); 
-      pID.className = 'translation-block'; 
-      pID.style.whiteSpace = 'pre-wrap';
-      pID.innerText = textID; 
-      area.appendChild(pID);
+      const p = document.createElement('div');
+      p.className = 'translation-block';
+      p.style.whiteSpace = 'pre-wrap';
+      p.innerText = id;
+      area.appendChild(p);
     }
   }
 
@@ -508,7 +500,10 @@
     const data = await callGas('getSheetData', { sheetName: sheetName, studentName: activeUser.nama, kelas: activeUser.kelas });
     if (!data || !data.success || !data.materi) return;
     currentSheetData = data;
-    parseAndRenderStructuredContent('materi-content-area', data.materi);
+    
+    // Render materi menggunakan fungsi blok baru
+    renderStructuredBlock('materi-content-area', data.materi.materiEn, data.materi.materiPronounce, data.materi.materiId);
+    
     renderQuestionSubTabs();
     switchQuestionSlide(1);
   }
@@ -544,7 +539,8 @@
 
     const qData = currentSheetData.questions.find(q => q.num === qNum);
     if (qData) {
-      parseAndRenderStructuredContent('pertanyaan-content-area', { materiEn: qData.pertanyaanEn, materiPronounce: qData.pertanyaanPronounce, materiId: qData.pertanyaanId });
+      // Render instruksi pertanyaan menggunakan fungsi blok baru
+      renderStructuredBlock('pertanyaan-content-area', qData.pertanyaanEn, qData.pertanyaanPronounce, qData.pertanyaanId);
     }
 
     const sub = (currentSheetData.submissions && currentSheetData.submissions[qNum]) ? currentSheetData.submissions[qNum] : null;
@@ -929,8 +925,9 @@
     document.getElementById('formAnswerContainer').style.display = 'none';
     document.getElementById('submissionDisplay').style.display = 'block';
 
-    parseAndRenderStructuredContent('ans-id-area', { jawabanId: sub.jawabanId });
-    parseAndRenderStructuredContent('ans-en-area', { jawabanEn: sub.jawabanEn, jawabanPronounce: sub.jawabanPronounce });
+    // Tampilkan jawaban dan terjemahan menggunakan blok utuh
+    renderStructuredBlock('ans-id-area', null, null, sub.jawabanId);
+    renderStructuredBlock('ans-en-area', sub.jawabanEn, sub.jawabanPronounce, null);
 
     var accuracy = parseAccuracy(sub.akurasi);
     var category = determineCategory(accuracy);
