@@ -29,8 +29,8 @@
     .login-card { max-width: 400px; margin: 60px auto; }
     .section-title { color: var(--primary); font-size: 1.3rem; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
     .formatted-paragraph { font-size: 1.05rem; font-weight: 500; color: #0f172a; margin-bottom: 12px; text-align: justify; }
-    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; text-align: justify; }
-    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; text-align: justify; }
+    .pronounce-block { background-color: #f0f9ff; border-left: 4px solid var(--secondary); padding: 12px 16px; color: #0369a1; font-style: italic; border-radius: 4px; margin-bottom: 12px; line-height: 1.6; }
+    .translation-block { background-color: #f0fdf4; border-left: 4px solid var(--success); padding: 12px 16px; color: #15803d; border-radius: 4px; margin-bottom: 20px; line-height: 1.6; }
     .audio-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; margin-top: 15px; flex-wrap: wrap; }
     .btn-audio { border: none; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; color: white; }
     .btn-play-en { background-color: var(--secondary); }
@@ -275,7 +275,7 @@
 
 <script>
   // ==========================================
-  // GANTI DENGAN URL WEB APP GAS ANDA (Yang baru di deploy)
+  // GANTI DENGAN URL WEB APP GAS ANDA
   // ==========================================
   const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzLMA6BqrTbgfroZaQkjThw7lXDy8qP2rAVxFvxpQE552vgPepCUOBbxOuPWRPSAh1b2g/exec';
 
@@ -414,6 +414,8 @@
 
   function renderParagraphOrMedia(textParagraph) {
     const trimmed = textParagraph.trim(); if (!trimmed) return null;
+    
+    // Cek URL (Video/Gambar)
     const isUrl = /^(https?:\/\/[^\s]+)$/i.test(trimmed);
     if (isUrl) {
       const mediaWrapper = document.createElement('div'); mediaWrapper.className = 'media-embed-container';
@@ -433,81 +435,70 @@
         mediaWrapper.innerHTML = `<img src="${trimmed}" alt="Materi Gambar" loading="lazy">`; return mediaWrapper;
       }
     }
-    const p = document.createElement('div'); p.className = 'formatted-paragraph'; p.innerHTML = textParagraph.replace(/\n/g, '<br>'); return p;
+    
+    // Jika bukan URL, render sebagai Teks Utuh dengan mempertahankan baris baru
+    const p = document.createElement('div'); 
+    p.className = 'formatted-paragraph'; 
+    p.style.whiteSpace = 'pre-wrap'; 
+    p.innerText = textParagraph; 
+    return p;
   }
 
   function parseAndRenderStructuredContent(targetAreaId, rawData) {
-    const area = document.getElementById(targetAreaId); 
+    const area = document.getElementById(targetAreaId);
     area.innerHTML = '';
-    
+
     let textEN = rawData.materiEn || rawData.pertanyaanEn || rawData.feedbackEn || rawData.jawabanEn || '';
     let textPRON = rawData.materiPronounce || rawData.pertanyaanPronounce || rawData.feedbackPronounce || rawData.jawabanPronounce || '';
     let textID = rawData.materiId || rawData.pertanyaanId || rawData.feedbackId || rawData.jawabanId || '';
 
-    let blockContainer = document.createElement('div'); 
-    blockContainer.style.marginBottom = "20px";
-
-    // ==========================================
-    // BAGIAN 1: BAHASA INGGRIS
-    // ==========================================
-    if (textEN.trim()) {
+    // 1. Tampilkan Teks Bahasa Inggris (Utuh)
+    if (textEN) {
       const isUrl = /^(https?:\/\/[^\s]+)$/i.test(textEN.trim());
       if (!isUrl) {
         const audioControlEN = document.createElement('div'); audioControlEN.className = 'audio-controls';
         const btnEN = document.createElement('button'); btnEN.className = 'btn-audio btn-play-en'; btnEN.innerHTML = '▶ Play EN';
-        const cleanEnText = textEN.replace(/\n/g, ' ').trim();
-        btnEN.onclick = function() { playText(cleanEnText, 'en-US', 0.75); };
-        
+        btnEN.onclick = function() { playText(textEN, 'en-US', 0.75); };
         const btnPauseEN = document.createElement('button'); btnPauseEN.className = 'btn-audio btn-stop'; btnPauseEN.innerHTML = '⏸ Pause';
         btnPauseEN.onclick = function() { pauseSpeech(); };
-        
         const btnStopEN = document.createElement('button'); btnStopEN.className = 'btn-audio btn-stop'; btnStopEN.innerHTML = '⏹ Stop';
         btnStopEN.onclick = speechStop;
-        
         audioControlEN.appendChild(btnEN); audioControlEN.appendChild(btnPauseEN); audioControlEN.appendChild(btnStopEN);
         audioControlEN.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.75x'}));
-        blockContainer.appendChild(audioControlEN);
+        area.appendChild(audioControlEN);
       }
       const renderedElement = renderParagraphOrMedia(textEN);
-      if (renderedElement) blockContainer.appendChild(renderedElement);
+      if (renderedElement) area.appendChild(renderedElement);
     }
 
-    // ==========================================
-    // BAGIAN 2: CARA PENGUCAPAN
-    // ==========================================
-    if (textPRON.trim()) {
+    // 2. Tampilkan Cara Pengucapan (Utuh)
+    if (textPRON) {
       const pPRON = document.createElement('div'); 
       pPRON.className = 'pronounce-block'; 
-      pPRON.innerHTML = textPRON.replace(/\n/g, '<br>'); 
-      blockContainer.appendChild(pPRON);
+      pPRON.style.whiteSpace = 'pre-wrap';
+      pPRON.innerText = textPRON; 
+      area.appendChild(pPRON);
     }
 
-    // ==========================================
-    // BAGIAN 3: TERJEMAHAN BAHASA INDONESIA
-    // ==========================================
-    if (textID.trim()) {
+    // 3. Tampilkan Terjemahan Bahasa Indonesia (Utuh)
+    if (textID) {
       const audioControlID = document.createElement('div'); audioControlID.className = 'audio-controls';
       const btnID = document.createElement('button'); btnID.className = 'btn-audio btn-play-id'; btnID.innerHTML = '▶ Play ID';
-      const cleanIdText = textID.replace(/\n/g, ' ').trim();
-      btnID.onclick = function() { playText(cleanIdText, 'id-ID', 0.85); };
-      
+      btnID.onclick = function() { playText(textID, 'id-ID', 0.85); };
       const btnPauseID = document.createElement('button'); btnPauseID.className = 'btn-audio btn-stop'; btnPauseID.innerHTML = '⏸ Pause';
       btnPauseID.onclick = function() { pauseSpeech(); };
-      
       const btnStopID = document.createElement('button'); btnStopID.className = 'btn-audio btn-stop'; btnStopID.innerHTML = '⏹ Stop';
       btnStopID.onclick = speechStop;
-      
       audioControlID.appendChild(btnID); audioControlID.appendChild(btnPauseID); audioControlID.appendChild(btnStopID);
       audioControlID.appendChild(Object.assign(document.createElement('span'), {className: 'speed-tag', innerText: 'Kecepatan: 0.85x'}));
-      blockContainer.appendChild(audioControlID);
-      
+      area.appendChild(audioControlID);
+
       const pID = document.createElement('div'); 
       pID.className = 'translation-block'; 
-      pID.innerHTML = textID.replace(/\n/g, '<br>'); 
-      blockContainer.appendChild(pID);
+      pID.style.whiteSpace = 'pre-wrap';
+      pID.innerText = textID; 
+      area.appendChild(pID);
     }
-
-    area.appendChild(blockContainer);
   }
 
   async function loadSheetContent(sheetName) {
@@ -609,7 +600,7 @@
       const answerHistory = document.getElementById('answerHistory');
       const newAnswerBlock = document.createElement('div');
       newAnswerBlock.className = 'saved-answer-preview';
-      newAnswerBlock.innerHTML = '<h4>✅ Jawaban Anda Terkirim:</h4><div class="formatted-paragraph">' + text.replace(/\n/g, '<br>') + '</div>';
+      newAnswerBlock.innerHTML = '<h4>✅ Jawaban Anda Terkirim:</h4><div class="formatted-paragraph" style="white-space: pre-wrap;">' + text + '</div>';
       answerHistory.appendChild(newAnswerBlock);
       document.getElementById('answerInput').value = '';
       document.getElementById('charCounter').innerText = '0 / 300 Karakter Minimum';
@@ -619,7 +610,7 @@
 
       const previewEnArea = document.getElementById('preview-en-area');
       previewEnArea.innerHTML = '';
-      const pEn = document.createElement('div'); pEn.className = 'formatted-paragraph'; pEn.innerText = res.jawabanEn;
+      const pEn = document.createElement('div'); pEn.className = 'formatted-paragraph'; pEn.style.whiteSpace = 'pre-wrap'; pEn.innerText = res.jawabanEn;
       previewEnArea.appendChild(pEn);
 
       const audioCtrl = document.createElement('div'); audioCtrl.className = 'audio-controls';
@@ -634,6 +625,7 @@
       previewEnArea.appendChild(audioCtrl);
 
       document.getElementById('preview-pronounce-area').innerText = res.jawabanPronounce;
+      document.getElementById('preview-pronounce-area').style.whiteSpace = 'pre-wrap';
       document.getElementById('speakingPracticeArea').scrollIntoView({ behavior: 'smooth' });
     } else {
       err.innerText = res.message; err.style.display = 'block';
@@ -948,8 +940,8 @@
     if (sub.penilaianAI) {
       document.getElementById('speaking-display-area').style.display = 'block';
       var reviewHtml = '';
-      reviewHtml += '<div style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); line-height: 1.8; font-size: 1.05rem;">';
-      reviewHtml += (sub.penilaianAI || '').replace(/\n/g, '<br>');
+      reviewHtml += '<div style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); line-height: 1.8; font-size: 1.05rem; white-space: pre-wrap;">';
+      reviewHtml += (sub.penilaianAI || '');
       reviewHtml += '</div>';
 
       var audioToPlay = sub.linkReupload || sub.audioUrl;
@@ -976,11 +968,11 @@
         teacherHtml += '<button class="btn-audio btn-stop" onclick="pauseSpeech()">⏸ Pause</button>';
         teacherHtml += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>';
         teacherHtml += '<span class="speed-tag">Kecepatan: 0.75x</span></div>';
-        teacherHtml += '<div class="formatted-paragraph" style="margin-top: 8px;">' + sub.feedbackEn + '</div></div>';
+        teacherHtml += '<div class="formatted-paragraph" style="margin-top: 8px; white-space: pre-wrap;">' + sub.feedbackEn + '</div></div>';
       }
 
       if (sub.feedbackPronounce) {
-        teacherHtml += '<div class="pronounce-block" style="margin-bottom: 18px;">' + sub.feedbackPronounce + '</div>';
+        teacherHtml += '<div class="pronounce-block" style="margin-bottom: 18px; white-space: pre-wrap;">' + sub.feedbackPronounce + '</div>';
       }
 
       if (sub.feedbackId) {
@@ -990,7 +982,7 @@
         teacherHtml += '<button class="btn-audio btn-stop" onclick="pauseSpeech()">⏸ Pause</button>';
         teacherHtml += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>';
         teacherHtml += '<span class="speed-tag">Kecepatan: 0.85x</span></div>';
-        teacherHtml += '<div class="translation-block" style="margin-top: 8px;">' + sub.feedbackId + '</div></div>';
+        teacherHtml += '<div class="translation-block" style="margin-top: 8px; white-space: pre-wrap;">' + sub.feedbackId + '</div></div>';
       }
 
       document.getElementById('teacher-feedback-content').innerHTML = teacherHtml;
