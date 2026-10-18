@@ -275,9 +275,9 @@
 
 <script>
   // ==========================================
-  // GANTI DENGAN URL WEB APP GAS ANDA
+  // URL WEB APP GAS (GANTI JIKA PERLU)
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwmuLxA9oqskBz-PGmh6FrTKWsWBdgn1kQCAQ9riqm0UGjiczClfhHsgecM1K_hA3QEAw/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxCI45UgIahQ-sUo_hhGk8yv5PefaRY1ANs4aTL2tWt9-obqTnjMMdE-AHr0gzKSdN5Rw/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -413,7 +413,6 @@
 
   function renderParagraphOrMedia(textParagraph) {
     const trimmed = textParagraph.trim(); if (!trimmed) return null;
-    
     const isUrl = /^(https?:\/\/[^\s]+)$/i.test(trimmed);
     if (isUrl) {
       const mediaWrapper = document.createElement('div'); mediaWrapper.className = 'media-embed-container';
@@ -433,15 +432,10 @@
         mediaWrapper.innerHTML = `<img src="${trimmed}" alt="Materi Gambar" loading="lazy">`; return mediaWrapper;
       }
     }
-    
-    const p = document.createElement('div'); 
-    p.className = 'formatted-paragraph'; 
-    p.style.whiteSpace = 'pre-wrap'; 
-    p.innerText = textParagraph; 
-    return p;
+    const p = document.createElement('div'); p.className = 'formatted-paragraph'; p.style.whiteSpace = 'pre-wrap'; p.innerText = textParagraph; return p;
   }
 
-  // FUNGSI UTAMA UNTUK MENAMPILKAN TEKS UTUH (EN -> PRON -> ID)
+  // FUNGSI MENAMPILKAN TEKS UTUH (TIDAK DIPOTONG)
   function renderStructuredBlock(targetAreaId, en, pron, id) {
     const area = document.getElementById(targetAreaId);
     area.innerHTML = '';
@@ -501,7 +495,7 @@
     if (!data || !data.success || !data.materi) return;
     currentSheetData = data;
     
-    // Tampilkan materi utama
+    // Render materi utuh
     renderStructuredBlock('materi-content-area', data.materi.materiEn, data.materi.materiPronounce, data.materi.materiId);
     
     renderQuestionSubTabs();
@@ -539,7 +533,7 @@
 
     const qData = currentSheetData.questions.find(q => q.num === qNum);
     if (qData) {
-      // Tampilkan instruksi pertanyaan utuh
+      // Render instruksi pertanyaan utuh
       renderStructuredBlock('pertanyaan-content-area', qData.pertanyaanEn, qData.pertanyaanPronounce, qData.pertanyaanId);
     }
 
