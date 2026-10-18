@@ -277,7 +277,7 @@
   // ==========================================
   // GANTI DENGAN URL WEB APP GAS ANDA YANG BARU
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyOpya8896RbRbKeQMlV5ooWF2r73xbHtK-CxNBBCjy42KzUKatla9fznwcUGxAKKIjLw/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwEVNR0G9SVHUbt7ll83LWdtJRApU6-YjBqzEnEUmSYH5TPSiyhXvtTxaNbAubTKf6BXw/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -305,6 +305,56 @@
   let currentUtterance = null;
   let isSpeaking = false;
   let isPaused = false;
+
+  // FUNGSI VALIDASI DI FRONTEND (ANTI SPAM & KATA KASAR)
+  function validateStudentAnswer(text) {
+    if (!text || text.trim().length < 300) {
+      return 'Jawaban wajib minimal 300 karakter!';
+    }
+
+    // 1. Cek Teks Acak / Tanpa Spasi (seperti ketikan gambar Anda)
+    if (text.indexOf(' ') === -1) {
+      return 'Jawaban tidak valid. Harap ketik kalimat yang benar (menggunakan spasi).';
+    }
+    
+    var clean = text.toLowerCase().replace(/[^a-z]/g, '');
+    if (clean.match(/[^aeiou]{6,}/g) || clean.match(/(.)\1{4,}/g)) {
+      return '⚠️ PERINGATAN: Jawaban terdeteksi acak / tidak jelas. Harap ketik dengan benar!';
+    }
+
+    // 2. Cek Kata Kasar
+    var badWords = [
+      'anjing', 'babi', 'monyet', 'bangsat', 'kontol', 'memek', 'goblok', 'tolol', 'bodoh', 'asu', 'bajingan', 'peler', 'itil', 'ngentot', 'pepek', 'jancok', 'tai', 'tahi', 'keparat', 'brengsek', 'pukimai', 'puki', 'meki', 'idiot', 'bego',
+      'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'dick', 'pussy', 'cunt', 'whore', 'slut', 'motherfucker', 'faggot', 'nigga', 'penis', 'vagina', 'sex'
+    ];
+    var lower = text.toLowerCase();
+    for (var i = 0; i < badWords.length; i++) {
+      if (lower.indexOf(badWords[i]) !== -1) {
+        return '⚠️ PERINGATAN KERAS: Jawaban mengandung kata kasar / tidak sopan. Harap gunakan bahasa yang baik!';
+      }
+    }
+
+    // 3. Cek Relevansi Materi
+    var keywords = [
+      'deskripsi', 'menggambarkan', 'orang', 'tempat', 'benda', 'ciri', 'fisik', 'sifat', 'karakter', 
+      'adjective', 'describe', 'appearance', 'person', 'place', 'thing', 'namanya', 'bernama', 
+      'tinggi', 'rambut', 'mata', 'wajah', 'deskriptif', 'teks', 'text', 'menulis', 'writing', 
+      'pembaca', 'reader', 'gambaran', 'nenek', 'ayah', 'siti', 'rahma', 'ahmad', 'wijaya', 
+      'paragraf', 'kalimat', 'identifikasi', 'kata kerja', 'verb', 'kata sifat', 'noun', 'pronoun', 
+      'present', 'tense', 'materi', 'penulis', 'tokoh', 'hati', 'senyum', 'keluarga', 'rumah'
+    ];
+    var matchCount = 0;
+    for (var j = 0; j < keywords.length; j++) {
+      if (lower.indexOf(keywords[j]) !== -1) {
+        matchCount++;
+      }
+    }
+    if (matchCount < 2) {
+      return '⚠️ PERINGATAN: Jawaban tidak relevan dengan topik materi deskriptif. Harap fokus pada materi (Nenek/Ayah/Grammar).';
+    }
+
+    return null; // Lolos Validasi
+  }
 
   function loadVoices() { availableVoices = window.speechSynthesis.getVoices(); }
   loadVoices();
@@ -572,7 +622,15 @@
     const text = document.getElementById('answerInput').value;
     const btn = document.getElementById('btnGetTranslation');
     const err = document.getElementById('ansError');
-    if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
+    
+    // JALANKAN VALIDASI KETAT SEBELUM MENERJEMAHKAN
+    const validationError = validateStudentAnswer(text);
+    if (validationError) {
+      err.innerText = validationError;
+      err.style.display = 'block';
+      return; 
+    }
+
     btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
     submittedAnswerText = text;
 
@@ -1079,7 +1137,4 @@
     currentUtterance = null;
   }
 
-  function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-</script>
-</body>
-</html>
+  function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g,
