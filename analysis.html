@@ -277,7 +277,7 @@
   // ==========================================
   // GANTI DENGAN URL WEB APP GAS ANDA YANG BARU
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwEVNR0G9SVHUbt7ll83LWdtJRApU6-YjBqzEnEUmSYH5TPSiyhXvtTxaNbAubTKf6BXw/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzyqs_l_ZBih_gIsCyXj709eDk-LLFXhko6M_0JuvU6-NQnJQ0067SWV0ImiJi9SjZDxA/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -1137,4 +1137,7 @@
     currentUtterance = null;
   }
 
-  function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g,
+  function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+</script>
+</body>
+</html>
