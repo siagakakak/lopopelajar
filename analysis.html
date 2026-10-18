@@ -277,7 +277,7 @@
   // ==========================================
   // GANTI DENGAN URL WEB APP GAS ANDA
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzjAkFyvBCqQ9BSE4sNyE_jCKpdNjUupCC2NmfMZMvNhdyhfhYkQat1Og4HcXezObJaag/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwmuLxA9oqskBz-PGmh6FrTKWsWBdgn1kQCAQ9riqm0UGjiczClfhHsgecM1K_hA3QEAw/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -441,7 +441,7 @@
     return p;
   }
 
-  // FUNGSI BARU: Menampilkan teks utuh berurutan (EN -> PRON -> ID) tanpa dipotong
+  // FUNGSI UTAMA UNTUK MENAMPILKAN TEKS UTUH (EN -> PRON -> ID)
   function renderStructuredBlock(targetAreaId, en, pron, id) {
     const area = document.getElementById(targetAreaId);
     area.innerHTML = '';
@@ -501,7 +501,7 @@
     if (!data || !data.success || !data.materi) return;
     currentSheetData = data;
     
-    // Render materi menggunakan fungsi blok baru
+    // Tampilkan materi utama
     renderStructuredBlock('materi-content-area', data.materi.materiEn, data.materi.materiPronounce, data.materi.materiId);
     
     renderQuestionSubTabs();
@@ -539,7 +539,7 @@
 
     const qData = currentSheetData.questions.find(q => q.num === qNum);
     if (qData) {
-      // Render instruksi pertanyaan menggunakan fungsi blok baru
+      // Tampilkan instruksi pertanyaan utuh
       renderStructuredBlock('pertanyaan-content-area', qData.pertanyaanEn, qData.pertanyaanPronounce, qData.pertanyaanId);
     }
 
