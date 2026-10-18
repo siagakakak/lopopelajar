@@ -277,7 +277,7 @@
   // ==========================================
   // GANTI DENGAN URL WEB APP GAS ANDA YANG BARU
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwpCUfvJhjeXKeDw4xbcMW_TGQiNieTRhidhgGnvI9fCy1ybZo5mLlaok8t4wWdyvvTBg/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyOpya8896RbRbKeQMlV5ooWF2r73xbHtK-CxNBBCjy42KzUKatla9fznwcUGxAKKIjLw/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -435,12 +435,10 @@
     const p = document.createElement('div'); p.className = 'formatted-paragraph'; p.style.whiteSpace = 'pre-wrap'; p.innerText = textParagraph; return p;
   }
 
-  // FUNGSI MENAMPILKAN TEKS UTUH (TIDAK DIPOTONG)
   function renderStructuredBlock(targetAreaId, en, pron, id) {
     const area = document.getElementById(targetAreaId);
     area.innerHTML = '';
 
-    // 1. Tampilkan Teks Bahasa Inggris (Utuh)
     if (en) {
       const isUrl = /^(https?:\/\/[^\s]+)$/i.test(en.trim());
       if (!isUrl) {
@@ -458,7 +456,6 @@
       if (element) area.appendChild(element);
     }
 
-    // 2. Tampilkan Cara Pengucapan (Utuh)
     if (pron) {
       const p = document.createElement('div');
       p.className = 'pronounce-block';
@@ -467,7 +464,6 @@
       area.appendChild(p);
     }
 
-    // 3. Tampilkan Terjemahan Bahasa Indonesia (Utuh)
     if (id) {
       const ctrl = document.createElement('div'); ctrl.className = 'audio-controls';
       ctrl.innerHTML = `<button class="btn-audio btn-play-id">▶ Play ID</button>
@@ -495,7 +491,6 @@
     if (!data || !data.success || !data.materi) return;
     currentSheetData = data;
     
-    // Render materi utuh
     renderStructuredBlock('materi-content-area', data.materi.materiEn, data.materi.materiPronounce, data.materi.materiId);
     
     renderQuestionSubTabs();
@@ -533,7 +528,6 @@
 
     const qData = currentSheetData.questions.find(q => q.num === qNum);
     if (qData) {
-      // Render instruksi pertanyaan utuh
       renderStructuredBlock('pertanyaan-content-area', qData.pertanyaanEn, qData.pertanyaanPronounce, qData.pertanyaanId);
     }
 
@@ -919,7 +913,6 @@
     document.getElementById('formAnswerContainer').style.display = 'none';
     document.getElementById('submissionDisplay').style.display = 'block';
 
-    // Tampilkan jawaban dan terjemahan menggunakan blok utuh
     renderStructuredBlock('ans-id-area', null, null, sub.jawabanId);
     renderStructuredBlock('ans-en-area', sub.jawabanEn, sub.jawabanPronounce, null);
 
