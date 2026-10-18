@@ -109,7 +109,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Kelas</label>
+        <label>Kelas (Wajib Dipilih)</label>
         <select id="inputKelas" required>
           <option value="">-- Pilih Kelas --</option>
           <option value="7A">7A</option>
@@ -275,9 +275,9 @@
 
 <script>
   // ==========================================
-  // GANTI DENGAN URL WEB APP GAS ANDA
+  // GANTI DENGAN URL WEB APP GAS ANDA (Yang baru di deploy)
   // ==========================================
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzibl2u3ZCN1Qy9yVH6Mr6X6Knxj42Yu4d9JGH2FfWIx0n-SqEOljpMDUAXo2IqBLiBmg/exec';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzLMA6BqrTbgfroZaQkjThw7lXDy8qP2rAVxFvxpQE552vgPepCUOBbxOuPWRPSAh1b2g/exec';
 
   let activeUser = { nama: '', password: '', kelas: '' };
   let currentSheet = '';
@@ -986,9 +986,6 @@
     }
   }
 
-  // ==========================================
-  // TTS DENGAN PAUSE
-  // ==========================================
   function playText(textToRead, langCode, customRate) {
     speechStop();
     if (!textToRead || !textToRead.trim()) return;
