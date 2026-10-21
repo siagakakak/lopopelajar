@@ -150,7 +150,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxgMqchq3OxsUIJmngdBjE1YjvoNJwrc3dtXfLvyj_vbCtxFtI4-jROQb8cvfJ3m57x/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyNOPkoxISqnmZAnvC8ZXxPnTuEnW7MaWkGm38_kgSprQvSAmVCT3CSSzFwp_rkBCe27g/exec';
 
 let activeUser = { nama: '' };
 let currentSheet = '';
@@ -206,9 +206,31 @@ function determineCat(acc) { if (acc >= 80) return 4; if (acc >= 60) return 3; i
 
 async function callGas(action, payload) {
   try {
-    const res = await fetch(GAS_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, payload }) });
-    return await res.json();
-  } catch (err) { return { success: false, message: 'Koneksi gagal: ' + err.message }; }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 seconds timeout
+
+    // Gunakan URLSearchParams agar tidak memicu CORS Preflight
+    const formData = new URLSearchParams();
+    formData.append('payload', JSON.stringify({ action, payload }));
+
+    const res = await fetch(GAS_API_URL, { 
+      method: 'POST', 
+      body: formData,
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch(e) {
+      console.error("Respon server bukan JSON:", text);
+      return { success: false, message: 'Respon server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' };
+    }
+  } catch (err) { 
+    return { success: false, message: 'Koneksi gagal/timeout: ' + err.message }; 
+  }
 }
 
 async function executeLogin(e) {
@@ -271,8 +293,14 @@ async function loadSheet(sheetName) {
   currentAnalysisNum = 1;
   speechStop();
   document.getElementById('mainContent').innerHTML = '<div class="card"><p style="text-align:center">⏳ Memuat data...</p></div>';
+  
   const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
-  if (!data || !data.materi) { document.getElementById('mainContent').innerHTML = '<div class="card"><p>Gagal memuat data.</p></div>'; return; }
+  
+  if (!data || data.success === false || !data.materi) { 
+    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Pastikan koneksi internet stabil dan coba refresh halaman.') + '</p></div>'; 
+    return; 
+  }
+  
   currentSheetData = data;
   pgLocalAnswers = {}; mcmaLocalAnswers = {}; tfLocalAnswers = {};
   buildSubNav();
@@ -713,7 +741,6 @@ function showSavedAnalysis(sub, num, area) {
 function showReuploadForm(num) {
   const area = document.getElementById('analysisArea');
   area.innerHTML = '';
-  // Rebuild reupload form
   const wrap = document.createElement('div');
   wrap.innerHTML = '<h3>🔄 Form Kirim Ulang Audio</h3><p>Rekam ulang dengan membaca teks bahasa Inggris di atas dengan lantang.</p>';
   const box = document.createElement('div'); box.className = 'recorder-box'; box.style.background = '#fef2f2'; box.style.border = '1px solid #fecaca';
@@ -730,7 +757,6 @@ function showReuploadForm(num) {
   const err = document.createElement('div'); err.id = 'ansError' + num; err.className = 'alert alert-danger';
   wrap.appendChild(err);
   area.appendChild(wrap);
-  // Pre-fill from saved submission to be able to re-submit
   if (currentSheetData && currentSheetData.submissions[num]) {
     submittedAnswerText = currentSheetData.submissions[num].jawabanId;
     originalEnglishText = currentSheetData.submissions[num].jawabanEn;
@@ -763,7 +789,6 @@ function renderPG(c) {
     if (ac.children.length) card.appendChild(ac);
     if (q.questionPronounce) { const p = document.createElement('div'); p.className = 'pron-block'; p.innerText = q.questionPronounce; card.appendChild(p); }
     if (q.questionId) { const t = document.createElement('div'); t.className = 'trans-block'; t.innerText = q.questionId; card.appendChild(t); }
-    // Parse options from question (assume lines start with A. B. C. D.)
     const optText = (q.questionEn || '');
     const lines = optText.split(/\n/).map(s => s.trim()).filter(s => s);
     const opts = [];
