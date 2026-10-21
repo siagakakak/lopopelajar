@@ -7,8 +7,8 @@
 <style>
 :root{--primary:#1b365d;--secondary:#0066cc;--accent:#d97706;--danger:#dc2626;--success:#16a34a;--bg:#f8fafc;--text:#1e293b}
 *{box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);background:var(--bg);margin:0;padding:0}
-.header-banner{background:var(--primary);color:#fff;padding:20px;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);background-color:var(--bg);margin:0;padding:0}
+.header-banner{background-color:var(--primary);color:white;padding:20px;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.1)}
 .header-banner h1{margin:0;font-size:1.6rem}
 .header-banner p{margin:5px 0 0;font-size:.9rem;opacity:.9}
 .nav-bar{display:flex;background:#0f172a;overflow-x:auto;padding:0 10px}
@@ -25,14 +25,12 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .q-tab.wrong{background:#fee2e2;color:#991b1b;border-left:4px solid var(--danger)}
 .container{max-width:900px;margin:20px auto;padding:0 20px}
 .container-wide{width:100%;margin:15px 0;padding:0 15px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-@media(max-width:900px){.two-col{grid-template-columns:1fr}}
 .card{background:#fff;padding:25px;margin-bottom:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #e2e8f0}
 .login-card{max-width:400px;margin:60px auto}
 .sec-title{color:var(--primary);font-size:1.3rem;margin-top:0;border-bottom:2px solid #e2e8f0;padding-bottom:8px}
 .fmt-p{font-size:1.05rem;font-weight:500;color:#0f172a;margin-bottom:12px;text-align:justify}
-.pron-block{background:#f0f9ff;border-left:4px solid var(--secondary);padding:12px 16px;color:#0369a1;font-style:italic;border-radius:4px;margin-bottom:12px;line-height:1.6}
-.trans-block{background:#f0fdf4;border-left:4px solid var(--success);padding:12px 16px;color:#15803d;border-radius:4px;margin-bottom:20px;line-height:1.6}
+.pron-block{background:#f0f9ff;border-left:4px solid var(--secondary);padding:15px 20px;color:#0369a1;font-style:italic;border-radius:4px;margin-bottom:20px;line-height:1.8;font-size:1.05rem}
+.trans-block{background:#f0fdf4;border-left:4px solid var(--success);padding:15px 20px;color:#15803d;border-radius:4px;margin-bottom:20px;line-height:1.8;font-size:1.05rem}
 .instr-block{background:#fff7ed;border-left:4px solid var(--accent);padding:16px;border-radius:4px;margin-bottom:15px;font-size:1rem;line-height:1.7}
 .audio-ctrl{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
 .btn-audio{border:none;padding:6px 12px;border-radius:16px;cursor:pointer;font-weight:600;font-size:.8rem;color:#fff}
@@ -42,7 +40,7 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .speed-tag{font-size:.75rem;background:#e2e8f0;padding:3px 8px;border-radius:10px;font-weight:bold}
 .form-group{margin-bottom:15px}
 label{display:block;font-weight:600;margin-bottom:6px}
-input[type=text],input[type=password],textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:1rem}
+input[type=text],input[type=password],select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:1rem;background:#fff}
 .pw-wrap{position:relative;display:flex;align-items:center}
 .pw-wrap input{padding-right:45px}
 .toggle-pw{position:absolute;right:12px;cursor:pointer;font-size:1.2rem;color:#64748b}
@@ -118,6 +116,19 @@ textarea{height:140px;resize:vertical}
     <form onsubmit="executeLogin(event)">
       <div class="form-group"><label>Nama Lengkap</label><input type="text" id="inputNama" required></div>
       <div class="form-group">
+        <label>Kelas</label>
+        <select id="inputKelas" required>
+          <option value="" disabled selected>-- Pilih Kelas --</option>
+          <option value="7A">7A</option><option value="7B">7B</option><option value="7C">7C</option><option value="7D">7D</option>
+          <option value="7E">7E</option><option value="7F">7F</option><option value="7G">7G</option><option value="7H">7H</option>
+          <option value="7I">7I</option><option value="7J">7J</option><option value="7K">7K</option><option value="7L">7L</option>
+          <option value="7M">7M</option><option value="7N">7N</option><option value="7O">7O</option><option value="7P">7P</option>
+          <option value="7Q">7Q</option><option value="7R">7R</option><option value="7S">7S</option><option value="7T">7T</option>
+          <option value="7U">7U</option><option value="7V">7V</option><option value="7W">7W</option><option value="7X">7X</option>
+          <option value="7Y">7Y</option><option value="7Z">7Z</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label>Password</label>
         <div class="pw-wrap">
           <input type="password" id="inputPass" required>
@@ -150,7 +161,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyNOPkoxISqnmZAnvC8ZXxPnTuEnW7MaWkGm38_kgSprQvSAmVCT3CSSzFwp_rkBCe27g/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzD9RiodUYEoayAoht97ZXn8j9FDefFmF7BOO2_HIzhLQlrybdTThd6vGipsVkB0AvMiA/exec';
 
 let activeUser = { nama: '' };
 let currentSheet = '';
@@ -207,39 +218,29 @@ function determineCat(acc) { if (acc >= 80) return 4; if (acc >= 60) return 3; i
 async function callGas(action, payload) {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 seconds timeout
-
-    // Gunakan URLSearchParams agar tidak memicu CORS Preflight
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
     const formData = new URLSearchParams();
     formData.append('payload', JSON.stringify({ action, payload }));
 
-    const res = await fetch(GAS_API_URL, { 
-      method: 'POST', 
-      body: formData,
-      signal: controller.signal
-    });
-    
+    const res = await fetch(GAS_API_URL, { method: 'POST', body: formData, signal: controller.signal });
     clearTimeout(timeoutId);
-
     const text = await res.text();
-    try {
-      return JSON.parse(text);
-    } catch(e) {
-      console.error("Respon server bukan JSON:", text);
-      return { success: false, message: 'Respon server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' };
-    }
-  } catch (err) { 
-    return { success: false, message: 'Koneksi gagal/timeout: ' + err.message }; 
-  }
+    try { return JSON.parse(text); } 
+    catch(e) { return { success: false, message: 'Respon server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' }; }
+  } catch (err) { return { success: false, message: 'Koneksi gagal/timeout: ' + err.message }; }
 }
 
 async function executeLogin(e) {
   e.preventDefault();
-  const nama = document.getElementById('inputNama').value, pass = document.getElementById('inputPass').value;
+  const nama = document.getElementById('inputNama').value;
+  const pass = document.getElementById('inputPass').value;
+  const kelas = document.getElementById('inputKelas').value;
   const btn = document.getElementById('btnLogin'), err = document.getElementById('loginError');
+  
   btn.disabled = true; btn.innerText = 'Memuat...'; err.style.display = 'none';
-  const res = await callGas('login', { nama, password: pass });
+  const res = await callGas('login', { nama, password: pass, kelas: kelas });
   btn.disabled = false; btn.innerText = 'Masuk';
+  
   if (res.success) {
     activeUser.nama = res.nama;
     document.getElementById('login-container').style.display = 'none';
@@ -297,7 +298,7 @@ async function loadSheet(sheetName) {
   const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
   
   if (!data || data.success === false || !data.materi) { 
-    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Pastikan koneksi internet stabil dan coba refresh halaman.') + '</p></div>'; 
+    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Coba refresh halaman.') + '</p></div>'; 
     return; 
   }
   
@@ -329,42 +330,76 @@ function renderParaOrMedia(text) {
   const p = document.createElement('div'); p.className = 'fmt-p'; p.innerText = text; return p;
 }
 
+// ================= TAMPILAN MATERI DIPERBARUI =================
 function renderMateri(c) {
-  const two = document.createElement('div'); two.className = 'two-col';
-  const left = document.createElement('div');
-  const lc = document.createElement('div'); lc.className = 'card';
-  lc.innerHTML = '<h2 class="sec-title">📖 ' + currentSheet + '</h2>';
+  const container = document.createElement('div');
+  container.className = 'card';
+  
   const data = currentSheetData.materi;
-  const enParas = (data.materiEn || '').split(/\n+/).filter(p => p.trim());
-  enParas.forEach(function(para) {
-    const el = renderParaOrMedia(para); if (el) lc.appendChild(el);
-  });
-  left.appendChild(lc);
-  const right = document.createElement('div');
-  const rc = document.createElement('div'); rc.className = 'card';
-  rc.innerHTML = '<h2 class="sec-title">🔊 Cara Pengucapan & Terjemahan</h2>';
+
+  // 1. Teks Inggris
+  if (data.materiEn) {
+    const titleEn = document.createElement('h3');
+    titleEn.innerText = "📖 Teks Deskripsi (English)";
+    titleEn.style.color = 'var(--primary)';
+    titleEn.style.marginTop = '0';
+    container.appendChild(titleEn);
+
+    const enParas = (data.materiEn || '').split(/\n+/).filter(p => p.trim());
+    enParas.forEach(function(para) {
+      const el = renderParaOrMedia(para); 
+      if (el) container.appendChild(el);
+    });
+
+    // Audio Teks Inggris
+    const acEn = document.createElement('div'); acEn.className = 'audio-ctrl';
+    const bEn = document.createElement('button'); bEn.className = 'btn-audio btn-play-en'; bEn.innerHTML = '▶ Play Audio EN';
+    bEn.onclick = function() { playText(data.materiEn, 'en-US', 0.75); };
+    const sEn = document.createElement('button'); sEn.className = 'btn-audio btn-stop'; sEn.innerHTML = '⏹ Stop'; sEn.onclick = speechStop;
+    acEn.appendChild(bEn); acEn.appendChild(sEn);
+    container.appendChild(acEn);
+  }
+
+  // 2. Cara Pengucapan
   if (data.materiPronounce) {
-    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-    const b1 = document.createElement('button'); b1.className = 'btn-audio btn-play-en'; b1.innerHTML = '▶ Play Pronounce';
-    b1.onclick = function() { playText(data.materiPronounce, 'en-US', 0.75); };
-    const b2 = document.createElement('button'); b2.className = 'btn-audio btn-stop'; b2.innerHTML = '⏹ Stop'; b2.onclick = speechStop;
-    ac.appendChild(b1); ac.appendChild(b2);
-    rc.appendChild(ac);
-    const pb = document.createElement('div'); pb.className = 'pron-block'; pb.innerText = data.materiPronounce; rc.appendChild(pb);
+    const titlePron = document.createElement('h3');
+    titlePron.innerText = "🔊 Cara Pengucapan";
+    titlePron.style.color = 'var(--secondary)';
+    titlePron.style.marginTop = '30px';
+    container.appendChild(titlePron);
+
+    const pPron = document.createElement('div');
+    pPron.className = 'pron-block';
+    pPron.innerText = data.materiPronounce;
+    container.appendChild(pPron);
+    // TIDAK ADA AUDIO UNTUK CARA PENGUCAPAN
   }
+
+  // 3. Terjemahan Bahasa Indonesia
   if (data.materiId) {
-    const ac2 = document.createElement('div'); ac2.className = 'audio-ctrl';
-    const b3 = document.createElement('button'); b3.className = 'btn-audio btn-play-id'; b3.innerHTML = '▶ Play ID';
-    b3.onclick = function() { playText(data.materiId, 'id-ID', 0.85); };
-    const b4 = document.createElement('button'); b4.className = 'btn-audio btn-stop'; b4.innerHTML = '⏹ Stop'; b4.onclick = speechStop;
-    ac2.appendChild(b3); ac2.appendChild(b4);
-    rc.appendChild(ac2);
-    const tb = document.createElement('div'); tb.className = 'trans-block'; tb.innerText = data.materiId; rc.appendChild(tb);
+    const titleId = document.createElement('h3');
+    titleId.innerText = "🌐 Terjemahan Bahasa Indonesia";
+    titleId.style.color = 'var(--success)';
+    titleId.style.marginTop = '30px';
+    container.appendChild(titleId);
+
+    const pId = document.createElement('div');
+    pId.className = 'trans-block';
+    pId.innerText = data.materiId;
+    container.appendChild(pId);
+
+    // Audio Teks Indonesia
+    const acId = document.createElement('div'); acId.className = 'audio-ctrl';
+    const bId = document.createElement('button'); bId.className = 'btn-audio btn-play-id'; bId.innerHTML = '▶ Play Audio ID';
+    bId.onclick = function() { playText(data.materiId, 'id-ID', 0.85); };
+    const sId = document.createElement('button'); sId.className = 'btn-audio btn-stop'; sId.innerHTML = '⏹ Stop'; sId.onclick = speechStop;
+    acId.appendChild(bId); acId.appendChild(sId);
+    container.appendChild(acId);
   }
-  right.appendChild(rc);
-  two.appendChild(left); two.appendChild(right);
-  c.appendChild(two);
+
+  c.appendChild(container);
 }
+// ==============================================================
 
 function renderAnalisis(c) {
   if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML = '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
