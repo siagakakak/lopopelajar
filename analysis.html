@@ -14,15 +14,6 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .nav-bar{display:flex;background:#0f172a;overflow-x:auto;padding:0 10px}
 .nav-tab{padding:14px 20px;color:#94a3b8;cursor:pointer;font-weight:600;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s}
 .nav-tab.active{color:#fff;border-bottom-color:var(--secondary);background:rgba(255,255,255,.05)}
-.sub-nav-bar{display:flex;background:#334155;overflow-x:auto;padding:0 10px}
-.sub-nav-tab{padding:12px 18px;color:#cbd5e1;cursor:pointer;font-weight:600;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s;font-size:.9rem}
-.sub-nav-tab.active{color:#fff;border-bottom-color:var(--accent);background:rgba(0,0,0,.2)}
-.q-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:15px;border-bottom:2px solid #e2e8f0;flex-wrap:wrap}
-.q-tab{padding:8px 14px;background:#e2e8f0;color:#334155;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;white-space:nowrap}
-.q-tab.active{background:var(--secondary);color:#fff}
-.q-tab.answered{border-left:4px solid var(--success)}
-.q-tab.correct{background:#d1fae5;color:#065f46;border-left:4px solid var(--success)}
-.q-tab.wrong{background:#fee2e2;color:#991b1b;border-left:4px solid var(--danger)}
 .container{max-width:900px;margin:20px auto;padding:0 20px}
 .container-wide{width:100%;margin:15px 0;padding:0 15px}
 .card{background:#fff;padding:25px;margin-bottom:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #e2e8f0}
@@ -36,6 +27,7 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .btn-audio{border:none;padding:6px 12px;border-radius:16px;cursor:pointer;font-weight:600;font-size:.8rem;color:#fff}
 .btn-play-en{background:var(--secondary)}
 .btn-play-id{background:var(--success)}
+.btn-pause{background:#f59e0b}
 .btn-stop{background:var(--danger)}
 .speed-tag{font-size:.75rem;background:#e2e8f0;padding:3px 8px;border-radius:10px;font-weight:bold}
 .form-group{margin-bottom:15px}
@@ -51,7 +43,7 @@ textarea{height:140px;resize:vertical}
 .btn-submit:disabled{background:#cbd5e1;cursor:not-allowed}
 .btn-reupload{background:var(--accent)}
 .alert{padding:12px;border-radius:8px;margin-top:15px;display:none}
-.alert-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.alert-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;white-space:pre-line}
 .alert-success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
 .speak-result{background:#fff7ed;border:1px solid #fdba74;padding:15px;border-radius:8px;margin-top:15px}
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;justify-content:center;align-items:center}
@@ -102,6 +94,96 @@ textarea{height:140px;resize:vertical}
 .quiz-header{background:#eff6ff;border-radius:12px;padding:15px;margin-bottom:20px;border:1px solid #bfdbfe}
 .quiz-header h3{margin:0 0 8px;color:var(--primary);font-size:1.1rem}
 .quiz-header p{margin:0;font-size:.9rem;color:#475569}
+
+/* ============ REVISI 2: Tab Bar Horizontal ============ */
+.sub-tab-bar-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 14px 16px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 1px solid #e2e8f0;
+  scrollbar-width: thin;
+}
+.sub-tab-btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sub-tab-btn:hover:not(.locked) {
+  background: #e0f2fe;
+  border-color: #0066cc;
+  transform: translateY(-1px);
+}
+.sub-tab-btn.active {
+  background: #0066cc;
+  color: #fff;
+  border-color: #0066cc;
+  box-shadow: 0 2px 6px rgba(0,102,204,0.3);
+}
+.sub-tab-btn.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f8fafc;
+  color: #94a3b8;
+}
+.sub-tab-btn.locked:hover {
+  transform: none;
+}
+
+/* ============ REVISI 6: Teacher Feedback Section ============ */
+.teacher-feedback-block {
+  background: #eff6ff;
+  border-left: 4px solid #0066cc;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+.teacher-feedback-block.id-block {
+  background: #f0fdf4;
+  border-left-color: #16a34a;
+}
+.teacher-feedback-block .fb-header {
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+.teacher-feedback-block.id-block .fb-header {
+  color: #15803d;
+}
+.teacher-feedback-block .fb-body {
+  line-height: 1.7;
+  margin-top: 6px;
+}
+.feedback-pron-block {
+  background: #f8fafc;
+  border-left: 3px solid #94a3b8;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-style: italic;
+  color: #475569;
+  font-size: 0.9rem;
+}
+.feedback-pron-block strong {
+  color: #334155;
+  font-style: normal;
+}
 </style>
 </head>
 <body>
@@ -143,7 +225,6 @@ textarea{height:140px;resize:vertical}
 
 <div id="main-app" style="display:none;">
   <div class="nav-bar" id="navTabs"></div>
-  <div class="sub-nav-bar" id="subNavTabs"></div>
   <div class="container-wide" id="mainContent"></div>
 </div>
 
@@ -161,11 +242,11 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzD9RiodUYEoayAoht97ZXn8j9FDefFmF7BOO2_HIzhLQlrybdTThd6vGipsVkB0AvMiA/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxxYsC3sWi253qOyE4Cg2Fjm7f9ij-MspumCdxsQezXtBIpv90WLkAr3oZzMhYvnSpBug/exec';
 
-let activeUser = { nama: '' };
+let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
-let currentSubTab = 'materi';
+let currentSubTab = 'analisis';
 let currentAnalysisNum = 1;
 let currentSheetData = null;
 let availableVoices = [];
@@ -225,7 +306,7 @@ async function callGas(action, payload) {
     const res = await fetch(GAS_API_URL, { method: 'POST', body: formData, signal: controller.signal });
     clearTimeout(timeoutId);
     const text = await res.text();
-    try { return JSON.parse(text); } 
+    try { return JSON.parse(text); }
     catch(e) { return { success: false, message: 'Respon server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' }; }
   } catch (err) { return { success: false, message: 'Koneksi gagal/timeout: ' + err.message }; }
 }
@@ -236,17 +317,21 @@ async function executeLogin(e) {
   const pass = document.getElementById('inputPass').value;
   const kelas = document.getElementById('inputKelas').value;
   const btn = document.getElementById('btnLogin'), err = document.getElementById('loginError');
-  
+
   btn.disabled = true; btn.innerText = 'Memuat...'; err.style.display = 'none';
   const res = await callGas('login', { nama, password: pass, kelas: kelas });
   btn.disabled = false; btn.innerText = 'Masuk';
-  
+
   if (res.success) {
     activeUser.nama = res.nama;
+    activeUser.kelas = res.kelas || kelas;
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
     buildNavTabs(res.availableSheets);
-  } else { err.innerText = res.message; err.style.display = 'block'; }
+  } else {
+    err.innerText = res.message;
+    err.style.display = 'block';
+  }
 }
 
 function buildNavTabs(sheets) {
@@ -265,56 +350,117 @@ function buildNavTabs(sheets) {
   if (sheets.length > 0) loadSheet(sheets[0]);
 }
 
-function buildSubNav() {
-  const sub = document.getElementById('subNavTabs'); sub.innerHTML = '';
+async function loadSheet(sheetName) {
+  currentSheet = sheetName;
+  currentSubTab = 'analisis';
+  currentAnalysisNum = 1;
+  speechStop();
+  document.getElementById('mainContent').innerHTML = '<div class="card"><p style="text-align:center">⏳ Memuat data...</p></div>';
+
+  const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
+
+  if (!data || data.success === false || !data.materi) {
+    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Coba refresh halaman.') + '</p></div>';
+    return;
+  }
+
+  currentSheetData = data;
+  pgLocalAnswers = {}; mcmaLocalAnswers = {}; tfLocalAnswers = {};
+  renderTab();
+}
+
+/**
+ * REVISI 2: renderTab — Materi selalu tampil di atas, lalu tab bar horizontal, lalu konten tab
+ */
+function renderTab() {
+  const c = document.getElementById('mainContent');
+  c.innerHTML = '';
+
+  // Bagian 1: Materi (Teks + Pengucapan + Terjemahan)
+  renderMateri(c);
+
+  // Bagian 2: Tab Bar Horizontal
+  renderSubTabBar(c);
+
+  // Bagian 3: Konten Tab yang dipilih
+  if (currentSubTab === 'analisis') renderAnalisis(c);
+  else if (currentSubTab === 'pg') renderPG(c);
+  else if (currentSubTab === 'mcma') renderMCMA(c);
+  else if (currentSubTab === 'tf') renderTF(c);
+}
+
+/**
+ * REVISI 5: Cek apakah tab boleh diakses (anti-lompat)
+ */
+function canAccessTab(tabId) {
+  if (!currentSheetData) return false;
+  if (tabId === 'analisis') return true;
+  if (tabId === 'pg') return isAnalisisComplete();
+  if (tabId === 'mcma') return isAnalisisComplete() && isPGComplete();
+  if (tabId === 'tf') return isAnalisisComplete() && isPGComplete() && isMCMAComplete();
+  return false;
+}
+
+function isAnalisisComplete() {
+  if (!currentSheetData || !currentSheetData.analyses || !currentSheetData.submissions) return false;
+  return currentSheetData.analyses.every(function(a) {
+    var sub = currentSheetData.submissions[a.num];
+    return sub && sub.jawabanId;
+  });
+}
+function isPGComplete() {
+  if (!currentSheetData || !currentSheetData.pg) return false;
+  var subs = currentSheetData.pgSubmissions || {};
+  return currentSheetData.pg.every(function(q) { return subs[q.num] && subs[q.num].jawaban; });
+}
+function isMCMAComplete() {
+  if (!currentSheetData || !currentSheetData.mcma) return false;
+  var subs = currentSheetData.mcmaSubmissions || {};
+  return currentSheetData.mcma.every(function(q) { return subs[q.num] && subs[q.num].jawaban; });
+}
+function isTFComplete() {
+  if (!currentSheetData || !currentSheetData.tf) return false;
+  var subs = currentSheetData.tfSubmissions || {};
+  return currentSheetData.tf.every(function(q) { return subs[q.num] && subs[q.num].jawaban; });
+}
+
+/**
+ * REVISI 2: Tab Bar Horizontal di bawah terjemahan
+ */
+function renderSubTabBar(c) {
+  const bar = document.createElement('div');
+  bar.className = 'sub-tab-bar-container';
+
   const tabs = [
-    { id: 'materi', label: '📚 Materi Teks' },
     { id: 'analisis', label: '🔍 10 Analisis HOTS' },
     { id: 'pg', label: '📝 Pilihan Ganda (10)' },
     { id: 'mcma', label: '☑️ Pilihan Ganda Kompleks (5)' },
     { id: 'tf', label: '✔️ True or False (5)' }
   ];
+
   tabs.forEach(function(t) {
-    const el = document.createElement('div');
-    el.className = 'sub-nav-tab' + (currentSubTab === t.id ? ' active' : '');
-    el.innerText = t.label;
-    el.onclick = function() {
+    const isActive = currentSubTab === t.id;
+    const accessible = canAccessTab(t.id);
+    const btn = document.createElement('button');
+    btn.className = 'sub-tab-btn' + (isActive ? ' active' : '') + (accessible ? '' : ' locked');
+    btn.innerHTML = t.label + (accessible ? '' : ' 🔒');
+    btn.title = accessible ? ('Buka ' + t.label) : ('Terkunci — selesaikan tugas halaman sebelumnya');
+    btn.onclick = function() {
+      if (!accessible) {
+        let prereq = '';
+        if (t.id === 'pg') prereq = 'selesaikan SEMUA 10 Analisis HOTS';
+        if (t.id === 'mcma') prereq = 'selesaikan SEMUA Pilihan Ganda (10 soal)';
+        if (t.id === 'tf') prereq = 'selesaikan SEMUA Pilihan Ganda Kompleks (5 soal)';
+        alert('🔒 HALAMAN MASIH TERKUNCI!\n\nUntuk membuka ' + t.label + ', Anda harus ' + prereq + ' terlebih dahulu.\n\nIkuti alur pembelajaran yang sudah direncanakan ya! 💪');
+        return;
+      }
       currentSubTab = t.id;
-      document.querySelectorAll('.sub-nav-tab').forEach(x => x.classList.remove('active'));
-      el.classList.add('active');
       renderTab();
     };
-    sub.appendChild(el);
+    bar.appendChild(btn);
   });
-}
 
-async function loadSheet(sheetName) {
-  currentSheet = sheetName;
-  currentSubTab = 'materi';
-  currentAnalysisNum = 1;
-  speechStop();
-  document.getElementById('mainContent').innerHTML = '<div class="card"><p style="text-align:center">⏳ Memuat data...</p></div>';
-  
-  const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
-  
-  if (!data || data.success === false || !data.materi) { 
-    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Coba refresh halaman.') + '</p></div>'; 
-    return; 
-  }
-  
-  currentSheetData = data;
-  pgLocalAnswers = {}; mcmaLocalAnswers = {}; tfLocalAnswers = {};
-  buildSubNav();
-  renderTab();
-}
-
-function renderTab() {
-  const c = document.getElementById('mainContent'); c.innerHTML = '';
-  if (currentSubTab === 'materi') renderMateri(c);
-  else if (currentSubTab === 'analisis') renderAnalisis(c);
-  else if (currentSubTab === 'pg') renderPG(c);
-  else if (currentSubTab === 'mcma') renderMCMA(c);
-  else if (currentSubTab === 'tf') renderTF(c);
+  c.appendChild(bar);
 }
 
 function renderParaOrMedia(text) {
@@ -330,11 +476,13 @@ function renderParaOrMedia(text) {
   const p = document.createElement('div'); p.className = 'fmt-p'; p.innerText = text; return p;
 }
 
-// ================= TAMPILAN MATERI DIPERBARUI =================
+/**
+ * REVISI 2: Materi selalu tampil di ATAS (Teks → Pengucapan → Terjemahan)
+ */
 function renderMateri(c) {
   const container = document.createElement('div');
   container.className = 'card';
-  
+
   const data = currentSheetData.materi;
 
   // 1. Teks Inggris
@@ -347,11 +495,10 @@ function renderMateri(c) {
 
     const enParas = (data.materiEn || '').split(/\n+/).filter(p => p.trim());
     enParas.forEach(function(para) {
-      const el = renderParaOrMedia(para); 
+      const el = renderParaOrMedia(para);
       if (el) container.appendChild(el);
     });
 
-    // Audio Teks Inggris
     const acEn = document.createElement('div'); acEn.className = 'audio-ctrl';
     const bEn = document.createElement('button'); bEn.className = 'btn-audio btn-play-en'; bEn.innerHTML = '▶ Play Audio EN';
     bEn.onclick = function() { playText(data.materiEn, 'en-US', 0.75); };
@@ -363,7 +510,7 @@ function renderMateri(c) {
   // 2. Cara Pengucapan
   if (data.materiPronounce) {
     const titlePron = document.createElement('h3');
-    titlePron.innerText = "🔊 Cara Pengucapan";
+    titlePron.innerText = "🔊 Cara Pengucapan Bahasa Inggris";
     titlePron.style.color = 'var(--secondary)';
     titlePron.style.marginTop = '30px';
     container.appendChild(titlePron);
@@ -372,7 +519,6 @@ function renderMateri(c) {
     pPron.className = 'pron-block';
     pPron.innerText = data.materiPronounce;
     container.appendChild(pPron);
-    // TIDAK ADA AUDIO UNTUK CARA PENGUCAPAN
   }
 
   // 3. Terjemahan Bahasa Indonesia
@@ -388,7 +534,6 @@ function renderMateri(c) {
     pId.innerText = data.materiId;
     container.appendChild(pId);
 
-    // Audio Teks Indonesia
     const acId = document.createElement('div'); acId.className = 'audio-ctrl';
     const bId = document.createElement('button'); bId.className = 'btn-audio btn-play-id'; bId.innerHTML = '▶ Play Audio ID';
     bId.onclick = function() { playText(data.materiId, 'id-ID', 0.85); };
@@ -399,7 +544,6 @@ function renderMateri(c) {
 
   c.appendChild(container);
 }
-// ==============================================================
 
 function renderAnalisis(c) {
   if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML = '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
@@ -515,6 +659,9 @@ function checkLen(num) {
   if (v.length >= 300) { cnt.className = 'char-count valid'; btn.disabled = false; } else { cnt.className = 'char-count'; btn.disabled = true; }
 }
 
+/**
+ * REVISI 3: Tambahkan tombol Play + Pause/Resume + Stop untuk Terjemahan EN
+ */
 async function requestTranslation(num) {
   const text = document.getElementById('ansInput' + num).value;
   const btn = document.getElementById('btnGetTrans' + num);
@@ -537,16 +684,43 @@ async function requestTranslation(num) {
     document.getElementById('speakArea' + num).style.display = 'block';
     const pEn = document.getElementById('previewEn' + num); pEn.innerHTML = '';
     const d = document.createElement('div'); d.className = 'fmt-p'; d.innerText = res.jawabanEn; pEn.appendChild(d);
+
+    // REVISI 3: Play + Pause/Resume + Stop untuk Terjemahan EN
     const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-    const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en'; bp.innerHTML = '▶ Dengarkan';
-    bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); };
-    const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop'; bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
-    ac.appendChild(bp); ac.appendChild(bs);
+    const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en'; bp.innerHTML = '▶ Play';
+    bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); resetPauseBtn('pauseBtn' + num); };
+    const bPause = document.createElement('button'); bPause.id = 'pauseBtn' + num; bPause.className = 'btn-audio btn-pause'; bPause.innerHTML = '⏸ Pause'; bPause.disabled = true;
+    bPause.onclick = function() { togglePauseSpeech('pauseBtn' + num); };
+    const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop'; bs.innerHTML = '⏹ Stop'; bs.onclick = function(){ speechStop(); resetPauseBtn('pauseBtn' + num); };
+    ac.appendChild(bp); ac.appendChild(bPause); ac.appendChild(bs);
     const tag = document.createElement('span'); tag.className = 'speed-tag'; tag.innerText = '0.75x'; ac.appendChild(tag);
     pEn.appendChild(ac);
+
+    // Aktifkan pause button setelah play dimulai
+    bp.onclick = function() {
+      playText(res.jawabanEn, 'en-US', 0.75);
+      setTimeout(function(){ var pb = document.getElementById('pauseBtn' + num); if (pb) { pb.disabled = false; pb.innerHTML = '⏸ Pause'; } }, 200);
+    };
+
     document.getElementById('previewPron' + num).innerText = res.jawabanPronounce;
     document.getElementById('speakArea' + num).scrollIntoView({ behavior: 'smooth' });
   } else { err.innerText = res.message; err.style.display = 'block'; }
+}
+
+function resetPauseBtn(id) {
+  var b = document.getElementById(id);
+  if (b) { b.innerHTML = '⏸ Pause'; b.disabled = true; }
+}
+
+function togglePauseSpeech(btnId) {
+  var btn = document.getElementById(btnId);
+  if (window.speechSynthesis.paused) {
+    window.speechSynthesis.resume();
+    if (btn) btn.innerHTML = '⏸ Pause';
+  } else if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.pause();
+    if (btn) btn.innerHTML = '▶ Resume';
+  }
 }
 
 function checkBrowser() {
@@ -721,18 +895,26 @@ async function submitFinal(num, isReup) {
   } else { err.innerText = res.message; err.style.display = 'block'; }
 }
 
+/**
+ * REVISI 6: Feedback guru selalu ditampilkan (EN + Pronounce + ID) di Analisis
+ */
 function showSavedAnalysis(sub, num, area) {
   area.innerHTML = '';
   const wrap = document.createElement('div');
+
+  // Jawaban siswa
   wrap.innerHTML = '<div class="saved-preview"><h3 style="color:var(--primary);margin-top:0">✅ Jawaban Anda (ID):</h3><div class="fmt-p">' + (sub.jawabanId || '').replace(/\n/g, '<br>') + '</div>' +
     '<h3 style="color:var(--primary);margin-top:20px">🌐 Terjemahan (EN):</h3><div class="fmt-p">' + (sub.jawabanEn || '').replace(/\n/g, '<br>') + '</div></div>';
   if (sub.jawabanPronounce) { const p = document.createElement('div'); p.className = 'pron-block'; p.innerText = sub.jawabanPronounce; wrap.appendChild(p); }
+
   const acc = parseAccuracy(sub.akurasi);
   const cat = determineCat(acc);
   const isBad = (cat === 1 || cat === 2);
+
+  // REVISI 4: Ulasan Pengucapan Audio (diperkaya dari server)
   if (sub.penilaianAI) {
     const sr = document.createElement('div'); sr.className = 'speak-result';
-    sr.innerHTML = '<h4 style="margin-top:0;color:var(--accent)">🎙️ Ulasan Pengucapan Audio:</h4><div class="descriptive-feedback"><div style="background:#f0f9ff;padding:15px;border-radius:8px;border-left:4px solid var(--secondary);line-height:1.8">' + (sub.penilaianAI || '').replace(/\n/g, '<br>') + '</div></div>';
+    sr.innerHTML = '<h4 style="margin-top:0;color:var(--accent)">🎙️ Ulasan Pengucapan Audio:</h4><div class="descriptive-feedback"><div style="line-height:1.8">' + (sub.penilaianAI || '').replace(/\n/g, '<br>') + '</div></div>';
     const audioToPlay = sub.audioUrl;
     if (audioToPlay) {
       currentAudioUrl = audioToPlay;
@@ -743,31 +925,40 @@ function showSavedAnalysis(sub, num, area) {
     }
     wrap.appendChild(sr);
   }
-  if (!isBad && (sub.feedbackEn || sub.feedbackId)) {
+
+  // REVISI 6: Feedback Guru SELALU ditampilkan (EN + Pronounce + ID) — bukan hanya saat skor bagus
+  if (sub.feedbackEn || sub.feedbackId) {
     const tf = document.createElement('div'); tf.className = 'teacher-feedback';
-    let html = '<h3 style="color:var(--secondary);margin-top:0">🏫 Feedback Konstruktif & Apresiasi Guru:</h3>';
+    let html = '<h3 style="color:var(--secondary);margin-top:0">🏫 Feedback & Kunci Jawaban Ideal dari Guru:</h3>';
+
     if (sub.feedbackEn) {
-      html += '<div style="margin-bottom:18px"><strong style="color:var(--secondary);font-size:1.05rem">🇬🇧 English Feedback:</strong>';
-      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-en" onclick=\'playFeedbackEN(' + JSON.stringify(sub.feedbackEn) + ',' + JSON.stringify(activeUser.nama) + ')\'>▶ Play EN</button>';
-      html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.75x</span></div>';
-      html += '<div class="fmt-p" style="margin-top:8px">' + sub.feedbackEn + '</div></div>';
+      html += '<div class="teacher-feedback-block"><div class="fb-header">🇬🇧 Feedback Guru (English):</div>';
+      html += '<div class="audio-ctrl" style="margin:6px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(sub.feedbackEn) + ', "en-US", 0.75)\'>▶ Play EN</button><button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.75x</span></div>';
+      html += '<div class="fb-body">' + sub.feedbackEn + '</div></div>';
     }
-    if (sub.feedbackPronounce) html += '<div class="pron-block" style="margin-bottom:18px">' + sub.feedbackPronounce + '</div>';
+
+    if (sub.feedbackPronounce) {
+      html += '<div class="feedback-pron-block"><strong>🔊 Cara Pengucapan Feedback:</strong><br><em>' + sub.feedbackPronounce + '</em></div>';
+    }
+
     if (sub.feedbackId) {
-      html += '<div style="margin-bottom:18px"><strong style="color:var(--success);font-size:1.05rem">🇮🇩 Terjemahan:</strong>';
-      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-id" onclick=\'playFeedbackID(' + JSON.stringify(sub.feedbackId) + ')\'>▶ Play ID</button>';
-      html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.85x</span></div>';
-      html += '<div class="trans-block" style="margin-top:8px">' + sub.feedbackId + '</div></div>';
+      html += '<div class="teacher-feedback-block id-block"><div class="fb-header">🇮🇩 Terjemahan Feedback (ID):</div>';
+      html += '<div class="audio-ctrl" style="margin:6px 0;"><button class="btn-audio btn-play-id" onclick=\'playText(' + JSON.stringify(sub.feedbackId) + ', "id-ID", 0.85)\'>▶ Play ID</button><button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.85x</span></div>';
+      html += '<div class="fb-body">' + sub.feedbackId + '</div></div>';
     }
+
     tf.innerHTML = html;
     wrap.appendChild(tf);
   }
+
+  // Reupload section jika perlu
   if (isBad) {
     const ru = document.createElement('div'); ru.className = 'reupload-section';
     const msg = sub.rerecordMessage || "Audio belum sesuai. Silakan rekam ulang dengan membaca teks secara perlahan dan jelas.";
     ru.innerHTML = '<h3>⚠️ Perhatian Khusus dari Guru</h3><div class="reupload-required">⚠️ REKAM ULANG DIPERLUKAN (Kategori ' + cat + '/4): ' + msg + '</div><p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p><button class="btn-submit btn-reupload" onclick="showReuploadForm(' + num + ')">🔄 Kirim Ulang Audio</button>';
     wrap.appendChild(ru);
   }
+
   const newForm = document.createElement('div'); newForm.id = 'newFormArea' + num; newForm.style.display = 'none';
   wrap.appendChild(newForm);
   area.appendChild(wrap);
@@ -799,12 +990,34 @@ function showReuploadForm(num) {
   document.getElementById('analysisArea').scrollIntoView({ behavior: 'smooth' });
 }
 
+/**
+ * REVISI 6: Helper untuk membuat blok feedback guru (dipakai di PG/MCMA/TF)
+ */
+function buildTeacherFeedbackHTML(fbEn, fbPronounce, fbId, idSuffix) {
+  var html = '';
+  if (fbEn) {
+    html += '<div class="teacher-feedback-block"><div class="fb-header">🇬🇧 Feedback Guru (English):</div>';
+    html += '<div class="audio-ctrl" style="margin:6px 0;"><button class="btn-audio btn-play-en" onclick=\'playText(' + JSON.stringify(fbEn) + ', "en-US", 0.75)\'>▶ Play EN</button><button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.75x</span></div>';
+    html += '<div class="fb-body">' + fbEn + '</div></div>';
+  }
+  if (fbPronounce) {
+    html += '<div class="feedback-pron-block"><strong>🔊 Cara Pengucapan Feedback:</strong><br><em>' + fbPronounce + '</em></div>';
+  }
+  if (fbId) {
+    html += '<div class="teacher-feedback-block id-block"><div class="fb-header">🇮🇩 Terjemahan Feedback (ID):</div>';
+    html += '<div class="audio-ctrl" style="margin:6px 0;"><button class="btn-audio btn-play-id" onclick=\'playText(' + JSON.stringify(fbId) + ', "id-ID", 0.85)\'>▶ Play ID</button><button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.85x</span></div>';
+    html += '<div class="fb-body">' + fbId + '</div></div>';
+  }
+  return html;
+}
+
 function renderPG(c) {
   if (!currentSheetData.pg || !currentSheetData.pg.length) { c.innerHTML = '<div class="card"><p>Tidak ada data PG.</p></div>'; return; }
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.pgSubmissions && currentSheetData.pgSubmissions._score !== undefined ? currentSheetData.pgSubmissions._score : 0;
-  header.innerHTML = '<h3>📝 Pilihan Ganda (10 Soal)</h3><p>Pilih satu jawaban yang paling tepat. Setelah dipilih, jawaban tidak bisa diubah.</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 10</strong><span class="score-badge">Pilihan Ganda</span></p>';
+  const allDone = isPGComplete();
+  header.innerHTML = '<h3>📝 Pilihan Ganda (10 Soal)</h3><p>Pilih satu jawaban yang paling tepat. Setelah dipilih, jawaban tidak bisa diubah.</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 10</strong><span class="score-badge">Pilihan Ganda</span>' + (allDone ? '<span class="score-badge success">✅ Selesai</span>' : '<span class="score-badge">' + Object.keys(currentSheetData.pgSubmissions || {}).filter(k => k !== '_score').length + '/10 terjawab</span>') + '</p>';
   w.appendChild(header);
   currentSheetData.pg.forEach(function(q) {
     const card = document.createElement('div'); card.className = 'quiz-card'; card.id = 'pgCard' + q.num;
@@ -855,7 +1068,8 @@ function renderPG(c) {
       fb.className = 'quiz-feedback ' + (existing === q.correctAnswer ? 'correct' : 'wrong');
       let html = '<strong>' + (existing === q.correctAnswer ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
       html += ' Jawaban benar: <strong>' + q.correctAnswer + '</strong>.<br><br>';
-      if (q.feedbackEn) html += '<div style="margin-top:8px">' + q.feedbackEn + '</div>';
+      // REVISI 6: Feedback lengkap (EN + Pronounce + ID)
+      html += buildTeacherFeedbackHTML(q.feedbackEn, q.feedbackPronounce, q.feedbackId, 'pg' + q.num);
       fb.innerHTML = html;
       card.appendChild(fb);
       if (existing === q.correctAnswer) card.classList.add('correct'); else card.classList.add('wrong');
@@ -888,7 +1102,8 @@ function renderMCMA(c) {
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.mcmaSubmissions && currentSheetData.mcmaSubmissions._score !== undefined ? currentSheetData.mcmaSubmissions._score : 0;
-  header.innerHTML = '<h3>☑️ Pilihan Ganda Kompleks (5 Soal)</h3><p>' + (currentSheetData.mcmaInstruction.instructionEn || 'Pilih LEBIH DARI SATU jawaban benar.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 5</strong><span class="score-badge">MCMA</span></p>';
+  const allDone = isMCMAComplete();
+  header.innerHTML = '<h3>☑️ Pilihan Ganda Kompleks (5 Soal)</h3><p>' + (currentSheetData.mcmaInstruction.instructionEn || 'Pilih LEBIH DARI SATU jawaban benar.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 5</strong><span class="score-badge">MCMA</span>' + (allDone ? '<span class="score-badge success">✅ Selesai</span>' : '') + '</p>';
   w.appendChild(header);
   if (currentSheetData.mcmaInstruction.instructionId) {
     const t = document.createElement('div'); t.className = 'trans-block'; t.innerText = currentSheetData.mcmaInstruction.instructionId; w.appendChild(t);
@@ -957,7 +1172,8 @@ function renderMCMA(c) {
       fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
       let html = '<strong>' + (isCorrect ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
       html += ' Jawaban benar: <strong>' + (Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : '') + '</strong>.<br><br>';
-      if (q.feedbackEn) html += '<div style="margin-top:8px">' + q.feedbackEn + '</div>';
+      // REVISI 6: Feedback lengkap
+      html += buildTeacherFeedbackHTML(q.feedbackEn, q.feedbackPronounce, q.feedbackId, 'mcma' + q.num);
       fb.innerHTML = html;
       card.appendChild(fb);
       if (isCorrect) card.classList.add('correct'); else card.classList.add('wrong');
@@ -981,7 +1197,8 @@ function renderTF(c) {
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.tfSubmissions && currentSheetData.tfSubmissions._score !== undefined ? currentSheetData.tfSubmissions._score : 0;
-  header.innerHTML = '<h3>✔️ True or False (5 Soal)</h3><p>' + (currentSheetData.tfInstruction.instructionEn || 'Tentukan apakah pernyataan TRUE atau FALSE.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 5</strong><span class="score-badge">True/False</span></p>';
+  const allDone = isTFComplete();
+  header.innerHTML = '<h3>✔️ True or False (5 Soal)</h3><p>' + (currentSheetData.tfInstruction.instructionEn || 'Tentukan apakah pernyataan TRUE atau FALSE.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + ' / 5</strong><span class="score-badge">True/False</span>' + (allDone ? '<span class="score-badge success">✅ Selesai</span>' : '') + '</p>';
   w.appendChild(header);
   if (currentSheetData.tfInstruction.instructionId) {
     const t = document.createElement('div'); t.className = 'trans-block'; t.innerText = currentSheetData.tfInstruction.instructionId; w.appendChild(t);
@@ -1027,7 +1244,8 @@ function renderTF(c) {
       fb.className = 'quiz-feedback ' + (isCorr ? 'correct' : 'wrong');
       let html = '<strong>' + (isCorr ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
       html += ' Jawaban benar: <strong>' + (q.correctAnswer === 'T' ? 'TRUE' : 'FALSE') + '</strong>.<br><br>';
-      if (q.feedbackEn) html += '<div style="margin-top:8px">' + q.feedbackEn + '</div>';
+      // REVISI 6: Feedback lengkap
+      html += buildTeacherFeedbackHTML(q.feedbackEn, q.feedbackPronounce, q.feedbackId, 'tf' + q.num);
       fb.innerHTML = html;
       card.appendChild(fb);
       if (isCorr) card.classList.add('correct'); else card.classList.add('wrong');
