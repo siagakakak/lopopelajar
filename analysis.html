@@ -169,9 +169,9 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzQfLxAQYb-1m55WsuaxViK7l4Ok3RFHaqUBHB44OQx-i_PEa1CaI-eWNh4qRwMDQnQVg/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby0FKWoam5tahIFYouLd0yQzUT_rHTQl1aC1hvpjn12Ziz9cdaAfmp6z1NXTW8I7hgXBA/exec';
 
-let activeUser = { nama: '' };
+let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
 let currentSection = 'analisis';
 let currentAnalysisNum = 1;
@@ -216,7 +216,6 @@ async function callGas(action, payload) {
   } catch (err) { return { success: false, message: 'Koneksi gagal/timeout: ' + err.message }; }
 }
 
-// ============ LOGIN dengan pesan tegas ============
 async function executeLogin(e) {
   e.preventDefault();
   const nama = document.getElementById('inputNama').value;
@@ -228,6 +227,7 @@ async function executeLogin(e) {
   btn.disabled = false; btn.innerText = 'Masuk';
   if (res.success) {
     activeUser.nama = res.nama;
+    activeUser.kelas = res.kelas || kelas;
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
     buildNavTabs(res.availableSheets);
@@ -235,7 +235,6 @@ async function executeLogin(e) {
     err.innerText = res.message;
     err.style.display = 'block';
     if (res.mustUseClass) {
-      // sorot dropdown kelas yang benar
       const sel = document.getElementById('inputKelas');
       for (let i = 0; i < sel.options.length; i++) {
         if (sel.options[i].value === res.mustUseClass) { sel.selectedIndex = i; break; }
@@ -276,7 +275,6 @@ async function loadSheet(sheetName) {
   renderTab();
 }
 
-// ============ GATING: cek seksi terbuka ============
 function isSectionUnlocked(section) {
   if (!currentSheetData) return false;
   if (section === 'analisis') return true;
@@ -313,7 +311,6 @@ function isSectionCompleted(section) {
   return false;
 }
 
-// ============ render utama: satu halaman ============
 function renderTab() {
   const c = document.getElementById('mainContent'); c.innerHTML = '';
   renderMateriCard(c);
@@ -428,21 +425,19 @@ function renderParaOrMedia(text) {
   const p = document.createElement('div'); p.className = 'fmt-p'; p.innerText = text; return p;
 }
 
-// ============================================================
-// ✨ ANALISIS dengan sub-tab BERURUTAN (Analisis 1 → 10 dikunci)
-// ============================================================
+// ============ ANALISIS dengan sub-tab berurutan (anti lompat) ============
 function renderAnalisis(c) {
   if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML += '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
   const subs = currentSheetData.submissions || {};
 
-  // 🛡️ Safety: jika currentAnalysisNum menunjuk ke tab yang terkunci, kembalikan ke 1
+  // Safety: jika currentAnalysisNum mengarah ke tab yang terkunci, kembalikan ke 1
   if (currentAnalysisNum !== 1 && !subs[currentAnalysisNum - 1]) {
     currentAnalysisNum = 1;
   }
 
   const w = document.createElement('div'); w.className = 'card';
   w.innerHTML = '<h2 class="sec-title">🔍 Analisis HOTS Teks Descriptive</h2>' +
-    '<p style="font-size:.88rem;color:#64748b;margin:-6px 0 14px">📌 <strong>Analisis harus diselesaikan berurutan.</strong> Selesaikan Analisis 1 terlebih dahulu untuk membuka Analisis 2, dan seterusnya. Ini membantu kamu mengikuti alur pembelajaran dengan jelas.</p>';
+    '<p style="font-size:.88rem;color:#64748b;margin:-6px 0 14px">📌 Analisis harus diselesaikan berurutan. Selesaikan Analisis 1 dahulu untuk membuka Analisis 2, dan seterusnya.</p>';
 
   const pills = document.createElement('div'); pills.className = 'q-tabs';
   currentSheetData.analyses.forEach(function(a) {
