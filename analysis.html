@@ -26,6 +26,7 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .q-tab.answered{border-left:4px solid var(--success)}
 .q-tab.correct{background:#d1fae5;color:#065f46;border-left:4px solid var(--success)}
 .q-tab.wrong{background:#fee2e2;color:#991b1b;border-left:4px solid var(--danger)}
+.q-tab.locked{opacity:.55;cursor:not-allowed;background:#f1f5f9;color:#94a3b8;border:1px dashed #cbd5e1}
 .container{max-width:900px;margin:20px auto;padding:0 20px}
 .container-wide{width:100%;margin:15px 0;padding:0 15px}
 .card{background:#fff;padding:25px;margin-bottom:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #e2e8f0}
@@ -427,22 +428,45 @@ function renderParaOrMedia(text) {
   const p = document.createElement('div'); p.className = 'fmt-p'; p.innerText = text; return p;
 }
 
-// ============ analisis ============
+// ============================================================
+// ✨ ANALISIS dengan sub-tab BERURUTAN (Analisis 1 → 10 dikunci)
+// ============================================================
 function renderAnalisis(c) {
   if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML += '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
+  const subs = currentSheetData.submissions || {};
+
+  // 🛡️ Safety: jika currentAnalysisNum menunjuk ke tab yang terkunci, kembalikan ke 1
+  if (currentAnalysisNum !== 1 && !subs[currentAnalysisNum - 1]) {
+    currentAnalysisNum = 1;
+  }
+
   const w = document.createElement('div'); w.className = 'card';
-  w.innerHTML = '<h2 class="sec-title">🔍 Analisis HOTS Teks Descriptive</h2>';
+  w.innerHTML = '<h2 class="sec-title">🔍 Analisis HOTS Teks Descriptive</h2>' +
+    '<p style="font-size:.88rem;color:#64748b;margin:-6px 0 14px">📌 <strong>Analisis harus diselesaikan berurutan.</strong> Selesaikan Analisis 1 terlebih dahulu untuk membuka Analisis 2, dan seterusnya. Ini membantu kamu mengikuti alur pembelajaran dengan jelas.</p>';
+
   const pills = document.createElement('div'); pills.className = 'q-tabs';
   currentSheetData.analyses.forEach(function(a) {
-    const sub = currentSheetData.submissions[a.num];
-    const isAns = !!sub;
+    const isAns = !!subs[a.num];
+    const isUnlocked = (a.num === 1) || !!subs[a.num - 1];
     const btn = document.createElement('div');
-    btn.className = 'q-tab' + (a.num === currentAnalysisNum ? ' active' : '') + (isAns ? ' answered' : '');
-    btn.innerText = 'Analisis ' + a.num + (isAns ? ' ✓' : '');
-    btn.onclick = function() { currentAnalysisNum = a.num; renderTab(); };
+    let cls = 'q-tab';
+    if (a.num === currentAnalysisNum && isUnlocked) cls += ' active';
+    if (isAns) cls += ' answered';
+    if (!isUnlocked) cls += ' locked';
+    btn.className = cls;
+    btn.innerText = 'Analisis ' + a.num + (isAns ? ' ✓' : '') + (!isUnlocked ? ' 🔒' : '');
+    btn.onclick = function() {
+      if (!isUnlocked) {
+        alert('🔒 Analisis ' + a.num + ' Terkunci.\n\nSilakan selesaikan Analisis ' + (a.num - 1) + ' terlebih dahulu.\n\nIkuti alur pembelajaran yang sudah direncanakan agar proses belajarmu lebih optimal.');
+        return;
+      }
+      currentAnalysisNum = a.num;
+      renderTab();
+    };
     pills.appendChild(btn);
   });
   w.appendChild(pills);
+
   const a = currentSheetData.analyses.find(x => x.num === currentAnalysisNum);
   if (!a) { c.appendChild(w); return; }
   const title = document.createElement('h3'); title.style.color = 'var(--primary)'; title.style.marginTop = '15px';
