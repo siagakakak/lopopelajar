@@ -30,7 +30,7 @@ body{font-family:'Segoe UI',sans-serif;line-height:1.7;color:var(--text);backgro
 .container{max-width:900px;margin:20px auto;padding:0 20px}
 .container-wide{width:100%;margin:15px 0;padding:0 15px}
 .card{background:#fff;padding:25px;margin-bottom:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #e2e8f0}
-.login-card{max-width:420px;margin:40px auto}
+.login-card{max-width:400px;margin:60px auto}
 .sec-title{color:var(--primary);font-size:1.3rem;margin-top:0;border-bottom:2px solid #e2e8f0;padding-bottom:8px}
 .fmt-p{font-size:1.05rem;font-weight:500;color:#0f172a;margin-bottom:12px;text-align:justify}
 .pron-block{background:#f0f9ff;border-left:4px solid var(--secondary);padding:15px 20px;color:#0369a1;font-style:italic;border-radius:4px;margin-bottom:20px;line-height:1.8;font-size:1.05rem}
@@ -111,50 +111,15 @@ textarea{height:140px;resize:vertical}
 .locked-msg h3{margin:0 0 10px;color:#b45309}
 .no-copy{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;cursor:default}
 .login-error-box{background:#fef2f2;color:#991b1b;border:2px solid #fecaca;padding:15px;border-radius:8px;margin-top:15px;white-space:pre-line;font-weight:600;display:none;line-height:1.7}
-.login-info-box{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;padding:12px;border-radius:8px;margin-bottom:15px;font-size:.9rem;line-height:1.6}
+.login-warning-box{background-color:#fffbeb;color:#92400e;border:2px solid #fcd34d;border-radius:8px;padding:15px;margin-bottom:20px;font-size:0.95rem;line-height:1.6}
+.pulse-red{animation:pulseRed 1.5s infinite}
+@keyframes pulseRed{0%{box-shadow:0 0 0 0 rgba(220,38,38,.7)}70%{box-shadow:0 0 0 10px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
 
-/* FLOATING WINDOW STYLES */
-.floating-answer-box {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-    border-top: 3px solid var(--secondary);
-    z-index: 900;
-    transition: transform 0.3s ease-in-out;
-}
-.floating-answer-box.collapsed {
-    transform: translateY(calc(100% - 52px));
-}
-.floating-header {
-    height: 52px;
-    background: var(--primary);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-}
-.floating-body {
-    padding: 20px;
-    max-height: 45vh;
-    overflow-y: auto;
-}
-.btn-toggle-float {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: .85rem;
-    font-weight: bold;
-    cursor: pointer;
-}
+/* Floating Answer Box */
+.floating-answer-box{position:fixed;bottom:20px;right:20px;width:450px;max-width:90vw;max-height:80vh;overflow-y:auto;background:#fff;border:2px solid var(--secondary);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);padding:20px;z-index:999;transition:all .3s ease}
+.floating-answer-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid #e2e8f0}
+.btn-close-float{background:var(--danger);color:#fff;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;font-weight:bold;line-height:1}
+.btn-open-float{background:var(--secondary);color:#fff;border:none;padding:10px 20px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:.9rem;margin:15px 0;display:none;box-shadow:0 4px 12px rgba(0,102,204,.3)}
 </style>
 </head>
 <body>
@@ -166,22 +131,21 @@ textarea{height:140px;resize:vertical}
 <div id="login-container" class="container">
   <div class="card login-card">
     <h2 class="sec-title">Masuk Portal Siswa</h2>
-    
-    <div class="login-info-box">
-      <strong>📢 Informasi Penting:</strong><br>
-      1. Wajib menuliskan <strong>Nama Lengkap</strong>.<br>
-      2. Jika sudah pernah mendaftar, Anda <strong>WAJIB</strong> memilih <strong>Kelas yang sama</strong> seperti saat pertama kali mendaftar. Sistem akan menolak jika Anda mencoba masuk ke kelas lain.
+    <div class="login-warning-box">
+      ⚠️ <strong>PERHATIAN SEBELUM MASUK:</strong><br>
+      1. Wajib mengisi <strong>Nama Lengkap</strong> (sesuai daftar hadir).<br>
+      2. Bagi siswa yang <strong>sudah pernah mendaftar</strong>, Anda <strong>WAJIB masuk dengan kelas yang sama</strong> seperti pendaftaran pertama Anda.<br>
+      3. Sistem akan <strong>menolak akses dengan tegas</strong> jika terdeteksi mencoba masuk ke kelas yang berbeda!
     </div>
-
     <form onsubmit="executeLogin(event)">
       <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input type="text" id="inputNama" placeholder="Contoh: Budi Santoso" required>
+        <label>Nama Lengkap (Sesuai Absen)</label>
+        <input type="text" id="inputNama" required placeholder="Tulis Nama Lengkap Anda di sini...">
       </div>
       <div class="form-group">
         <label>Kelas</label>
         <select id="inputKelas" required>
-          <option value="" disabled selected>-- Pilih Kelas (Wajib Sama Saat Daftar) --</option>
+          <option value="" disabled selected>-- Pilih Kelas --</option>
           <option value="7A">7A</option><option value="7B">7B</option><option value="7C">7C</option><option value="7D">7D</option>
           <option value="7E">7E</option><option value="7F">7F</option><option value="7G">7G</option><option value="7H">7H</option>
           <option value="7I">7I</option><option value="7J">7J</option><option value="7K">7K</option><option value="7L">7L</option>
@@ -194,7 +158,7 @@ textarea{height:140px;resize:vertical}
       <div class="form-group">
         <label>Password</label>
         <div class="pw-wrap">
-          <input type="password" id="inputPass" required>
+          <input type="password" id="inputPass" required placeholder="Masukkan Password Anda...">
           <span class="toggle-pw" id="toggleEye" onclick="togglePw()">👁️</span>
         </div>
       </div>
@@ -207,17 +171,6 @@ textarea{height:140px;resize:vertical}
 <div id="main-app" style="display:none;">
   <div class="nav-bar" id="navTabs"></div>
   <div class="container-wide" id="mainContent"></div>
-</div>
-
-<!-- FLOATING WINDOW UNTUK INPUT JAWABAN -->
-<div id="floatingAnswerBox" class="floating-answer-box collapsed" style="display:none;">
-  <div class="floating-header" onclick="toggleFloatingBox()">
-    <span>📝 Tulis Jawaban Analisis Kamu di Sini</span>
-    <button class="btn-toggle-float" id="btnToggleFloatText">Buka Bawah ▲</button>
-  </div>
-  <div class="floating-body" id="floatingBody">
-    <!-- Form akan di-inject oleh JS -->
-  </div>
 </div>
 
 <div id="audioModal" class="modal-overlay" onclick="closeAudioModalOnOverlay(event)">
@@ -234,7 +187,6 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-// Ganti dengan URL Web App Anda yang terbaru
 const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx8vGmgiehzyzj-hvl7LZ8jb4YXK5zuwbV2IzVmipn519piE0_OqoJ3aDMU1R_4wM2fuw/exec';
 
 let activeUser = { nama: '', kelas: '' };
@@ -288,7 +240,7 @@ async function executeLogin(e) {
   const pass = document.getElementById('inputPass').value;
   const kelas = document.getElementById('inputKelas').value;
   const btn = document.getElementById('btnLogin'), err = document.getElementById('loginError');
-  btn.disabled = true; btn.innerText = 'Memuat...'; err.style.display = 'none';
+  btn.disabled = true; btn.innerText = 'Memuat...'; err.style.display = 'none'; err.classList.remove('pulse-red');
   const res = await callGas('login', { nama, password: pass, kelas: kelas });
   btn.disabled = false; btn.innerText = 'Masuk';
   if (res.success) {
@@ -301,6 +253,7 @@ async function executeLogin(e) {
     err.innerText = res.message;
     err.style.display = 'block';
     if (res.mustUseClass) {
+      err.classList.add('pulse-red');
       const sel = document.getElementById('inputKelas');
       for (let i = 0; i < sel.options.length; i++) {
         if (sel.options[i].value === res.mustUseClass) { sel.selectedIndex = i; break; }
@@ -379,6 +332,10 @@ function isSectionCompleted(section) {
 
 function renderTab() {
   const c = document.getElementById('mainContent'); c.innerHTML = '';
+  // Clean up floating box if exists
+  const existingFloat = document.getElementById('floatingAnswerBox');
+  if (existingFloat) existingFloat.remove();
+  
   renderMateriCard(c);
   renderSectionNav(c);
   renderSectionContent(c);
@@ -491,102 +448,7 @@ function renderParaOrMedia(text) {
   const p = document.createElement('div'); p.className = 'fmt-p'; p.innerText = text; return p;
 }
 
-// ============ FLOATING ANSWER BOX ============
-function toggleFloatingBox() {
-  const box = document.getElementById('floatingAnswerBox');
-  const btn = document.getElementById('btnToggleFloatText');
-  if (box.classList.contains('collapsed')) {
-    box.classList.remove('collapsed');
-    btn.innerHTML = 'Tutup Bawah ▼';
-  } else {
-    box.classList.add('collapsed');
-    btn.innerHTML = 'Buka Bawah ▲';
-  }
-}
-
-function showFloatingAnalysisForm(num) {
-  const box = document.getElementById('floatingAnswerBox');
-  const body = document.getElementById('floatingBody');
-  box.style.display = 'block';
-  box.classList.add('collapsed');
-  document.getElementById('btnToggleFloatText').innerHTML = 'Buka Bawah ▲';
-  
-  // Populate form inside floating box
-  body.innerHTML = `
-    <div style="margin-bottom:10px; font-weight:bold; color:var(--primary)">
-      ✍️ Jawaban Analisis ${num} (Minimal 300 Karakter)
-    </div>
-    <div class="form-group">
-      <textarea id="floatAnsInput${num}" oninput="checkFloatLen(${num})" onpaste="return false" oncopy="return false" oncut="return false" oncontextmenu="return false" ondragover="return false" ondrop="return false" placeholder="Ketik jawaban analitis Anda dengan nalar sendiri di sini..." style="height:100px"></textarea>
-      <div id="floatCharCount${num}" class="char-count">0 / 300 Karakter Minimum</div>
-      <div style="font-size:.82rem;color:#94a3b8;margin-top:4px">🚫 Copy-Paste dinonaktifkan. Jawablah dengan nalar dan pemahamanmu sendiri.</div>
-    </div>
-    <button type="button" id="btnFloatGetTrans${num}" class="btn-submit" onclick="requestFloatTranslation(${num})" disabled style="background:var(--secondary)">📤 Kirimkan Jawaban Kamu!</button>
-    <div id="floatAnsError${num}" class="alert alert-danger" style="margin-top:10px"></div>
-  `;
-}
-
-function checkFloatLen(num) {
-  const v = document.getElementById('floatAnsInput' + num).value;
-  const cnt = document.getElementById('floatCharCount' + num);
-  const btn = document.getElementById('btnFloatGetTrans' + num);
-  cnt.innerText = v.length + ' / 300 Karakter Minimum';
-  if (v.length >= 300) { cnt.className = 'char-count valid'; btn.disabled = false; } else { cnt.className = 'char-count'; btn.disabled = true; }
-}
-
-async function requestFloatTranslation(num) {
-  const text = document.getElementById('floatAnsInput' + num).value;
-  const btn = document.getElementById('btnFloatGetTrans' + num);
-  const err = document.getElementById('floatAnsError' + num);
-  if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
-  
-  btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
-  submittedAnswerText = text;
-  
-  const res = await callGas('getInstantTranslation', { text });
-  btn.disabled = false; btn.innerHTML = '📤 Kirimkan Jawaban Kamu!';
-  
-  if (res.success) {
-    originalEnglishText = res.jawabanEn;
-    
-    // Hide floating box and show inline result
-    document.getElementById('floatingAnswerBox').style.display = 'none';
-    
-    // Move to inline display area
-    const hist = document.getElementById('ansHist' + num);
-    if (hist) {
-      hist.innerHTML = ''; // clear
-      const blk = document.createElement('div'); blk.className = 'saved-preview';
-      blk.innerHTML = '<h4 style="margin-top:0">✅ Jawaban Anda Terkirim:</h4><div class="fmt-p">' + text.replace(/\n/g, '<br>') + '</div>';
-      hist.appendChild(blk);
-    }
-    
-    // Show recording area
-    const speak = document.getElementById('speakArea' + num);
-    if (speak) {
-      speak.style.display = 'block';
-      const pEn = document.getElementById('previewEn' + num); pEn.innerHTML = '';
-      const d = document.createElement('div'); d.className = 'fmt-p'; d.innerText = res.jawabanEn; pEn.appendChild(d);
-      const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-      const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en'; bp.innerHTML = '▶ Play';
-      bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); };
-      const bpa = document.createElement('button'); bpa.className = 'btn-audio btn-pause'; bpa.innerHTML = '⏸ Pause'; bpa.onclick = speechPause;
-      const br = document.createElement('button'); br.className = 'btn-audio btn-play-en'; br.innerHTML = '▶ Resume'; br.onclick = speechResume;
-      const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop'; bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
-      ac.appendChild(bp); ac.appendChild(bpa); ac.appendChild(br); ac.appendChild(bs);
-      const tag = document.createElement('span'); tag.className = 'speed-tag'; tag.innerText = '0.75x'; ac.appendChild(tag);
-      pEn.appendChild(ac);
-      document.getElementById('previewPron' + num).innerText = res.jawabanPronounce;
-      speak.scrollIntoView({ behavior: 'smooth' });
-    }
-  } else { 
-    err.innerText = res.message; 
-    err.style.display = 'block'; 
-  }
-}
-// =====================================================
-
-// ============ ANALISIS dengan sub-tab berurutan (anti lompat) ============
+// ============ ANALISIS dengan sub-tab berurutan (anti lompat) + FLOATING BOX ============
 function renderAnalisis(c) {
   if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML += '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
   const subs = currentSheetData.submissions || {};
@@ -644,55 +506,83 @@ function renderAnalisis(c) {
     w.appendChild(ac);
     const p = document.createElement('div'); p.className = 'trans-block'; p.innerText = a.instructionId; w.appendChild(p);
   }
-  const area = document.createElement('div'); area.id = 'analysisArea'; area.style.marginTop = '20px'; w.appendChild(area);
-  const sub = currentSheetData.submissions[a.num];
   
-  if (sub && sub.jawabanId) {
-    // Jika sudah dijawab, sembunyikan floating box
-    document.getElementById('floatingAnswerBox').style.display = 'none';
-    showSavedAnalysis(sub, a.num, area);
-  } else {
-    // Tampilkan form inline (kosong) dan pemicu floating box
-    showAnalysisForm(a.num, area);
-    showFloatingAnalysisForm(a.num);
-  }
+  // Create Floating Box Container
+  const floatBox = document.createElement('div');
+  floatBox.id = 'floatingAnswerBox';
+  floatBox.className = 'floating-answer-box';
+  floatBox.innerHTML = '<div class="floating-answer-header"><strong>📝 Lembar Jawaban Analisis ' + a.num + '</strong><button type="button" class="btn-close-float" onclick="document.getElementById(\'floatingAnswerBox\').style.display=\'none\'; document.getElementById(\'openFloatBtn\').style.display=\'block\';">✕</button></div><div id="analysisArea"></div>';
+  document.body.appendChild(floatBox);
+
+  // Open button (hidden by default)
+  const openBtn = document.createElement('button');
+  openBtn.id = 'openFloatBtn';
+  openBtn.className = 'btn-open-float';
+  openBtn.innerText = '📝 Buka Lembar Jawaban';
+  openBtn.onclick = function() {
+    document.getElementById('floatingAnswerBox').style.display = 'block';
+    openBtn.style.display = 'none';
+  };
+  w.appendChild(openBtn);
+
+  const area = document.getElementById('analysisArea');
+  const sub = currentSheetData.submissions[a.num];
+  if (sub && sub.jawabanId) showSavedAnalysis(sub, a.num, area);
+  else showAnalysisForm(a.num, area);
+  
   c.appendChild(w);
 }
 
-// Fungsi showAnalysisForm sekarang hanya menyiapkan kerangka (target area)
 function showAnalysisForm(num, area) {
-  area.innerHTML = `
-    <div id="ansHist${num}"></div>
-    <div id="speakArea${num}" style="display:none; margin-top:25px; border-top:2px dashed #cbd5e1; padding-top:20px;">
-      <h3 style="color:var(--primary);margin-top:0">📖 Terjemahan Bahasa Inggris (Baca dengan Lantang):</h3>
-      <div id="previewEn${num}" style="background:#f0f9ff;padding:15px;border-radius:8px;border-left:4px solid var(--secondary);margin-bottom:10px"></div>
-      <div id="previewPron${num}" class="pron-block"></div>
-      <div class="recorder-box">
-        <label style="color:#c2410c;font-weight:bold;font-size:1.1rem">🎙️ Rekam Suara Anda (Langsung di Browser)</label>
-        <p style="font-size:.95rem;color:#7c2d12;margin-top:0">1. Klik MULAI REKAM<br>2. Baca teks EN dengan lantang<br>3. Transkrip muncul otomatis<br>4. Klik SELESAI REKAM<br>5. Klik Kirim Jawaban</p>
-        <div style="text-align:center;margin:20px 0"><button type="button" id="btnRec${num}" class="btn-record" onclick="toggleRecording(${num})">🎙️ MULAI REKAM</button></div>
-        <div id="recStatus${num}" class="rec-status" style="text-align:center">Siap merekam.</div>
-        <div id="liveBox${num}" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP (REAL-TIME):</span><div id="liveText${num}" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>
-        <audio id="audioPb${num}" controls class="audio-playback"></audio>
-        <input type="hidden" id="audioData${num}"><input type="hidden" id="audioMime${num}"><input type="hidden" id="audioDur${num}"><input type="hidden" id="speechTrans${num}">
-      </div>
-      <button type="button" id="btnSubmitFinal${num}" class="btn-submit" onclick="submitFinal(${num},false)" disabled style="background:var(--primary)">✅ Kirim Jawaban & Penilaian ke Guru</button>
-    </div>
-    <div id="reupArea${num}" style="display:none; margin-top:25px; border-top:2px dashed var(--danger); padding-top:20px;">
-      <h3 style="color:var(--danger);margin-top:0">🔄 Form Kirim Ulang Audio</h3>
-      <p style="color:var(--danger);font-weight:bold">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p>
-      <div class="recorder-box" style="background:#fef2f2;border:1px solid #fecaca">
-        <label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🎙️ Rekam Ulang</label>
-        <div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup${num}" class="btn-record" onclick="toggleRecReup(${num})">🎙️ MULAI REKAM ULANG</button></div>
-        <div id="recStatusReup${num}" class="rec-status" style="text-align:center">Siap merekam ulang.</div>
-        <div id="liveBoxReup${num}" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP:</span><div id="liveTextReup${num}" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>
-        <audio id="audioPbReup${num}" controls class="audio-playback"></audio>
-        <input type="hidden" id="audioDataReup${num}"><input type="hidden" id="audioMimeReup${num}"><input type="hidden" id="audioDurReup${num}"><input type="hidden" id="speechTransReup${num}">
-      </div>
-      <button type="button" id="btnSubmitReup${num}" class="btn-submit btn-reupload" onclick="submitFinal(${num},true)" disabled>🔄 Kirim Ulang Audio untuk Diperiksa</button>
-    </div>
-    <div id="ansError${num}" class="alert alert-danger"></div>
-  `;
+  area.innerHTML = '';
+  const form = document.createElement('form');
+  form.onsubmit = function(ev) { ev.preventDefault(); requestTranslation(num); };
+  const ta = document.createElement('div'); ta.className = 'form-group';
+  ta.innerHTML = '<label>Tuliskan Jawaban Anda (Bahasa Indonesia — Minimal 300 Karakter):</label>' +
+    '<textarea id="ansInput' + num + '" oninput="checkLen(' + num + ')" onpaste="return false" oncopy="return false" oncut="return false" oncontextmenu="return false" ondragover="return false" ondrop="return false" placeholder="Ketik jawaban analitis Anda dengan nalar sendiri..."></textarea>' +
+    '<div id="charCount' + num + '" class="char-count">0 / 300 Karakter Minimum</div>' +
+    '<div style="font-size:.82rem;color:#94a3b8;margin-top:4px">🚫 Copy-Paste dinonaktifkan. Jawablah dengan nalar dan pemahamanmu sendiri.</div>';
+  form.appendChild(ta);
+  const btn = document.createElement('button');
+  btn.type = 'submit'; btn.id = 'btnGetTrans' + num; btn.className = 'btn-submit';
+  btn.disabled = true; btn.style.background = 'var(--secondary)';
+  btn.innerText = '📤 Kirimkan Jawaban Kamu!';
+  form.appendChild(btn);
+  area.appendChild(form);
+  const hist = document.createElement('div'); hist.id = 'ansHist' + num; area.appendChild(hist);
+  const speak = document.createElement('div'); speak.id = 'speakArea' + num;
+  speak.style.display = 'none'; speak.style.marginTop = '25px';
+  speak.style.borderTop = '2px dashed #cbd5e1'; speak.style.paddingTop = '20px';
+  speak.innerHTML = '<h3 style="color:var(--primary);margin-top:0">📖 Terjemahan Bahasa Inggris (Baca dengan Lantang):</h3>' +
+    '<div id="previewEn' + num + '" style="background:#f0f9ff;padding:15px;border-radius:8px;border-left:4px solid var(--secondary);margin-bottom:10px"></div>' +
+    '<div id="previewPron' + num + '" class="pron-block"></div>' +
+    '<div class="recorder-box">' +
+      '<label style="color:#c2410c;font-weight:bold;font-size:1.1rem">🎙️ Rekam Suara Anda (Langsung di Browser)</label>' +
+      '<p style="font-size:.95rem;color:#7c2d12;margin-top:0">1. Klik MULAI REKAM<br>2. Baca teks EN dengan lantang<br>3. Transkrip muncul otomatis<br>4. Klik SELESAI REKAM<br>5. Klik Kirim Jawaban</p>' +
+      '<div style="text-align:center;margin:20px 0"><button type="button" id="btnRec' + num + '" class="btn-record" onclick="toggleRecording(' + num + ')">🎙️ MULAI REKAM</button></div>' +
+      '<div id="recStatus' + num + '" class="rec-status" style="text-align:center">Siap merekam.</div>' +
+      '<div id="liveBox' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP (REAL-TIME):</span><div id="liveText' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>' +
+      '<audio id="audioPb' + num + '" controls class="audio-playback"></audio>' +
+      '<input type="hidden" id="audioData' + num + '"><input type="hidden" id="audioMime' + num + '"><input type="hidden" id="audioDur' + num + '"><input type="hidden" id="speechTrans' + num + '">' +
+    '</div>' +
+    '<button type="button" id="btnSubmitFinal' + num + '" class="btn-submit" onclick="submitFinal(' + num + ',false)" disabled style="background:var(--primary)">✅ Kirim Jawaban & Penilaian ke Guru</button>';
+  area.appendChild(speak);
+  const reup = document.createElement('div'); reup.id = 'reupArea' + num;
+  reup.style.display = 'none'; reup.style.marginTop = '25px';
+  reup.style.borderTop = '2px dashed var(--danger)'; reup.style.paddingTop = '20px';
+  reup.innerHTML = '<h3 style="color:var(--danger);margin-top:0">🔄 Form Kirim Ulang Audio</h3>' +
+    '<p style="color:var(--danger);font-weight:bold">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p>' +
+    '<div class="recorder-box" style="background:#fef2f2;border:1px solid #fecaca">' +
+      '<label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🎙️ Rekam Ulang</label>' +
+      '<div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup' + num + '" class="btn-record" onclick="toggleRecReup(' + num + ')">🎙️ MULAI REKAM ULANG</button></div>' +
+      '<div id="recStatusReup' + num + '" class="rec-status" style="text-align:center">Siap merekam ulang.</div>' +
+      '<div id="liveBoxReup' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP:</span><div id="liveTextReup' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>' +
+      '<audio id="audioPbReup' + num + '" controls class="audio-playback"></audio>' +
+      '<input type="hidden" id="audioDataReup' + num + '"><input type="hidden" id="audioMimeReup' + num + '"><input type="hidden" id="audioDurReup' + num + '"><input type="hidden" id="speechTransReup' + num + '">' +
+    '</div>' +
+    '<button type="button" id="btnSubmitReup' + num + '" class="btn-submit btn-reupload" onclick="submitFinal(' + num + ',true)" disabled>🔄 Kirim Ulang Audio untuk Diperiksa</button>';
+  area.appendChild(reup);
+  const err = document.createElement('div'); err.id = 'ansError' + num; err.className = 'alert alert-danger'; area.appendChild(err);
 }
 
 function checkLen(num) {
@@ -701,6 +591,42 @@ function checkLen(num) {
   const btn = document.getElementById('btnGetTrans' + num);
   cnt.innerText = v.length + ' / 300 Karakter Minimum';
   if (v.length >= 300) { cnt.className = 'char-count valid'; btn.disabled = false; } else { cnt.className = 'char-count'; btn.disabled = true; }
+}
+
+async function requestTranslation(num) {
+  const text = document.getElementById('ansInput' + num).value;
+  const btn = document.getElementById('btnGetTrans' + num);
+  const err = document.getElementById('ansError' + num);
+  if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
+  btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
+  submittedAnswerText = text;
+  const res = await callGas('getInstantTranslation', { text });
+  btn.disabled = false; btn.innerHTML = '📤 Kirimkan Jawaban Kamu!';
+  if (res.success) {
+    originalEnglishText = res.jawabanEn;
+    const hist = document.getElementById('ansHist' + num);
+    const blk = document.createElement('div'); blk.className = 'saved-preview';
+    blk.innerHTML = '<h4 style="margin-top:0">✅ Jawaban Anda Terkirim:</h4><div class="fmt-p">' + text.replace(/\n/g, '<br>') + '</div>';
+    hist.appendChild(blk);
+    document.getElementById('ansInput' + num).value = '';
+    document.getElementById('charCount' + num).innerText = '0 / 300 Karakter Minimum';
+    document.getElementById('charCount' + num).className = 'char-count';
+    btn.disabled = true;
+    document.getElementById('speakArea' + num).style.display = 'block';
+    const pEn = document.getElementById('previewEn' + num); pEn.innerHTML = '';
+    const d = document.createElement('div'); d.className = 'fmt-p'; d.innerText = res.jawabanEn; pEn.appendChild(d);
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
+    const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en'; bp.innerHTML = '▶ Play';
+    bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); };
+    const bpa = document.createElement('button'); bpa.className = 'btn-audio btn-pause'; bpa.innerHTML = '⏸ Pause'; bpa.onclick = speechPause;
+    const br = document.createElement('button'); br.className = 'btn-audio btn-play-en'; br.innerHTML = '▶ Resume'; br.onclick = speechResume;
+    const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop'; bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
+    ac.appendChild(bp); ac.appendChild(bpa); ac.appendChild(br); ac.appendChild(bs);
+    const tag = document.createElement('span'); tag.className = 'speed-tag'; tag.innerText = '0.75x'; ac.appendChild(tag);
+    pEn.appendChild(ac);
+    document.getElementById('previewPron' + num).innerText = res.jawabanPronounce;
+    document.getElementById('speakArea' + num).scrollIntoView({ behavior: 'smooth' });
+  } else { err.innerText = res.message; err.style.display = 'block'; }
 }
 
 function checkBrowser() {
@@ -865,10 +791,6 @@ async function submitFinal(num, isReup) {
     const subData = { jawabanId: submittedAnswerText, jawabanEn: res.jawabanEn, jawabanPronounce: res.jawabanPronounce, audioUrl: up.downloadUrl, transkrip: res.speechTranscript || res.jawabanEn, penilaianAI: res.speakingAssessment, akurasi: res.similarityScore + '%', feedbackEn: res.feedbackEn, feedbackPronounce: res.feedbackPronounce, feedbackId: res.feedbackId, category: res.category, requiresReupload: res.requiresReupload, rerecordMessage: res.rerecordMessage };
     if (!currentSheetData.submissions) currentSheetData.submissions = {};
     currentSheetData.submissions[num] = subData;
-    
-    // Sembunyikan floating box setelah sukses
-    document.getElementById('floatingAnswerBox').style.display = 'none';
-    
     renderTab();
     if (res.requiresReupload && !isReup) alert('⚠️ PERHATIAN: ' + res.rerecordMessage);
     else if (!res.requiresReupload) alert('✅ Kerja bagus! Audio sesuai.');
@@ -954,9 +876,6 @@ function showReuploadForm(num) {
 
 // ============ PG ============
 function renderPG(c) {
-  // Sembunyikan floating box jika pindah ke PG
-  document.getElementById('floatingAnswerBox').style.display = 'none';
-
   if (!currentSheetData.pg || !currentSheetData.pg.length) { c.innerHTML += '<div class="card"><p>Tidak ada data PG.</p></div>'; return; }
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
@@ -1073,8 +992,6 @@ function buildTeacherFeedbackBlock(q, type) {
 
 // ============ MCMA ============
 function renderMCMA(c) {
-  document.getElementById('floatingAnswerBox').style.display = 'none';
-
   if (!currentSheetData.mcma || !currentSheetData.mcma.length) { c.innerHTML += '<div class="card"><p>Tidak ada data MCMA.</p></div>'; return; }
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
@@ -1168,8 +1085,6 @@ function toggleMCMA(num, letter) {
 
 // ============ TF ============
 function renderTF(c) {
-  document.getElementById('floatingAnswerBox').style.display = 'none';
-
   if (!currentSheetData.tf || !currentSheetData.tf.length) { c.innerHTML += '<div class="card"><p>Tidak ada data True/False.</p></div>'; return; }
   const w = document.createElement('div');
   const header = document.createElement('div'); header.className = 'quiz-header';
