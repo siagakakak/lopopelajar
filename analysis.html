@@ -152,6 +152,7 @@ textarea{height:140px;resize:vertical}
 </style>
 </head>
 <body>
+<!-- (Kode HTML Bagian Atas / Login / Header Sama Seperti Sebelumnya) -->
 <div class="header-banner">
   <h1>🎓 Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</h1>
   <p>Teks Analisis | 10 Analisis Struktur | PG | MCMA | True/False</p>
@@ -160,14 +161,12 @@ textarea{height:140px;resize:vertical}
 <div id="login-container" class="container">
   <div class="card login-card">
     <h2 class="sec-title">Masuk Portal Siswa</h2>
-    
     <div style="background:#f0f9ff; padding:15px; border-radius:8px; margin-bottom:20px; border-left:4px solid var(--secondary); color:#0369a1; font-size:0.9rem; line-height:1.6;">
         <strong style="color:#b45309; font-size:1rem;">📌 Pemberitahuan Penting:</strong><br>
         1. Wajib mengetik <b>Nama Lengkap</b> sesuai data sekolah.<br>
         2. Jika sudah pernah mendaftar, silakan masukkan <b>Password</b> yang sama seperti sebelumnya.<br>
         3. Sistem menerapkan aturan <b>Satu Siswa = Satu Kelas</b>. Jika Anda sudah terdaftar di Kelas A, maka Anda <b>WAJIB</b> masuk ke Kelas A. Sistem akan menolak tegas jika Anda mencoba masuk ke kelas lain untuk mencegah bukti belajar ganda.
     </div>
-
     <form onsubmit="executeLogin(event)">
       <div class="form-group"><label>Nama Lengkap</label><input type="text" id="inputNama" placeholder="Ketik nama lengkap Anda..." required></div>
       <div class="form-group">
@@ -215,7 +214,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyPq1HOwUWQkE9kmbAmBos1Ub-SaWL5A6WeSz4ZgU96cjRloDBdDFCxAKSoP9gq3IH0AA/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbytkrct3egvq5GDb1xpbYrGLFcbcqjHyh7r8Rcep0ts2hcTTWEDMNc1opTUqiYnGSsCyw/exec';
 
 let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
@@ -519,7 +518,6 @@ function renderAnalisis(c) {
   instr.innerHTML = (a.instructionEn || '').replace(/\n/g, '<br>'); w.appendChild(instr);
   if (a.instructionId) {
     const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-    // Hanya Play EN dan Play ID
     const bEn = document.createElement('button'); bEn.className = 'btn-audio btn-play-en'; bEn.innerHTML = '▶ Play EN';
     bEn.onclick = function() { playText(a.instructionEn, 'en-US', 0.75); }; ac.appendChild(bEn);
     
@@ -608,6 +606,26 @@ async function requestTranslation(num) {
   const btn = document.getElementById('btnGetTrans' + num);
   const err = document.getElementById('ansError' + num);
   if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
+  
+  // CLIENT-SIDE VALIDATION (Mencegah teks acak sebelum ke server)
+  var cleanText = text.toLowerCase().replace(/[^a-z\s]/g, ' ');
+  var words = cleanText.split(/\s+/).filter(Boolean);
+  var isGibberish = false;
+  for (var i = 0; i < words.length; i++) {
+      if (words[i].length > 15) { isGibberish = true; break; }
+  }
+  if (words.length < 20) isGibberish = true;
+  if (cleanText.match(/[bcdfghjklmnpqrstvwxyz]{4,}/g)) isGibberish = true;
+  var vowels = cleanText.match(/[aeiou]/g) || [];
+  if (vowels.length / cleanText.length < 0.25) isGibberish = true;
+
+  if (isGibberish) {
+      err.innerText = '🚫 Jawaban terdeteksi acak / tidak jelas. Silakan ketik jawaban yang benar dan bernalar.';
+      err.style.display = 'block';
+      alert('🚫 PERINGATAN: Jawaban Anda terdeteksi acak. Harap menjawab dengan kalimat yang benar.');
+      return;
+  }
+
   btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
   submittedAnswerText = text;
   
@@ -1193,12 +1211,9 @@ function selectTF(num, letter) {
 function playText(text, lang, rate) {
   speechStop();
   if (!text || !text.trim()) return;
-  
-  // Perbaikan: Ubah kata yang HURUF KAPITAL SEMUA menjadi Title Case agar tidak dieja
   var textToRead = text.replace(/\b[A-Z]{2,}\b/g, function(match) {
       return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
   });
-
   if (!availableVoices.length) loadVoices();
   const u = new SpeechSynthesisUtterance(textToRead);
   u.rate = rate || 0.85;
