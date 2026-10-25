@@ -215,7 +215,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbytvdApwKy1XqT61TA2dt03bP6gxk2WJX4KBviHglkxZpFYUtq29R_4Ruzim44V6SaPyA/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbynhuGBB1BtMzFwhR1ITAafUhJgRat_1Z93Ual7nVy0bIF1YWcAbxAIchrqLxm6Y-so-w/exec';
 
 let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
@@ -517,17 +517,24 @@ function renderAnalisis(c) {
   title.innerText = 'Analisis ' + a.num + ': ' + a.name; w.appendChild(title);
   const instr = document.createElement('div'); instr.className = 'instr-block';
   instr.innerHTML = (a.instructionEn || '').replace(/\n/g, '<br>'); w.appendChild(instr);
-  if (a.instructionPronounce) {
+  
+  // Audio HANYA untuk Instruksi EN
+  if (a.instructionEn) {
     const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-    const b = document.createElement('button'); b.className = 'btn-audio btn-play-en'; b.innerHTML = '▶ Play Pronounce';
-    b.onclick = function() { playText(a.instructionPronounce, 'en-US', 0.75); }; ac.appendChild(b);
+    const b = document.createElement('button'); b.className = 'btn-audio btn-play-en'; b.innerHTML = '▶ Play Instruksi EN';
+    b.onclick = function() { playText(a.instructionEn, 'en-US', 0.75); }; ac.appendChild(b);
     const s = document.createElement('button'); s.className = 'btn-audio btn-stop'; s.innerHTML = '⏹ Stop'; s.onclick = speechStop; ac.appendChild(s);
     w.appendChild(ac);
+  }
+
+  if (a.instructionPronounce) {
+    // Audio DIHAPUS untuk Pronounce
     const p = document.createElement('div'); p.className = 'pron-block'; p.innerText = a.instructionPronounce; w.appendChild(p);
   }
+  
   if (a.instructionId) {
     const ac = document.createElement('div'); ac.className = 'audio-ctrl';
-    const b = document.createElement('button'); b.className = 'btn-audio btn-play-id'; b.innerHTML = '▶ Play ID';
+    const b = document.createElement('button'); b.className = 'btn-audio btn-play-id'; b.innerHTML = '▶ Play Instruksi ID';
     b.onclick = function() { playText(a.instructionId, 'id-ID', 0.85); }; ac.appendChild(b);
     const s = document.createElement('button'); s.className = 'btn-audio btn-stop'; s.innerHTML = '⏹ Stop'; s.onclick = speechStop; ac.appendChild(s);
     w.appendChild(ac);
@@ -542,9 +549,8 @@ function renderAnalisis(c) {
 
 function showAnalysisForm(num, area) {
   area.innerHTML = '';
-  cleanupFloatingBar(); // Hapus yang lama jika ada
+  cleanupFloatingBar();
   
-  // ===== CREATE FLOATING ANSWER BAR =====
   const floatingBar = document.createElement('div');
   floatingBar.id = 'floatingAnswerBar';
   floatingBar.className = 'floating-answer-bar';
@@ -562,7 +568,6 @@ function showAnalysisForm(num, area) {
   document.body.appendChild(floatingBar);
   document.body.style.paddingBottom = '220px';
 
-  // ===== REST OF THE FORM (RECORDING AREA) =====
   const hist = document.createElement('div'); hist.id = 'ansHist' + num; area.appendChild(hist);
   const speak = document.createElement('div'); speak.id = 'speakArea' + num;
   speak.style.display = 'none'; speak.style.marginTop = '25px';
@@ -618,9 +623,7 @@ async function requestTranslation(num) {
   const res = await callGas('getInstantTranslation', { text });
   btn.disabled = false; btn.innerHTML = '📤 Kirimkan Jawaban Kamu!';
   if (res.success) {
-    // Sembunyikan floating bar karena teks sudah disubmit
     cleanupFloatingBar();
-
     originalEnglishText = res.jawabanEn;
     const hist = document.getElementById('ansHist' + num);
     const blk = document.createElement('div'); blk.className = 'saved-preview';
@@ -660,7 +663,7 @@ function startRec(num) {
   
   const liveBox = document.getElementById('liveBox' + num);
   liveBox.style.display = 'block';
-  liveBox.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll ke transkrip agar terlihat
+  liveBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   
   document.getElementById('liveText' + num).innerText = 'Mulai bicara...';
   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
@@ -811,10 +814,10 @@ async function submitFinal(num, isReup) {
   });
   btn.disabled = false; btn.innerHTML = isReup ? '🔄 Kirim Ulang Audio' : '✅ Kirim Jawaban';
   if (res.success) {
-    const subData = { jawabanId: submittedAnswerText, jawabanEn: res.jawabanEn, jawabanPronounce: res.jawabanPronounce, audioUrl: up.downloadUrl, transkrip: res.speechTranscript || res.jawabanEn, penilaianAI: res.speakingAssessment, akurasi: res.similarityScore + '%', feedbackEn: res.feedbackEn, feedbackPronounce: res.feedbackPronounce, feedbackId: res.feedbackId, category: res.category, requiresReupload: res.requiresReupload, rerecordMessage: res.rerecordMessage };
+    const subData = { jawabanId: submittedAnswerText, jawabanEn: res.jawabanEn, jawabanPronounce: res.jawabanPronounce, audioUrl: up.downloadUrl, transkrip: res.speechTranscript || res.jawabanEn, penilaianAI: res.speakingAssessment, akurasi: res.similarityScore + '%', feedbackEn: res.feedbackEn, feedbackPronounce: res.feedbackPronounce, feedbackId: res.feedbackId, category: res.category, requiresReupload: res.requiresReupload, rerecordMessage: res.rerecordMessage, matchedWordsList: res.matchedWordsList, missingWordsList: res.missingWordsList };
     if (!currentSheetData.submissions) currentSheetData.submissions = {};
     currentSheetData.submissions[num] = subData;
-    renderTab(); // renderTab akan otomatis memanggil cleanupFloatingBar
+    renderTab(); 
     if (res.requiresReupload && !isReup) alert('⚠️ PERHATIAN: ' + res.rerecordMessage);
     else if (!res.requiresReupload) alert('✅ Kerja bagus! Audio sesuai.');
   } else { err.innerText = res.message; err.style.display = 'block'; }
@@ -830,6 +833,36 @@ function showSavedAnalysis(sub, num, area) {
   const acc = parseAccuracy(sub.akurasi);
   const cat = determineCat(acc);
   const isBad = (cat === 1 || cat === 2);
+  
+  // TAMPILKAN TRANSKRIP REKAMAN DENGAN HIGHLIGHT
+  if (sub.jawabanEn && (sub.matchedWordsList || sub.missingWordsList)) {
+    const trWrap = document.createElement('div');
+    trWrap.style.cssText = "background:#fff; border:2px solid var(--primary); border-radius:8px; padding:15px; margin-bottom:20px;";
+    trWrap.innerHTML = '<h4 style="margin-top:0; color:var(--primary);">🎙️ Ulasan Transkrip Rekaman Suara Anda:</h4>';
+    
+    // Buat HTML untuk highlight per kata
+    let words = sub.jawabanEn.split(/(\s+)/); // split includes spaces
+    let htmlTranscript = words.map(w => {
+        let cleanW = w.toLowerCase().replace(/[^a-z]/g, '');
+        if (!cleanW) return w;
+        
+        let isMatched = sub.matchedWordsList && sub.matchedWordsList.includes(cleanW);
+        let isMissing = sub.missingWordsList && sub.missingWordsList.includes(cleanW);
+        
+        if (isMatched) {
+            return `<span style="color:#16a34a; font-weight:bold;">${w}</span>`;
+        } else if (isMissing) {
+            return `<span style="color:#dc2626; text-decoration:line-through; opacity:0.8;">${w}</span>`;
+        }
+        return w;
+    }).join('');
+    
+    trWrap.innerHTML += `<div style="font-size:1.1rem; line-height:2; background:#f8fafc; padding:15px; border-radius:8px;">${htmlTranscript}</div>`;
+    trWrap.innerHTML += `<div style="margin-top:10px; font-size:0.9rem; color:#64748b;"><span style="color:#16a34a; font-weight:bold;">Hijau</span> = Tepat, <span style="color:#dc2626; font-weight:bold; text-decoration:line-through;">Merah</span> = Belum Tepat / Tidak Terucap.</div>`;
+    
+    wrap.appendChild(trWrap);
+  }
+
   if (sub.penilaianAI) {
     const sr = document.createElement('div'); sr.className = 'speak-result';
     sr.innerHTML = '<h4 style="margin-top:0;color:var(--accent)">🎙️ Ulasan Pengucapan Audio:</h4><div class="descriptive-feedback">' + (sub.penilaianAI || '') + '</div>';
@@ -1175,11 +1208,18 @@ function selectTF(num, letter) {
   submitQuiz('tf', num, letter);
 }
 
+// TTS dengan penanganan HURUF KAPITAL
 function playText(text, lang, rate) {
   speechStop();
   if (!text || !text.trim()) return;
   if (!availableVoices.length) loadVoices();
-  const u = new SpeechSynthesisUtterance(text.trim());
+  
+  // Deteksi HURUF KAPITAL SEMUA. Ubah ke Title Case agar TTS tidak mengeja per huruf.
+  let cleanText = text.replace(/\b[A-Z]{2,}\b/g, function(match) {
+      return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
+  });
+
+  const u = new SpeechSynthesisUtterance(cleanText.trim());
   u.rate = rate || 0.85;
   u.lang = lang;
   const v = lang === 'id-ID' ? getIDVoice() : getENVoice();
