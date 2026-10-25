@@ -215,7 +215,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwEhJXeXZei9TIAzFkMGB8LCqNgEmvWtXjFTmKZyw6WQ0SkhSjb-mZsttXpihf5cMp3JQ/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyPq1HOwUWQkE9kmbAmBos1Ub-SaWL5A6WeSz4ZgU96cjRloDBdDFCxAKSoP9gq3IH0AA/exec';
 
 let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
@@ -610,7 +610,13 @@ async function requestTranslation(num) {
   if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
   btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
   submittedAnswerText = text;
-  const res = await callGas('getInstantTranslation', { text });
+  
+  const res = await callGas('getInstantTranslation', { 
+      text: text, 
+      materiEn: currentSheetData.materi.materiEn, 
+      materiId: currentSheetData.materi.materiId 
+  });
+  
   btn.disabled = false; btn.innerHTML = '📤 Kirimkan Jawaban Kamu!';
   if (res.success) {
     cleanupFloatingBar();
@@ -638,10 +644,7 @@ async function requestTranslation(num) {
   } else { 
     err.innerText = res.message; 
     err.style.display = 'block'; 
-    // Tampilkan alert jika ditolak backend karena tidak relevan/acak
-    if (res.message.includes('acak') || res.message.includes('relevan') || res.message.includes('tidak sopan')) {
-        alert('🚫 PERINGATAN: ' + res.message);
-    }
+    alert('🚫 PERINGATAN: ' + res.message);
   }
 }
 
@@ -834,9 +837,7 @@ async function submitFinal(num, isReup) {
   } else { 
     err.innerText = res.message; 
     err.style.display = 'block'; 
-    if (res.message.includes('acak') || res.message.includes('relevan') || res.message.includes('tidak sopan')) {
-        alert('🚫 PERINGATAN: ' + res.message);
-    }
+    alert('🚫 PERINGATAN: ' + res.message);
   }
 }
 
@@ -1189,7 +1190,6 @@ function selectTF(num, letter) {
   submitQuiz('tf', num, letter);
 }
 
-// ============ PERBAIKAN TTS: HURUF KAPITAL ============
 function playText(text, lang, rate) {
   speechStop();
   if (!text || !text.trim()) return;
