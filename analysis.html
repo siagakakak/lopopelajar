@@ -213,7 +213,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyGjJX3NmruXDDXH1Jxx33ZaZqJbNq65xWYPjRpGy4YyNWWi3IsYg4bwtOtTTKhgDeRjw/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxl-fzJbTgBzvSbF-pzJ9pys4FBrZn2dQcWw9FHbrcbQSHWKRf36BPh9gsjef5a72c9ww/exec';
 
 let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
@@ -606,6 +606,7 @@ async function requestTranslation(num) {
   const err = document.getElementById('ansError' + num);
   if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
   
+  // CLIENT-SIDE VALIDATION (Mencegah teks acak sebelum ke server)
   var cleanText = text.toLowerCase().replace(/[^a-z\s]/g, ' ');
   var words = cleanText.split(/\s+/).filter(Boolean);
   var isGibberish = false;
