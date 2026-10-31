@@ -152,7 +152,6 @@ textarea{height:140px;resize:vertical}
 </style>
 </head>
 <body>
-<!-- (Kode HTML Bagian Atas / Login / Header Sama Seperti Sebelumnya) -->
 <div class="header-banner">
   <h1>🎓 Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</h1>
   <p>Teks Analisis | 10 Analisis Struktur | PG | MCMA | True/False</p>
@@ -738,7 +737,6 @@ function stopRec(num) {
   document.getElementById('btnRec' + num).innerText = '🎙️ REKAM ULANG';
   document.getElementById('btnRec' + num).classList.remove('recording');
   document.getElementById('speechTrans' + num).value = (finalTranscript || '').trim();
-  // Biarkan liveBox tetap tampil agar siswa bisa mengevaluasi bacaannya
   if (finalTranscript.trim() === '') {
       document.getElementById('liveText' + num).innerText = '⚠️ Tidak ada suara yang terdeteksi. Silakan rekam ulang.';
       document.getElementById('liveText' + num).style.color = 'var(--danger)';
