@@ -152,6 +152,7 @@ textarea{height:140px;resize:vertical}
 </style>
 </head>
 <body>
+<!-- (Kode HTML Bagian Atas / Login / Header Sama Seperti Sebelumnya) -->
 <div class="header-banner">
   <h1>🎓 Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</h1>
   <p>Teks Analisis | 10 Analisis Struktur | PG | MCMA | True/False</p>
@@ -213,7 +214,7 @@ textarea{height:140px;resize:vertical}
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwEJNLTfJKx6-uVrCRircOeDNSVPCRcnIVgcC_ygNzjSLq0YDRFEynf8X1DzGAPuGfhHg/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbx9M3Y_vmMMvyjhiSbgHrBhpl6ygnzE75sz9rCfOJYUFYTWgE8m8SzXZ6e16-mGYm-Bmg/exec';
 
 let activeUser = { nama: '', kelas: '' };
 let currentSheet = '';
@@ -661,7 +662,7 @@ async function requestTranslation(num) {
   } else { 
     err.innerText = res.message; 
     err.style.display = 'block'; 
-    alert('🚫 PERINGATAN TEGAS: ' + res.message);
+    alert('🚫 PERINGATAN: ' + res.message);
   }
 }
 
@@ -737,6 +738,7 @@ function stopRec(num) {
   document.getElementById('btnRec' + num).innerText = '🎙️ REKAM ULANG';
   document.getElementById('btnRec' + num).classList.remove('recording');
   document.getElementById('speechTrans' + num).value = (finalTranscript || '').trim();
+  // Biarkan liveBox tetap tampil agar siswa bisa mengevaluasi bacaannya
   if (finalTranscript.trim() === '') {
       document.getElementById('liveText' + num).innerText = '⚠️ Tidak ada suara yang terdeteksi. Silakan rekam ulang.';
       document.getElementById('liveText' + num).style.color = 'var(--danger)';
@@ -853,7 +855,7 @@ async function submitFinal(num, isReup) {
   } else { 
     err.innerText = res.message; 
     err.style.display = 'block'; 
-    alert('🚫 PERINGATAN TEGAS: ' + res.message);
+    alert('🚫 PERINGATAN: ' + res.message);
   }
 }
 
