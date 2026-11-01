@@ -5,638 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</title>
 <style>
-:root {
-  --primary: #1b365d;
-  --secondary: #0066cc;
-  --accent: #d97706;
-  --danger: #dc2626;
-  --success: #16a34a;
-  --bg: #f8fafc;
-  --text: #1e293b;
-}
-* { box-sizing: border-box; }
-body {
-  font-family: 'Segoe UI', sans-serif;
-  line-height: 1.7;
-  color: var(--text);
-  background-color: var(--bg);
-  margin: 0;
-  padding: 0;
-  padding-bottom: 0;
-  transition: padding-bottom 0.3s;
-}
-.header-banner {
-  background-color: var(--primary);
-  color: white;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,.1);
-}
-.header-banner h1 { margin: 0; font-size: 1.6rem; }
-.header-banner p { margin: 5px 0 0; font-size: .9rem; opacity: .9; }
-.nav-bar {
-  display: flex;
-  background: #0f172a;
-  overflow-x: auto;
-  padding: 0 10px;
-}
-.nav-tab {
-  padding: 14px 20px;
-  color: #94a3b8;
-  cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
-  border-bottom: 3px solid transparent;
-  transition: .2s;
-}
-.nav-tab.active {
-  color: #fff;
-  border-bottom-color: var(--secondary);
-  background: rgba(255,255,255,.05);
-}
-.section-nav {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 12px 0;
-  border-bottom: 2px solid #e2e8f0;
-  margin-bottom: 20px;
-  flex-wrap: nowrap;
-}
-.section-btn {
-  padding: 12px 20px;
-  background: #fff;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
-  font-size: .95rem;
-  color: #475569;
-  font-family: inherit;
-  transition: .2s;
-  flex-shrink: 0;
-}
-.section-btn:hover:not(.locked):not(.active) {
-  border-color: var(--secondary);
-  background: #f0f9ff;
-}
-.section-btn.active {
-  background: var(--secondary);
-  color: #fff;
-  border-color: var(--secondary);
-}
-.section-btn.locked {
-  opacity: .55;
-  cursor: not-allowed;
-  background: #f1f5f9;
-}
-.section-btn.completed {
-  border-color: var(--success);
-  background: #f0fdf4;
-  color: #166534;
-}
-.q-tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #e2e8f0;
-  flex-wrap: nowrap;
-}
-.q-tab {
-  padding: 8px 14px;
-  background: #e2e8f0;
-  color: #334155;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: .85rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.q-tab.active { background: var(--secondary); color: #fff; }
-.q-tab.answered { border-left: 4px solid var(--success); }
-.q-tab.correct { background: #d1fae5; color: #065f46; border-left: 4px solid var(--success); }
-.q-tab.wrong { background: #fee2e2; color: #991b1b; border-left: 4px solid var(--danger); }
-.q-tab.locked {
-  opacity: .55;
-  cursor: not-allowed;
-  background: #f1f5f9;
-  color: #94a3b8;
-  border: 1px dashed #cbd5e1;
-}
-.container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
-.container-wide { width: 100%; margin: 15px 0; padding: 0 15px; }
-.card {
-  background: #fff;
-  padding: 25px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
-  border: 1px solid #e2e8f0;
-}
-.login-card { max-width: 500px; margin: 60px auto; }
-.sec-title {
-  color: var(--primary);
-  font-size: 1.3rem;
-  margin-top: 0;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 8px;
-}
-.fmt-p {
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #0f172a;
-  margin-bottom: 12px;
-  text-align: justify;
-}
-.pron-block {
-  background: #f0f9ff;
-  border-left: 4px solid var(--secondary);
-  padding: 15px 20px;
-  color: #0369a1;
-  font-style: italic;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  line-height: 1.8;
-  font-size: 1.05rem;
-}
-.trans-block {
-  background: #f0fdf4;
-  border-left: 4px solid var(--success);
-  padding: 15px 20px;
-  color: #15803d;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  line-height: 1.8;
-  font-size: 1.05rem;
-}
-.instr-block {
-  background: #fff7ed;
-  border-left: 4px solid var(--accent);
-  padding: 16px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  font-size: 1rem;
-  line-height: 1.7;
-}
-.audio-ctrl {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin: 12px 0;
-  flex-wrap: wrap;
-}
-.btn-audio {
-  border: none;
-  padding: 6px 12px;
-  border-radius: 16px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: .8rem;
-  color: #fff;
-}
-.btn-play-en { background: var(--secondary); }
-.btn-play-id { background: var(--success); }
-.btn-pause { background: var(--accent); }
-.btn-stop { background: var(--danger); }
-.speed-tag {
-  font-size: .75rem;
-  background: #e2e8f0;
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-.form-group { margin-bottom: 15px; }
-label { display: block; font-weight: 600; margin-bottom: 6px; }
-input[type=text], input[type=password], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 1rem;
-  background: #fff;
-}
-.pw-wrap { position: relative; display: flex; align-items: center; }
-.pw-wrap input { padding-right: 45px; }
-.toggle-pw {
-  position: absolute;
-  right: 12px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #64748b;
-}
-textarea { height: 140px; resize: vertical; }
-.char-count {
-  font-size: .85rem;
-  text-align: right;
-  color: #64748b;
-  margin-top: 4px;
-}
-.char-count.valid { color: var(--success); font-weight: bold; }
-.btn-submit {
-  background: var(--success);
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  font-family: inherit;
-}
-.btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
-.btn-reupload { background: var(--accent); }
-.alert {
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
-  display: none;
-}
-.alert-danger {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-.alert-success {
-  background: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
-}
-.speak-result {
-  background: #fff7ed;
-  border: 1px solid #fdba74;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 15px;
-}
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,.7);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
-.modal-overlay.active { display: flex; }
-.modal-content {
-  background: #fff;
-  border-radius: 16px;
-  padding: 30px;
-  max-width: 700px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e2e8f0;
-}
-.modal-title { font-size: 1.3rem; color: var(--primary); margin: 0; }
-.modal-close {
-  background: var(--danger);
-  color: #fff;
-  border: none;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-.drive-player iframe {
-  width: 100%;
-  height: 200px;
-  border: none;
-  border-radius: 8px;
-}
-.saved-preview {
-  background: #f0fdf4;
-  border: 1px solid #86efac;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  border-left: 4px solid var(--success);
-}
-.descriptive-feedback {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 15px;
-  border: 2px solid #e2e8f0;
-}
-.teacher-feedback {
-  background: #eff6ff;
-  border: 2px solid var(--secondary);
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-}
-.reupload-section {
-  background: #fef2f2;
-  border: 2px solid var(--danger);
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-}
-.reupload-required {
-  background: #fee2e2;
-  color: #991b1b;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-.recorder-box {
-  background: #fff7ed;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #fdba74;
-}
-.btn-record {
-  background: var(--danger);
-  color: #fff;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(220,38,38,.3);
-}
-.btn-record.recording {
-  background: #991b1b;
-  animation: pulseRec 1s infinite;
-}
-@keyframes pulseRec {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .6; }
-}
-.btn-record:disabled { background: #cbd5e1; cursor: not-allowed; }
-.transcript-box {
-  background: #f0f9ff;
-  border-left: 4px solid var(--secondary);
-  padding: 12px 16px;
-  margin-top: 15px;
-  border-radius: 4px;
-  min-height: 50px;
-  font-size: 1.1rem;
-  color: #0c4a6e;
-  font-weight: 500;
-}
-.rec-status {
-  font-size: .95rem;
-  margin-top: 10px;
-  color: #7c2d12;
-  font-weight: 600;
-}
-.rec-status.recording { color: var(--danger); }
-.rec-status.done { color: var(--success); }
-.audio-playback {
-  width: 100%;
-  margin-top: 15px;
-  display: none;
-}
-.quiz-card {
-  background: #fff;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.quiz-card.correct { border-color: var(--success); background: #f0fdf4; }
-.quiz-card.wrong { border-color: var(--danger); background: #fef2f2; }
-.quiz-q-text {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-.quiz-opt {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 12px 16px;
-  margin-bottom: 10px;
-  border: 2px solid #cbd5e1;
-  background: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: .95rem;
-  font-family: inherit;
-  transition: .15s;
-}
-.quiz-opt:hover:not(:disabled) { border-color: var(--secondary); background: #f0f9ff; }
-.quiz-opt.selected { border-color: var(--secondary); background: #dbeafe; font-weight: 600; }
-.quiz-opt.correct-opt { border-color: var(--success); background: #d1fae5; }
-.quiz-opt.wrong-opt { border-color: var(--danger); background: #fee2e2; }
-.quiz-opt:disabled { cursor: not-allowed; opacity: .85; }
-.tf-btns { display: flex; gap: 15px; margin-top: 15px; }
-.tf-btn {
-  flex: 1;
-  padding: 16px;
-  border: 2px solid #cbd5e1;
-  background: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
-  font-family: inherit;
-  transition: .15s;
-}
-.tf-btn:hover:not(:disabled) { border-color: var(--secondary); background: #f0f9ff; }
-.tf-btn.selected { border-color: var(--secondary); background: #dbeafe; }
-.tf-btn.correct-tf { border-color: var(--success); background: #d1fae5; color: #065f46; }
-.tf-btn.wrong-tf { border-color: var(--danger); background: #fee2e2; color: #991b1b; }
-.tf-btn:disabled { cursor: not-allowed; opacity: .85; }
-.quiz-feedback {
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  font-size: .95rem;
-  line-height: 1.7;
-}
-.quiz-feedback.correct { background: #d1fae5; border-left: 4px solid var(--success); }
-.quiz-feedback.wrong { background: #fee2e2; border-left: 4px solid var(--danger); }
-.score-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  background: var(--secondary);
-  color: #fff;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: .9rem;
-  margin-left: 10px;
-}
-.score-badge.success { background: var(--success); }
-.score-badge.danger { background: var(--danger); }
-.quiz-header {
-  background: #eff6ff;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #bfdbfe;
-}
-.quiz-header h3 { margin: 0 0 8px; color: var(--primary); font-size: 1.1rem; }
-.quiz-header p { margin: 0; font-size: .9rem; color: #475569; }
-.locked-msg {
-  background: #fef3c7;
-  border: 2px dashed #f59e0b;
-  border-radius: 12px;
-  padding: 30px;
-  text-align: center;
-  color: #92400e;
-  margin: 20px 0;
-}
-.locked-msg h3 { margin: 0 0 10px; color: #b45309; }
-.no-copy {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  cursor: default;
-}
-.login-error-box {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 2px solid #fecaca;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 15px;
-  white-space: pre-line;
-  font-weight: 600;
-  display: none;
-  line-height: 1.7;
-}
+:root{--primary:#1b365d;--secondary:#0066cc;--accent:#d97706;--danger:#dc2626;--success:#16a34a;--bg:#f8fafc;--text:#1e293b}
+*{box-sizing:border-box}
+body{font-family:'Segoe UI', sans-serif;line-height:1.7;color:var(--text);background-color:var(--bg);margin:0;padding:0;padding-bottom:0;transition:padding-bottom 0.3s;}
+.header-banner{background-color:var(--primary);color:white;padding:20px;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+.header-banner h1{margin:0;font-size:1.6rem}
+.header-banner p{margin:5px 0 0;font-size:.9rem;opacity:.9}
+.nav-bar{display:flex;background:#0f172a;overflow-x:auto;padding:0 10px}
+.nav-tab{padding:14px 20px;color:#94a3b8;cursor:pointer;font-weight:600;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s}
+.nav-tab.active{color:#fff;border-bottom-color:var(--secondary);background:rgba(255,255,255,.05)}
+.section-nav{display:flex;gap:10px;overflow-x:auto;padding:12px 0;border-bottom:2px solid #e2e8f0;margin-bottom:20px;flex-wrap:nowrap}
+.section-btn{padding:12px 20px;background:#fff;border:2px solid #cbd5e1;border-radius:8px;cursor:pointer;font-weight:600;white-space:nowrap;font-size:.95rem;color:#475569;font-family:inherit;transition:.2s;flex-shrink:0}
+.section-btn:hover:not(.locked):not(.active){border-color:var(--secondary);background:#f0f9ff}
+.section-btn.active{background:var(--secondary);color:#fff;border-color:var(--secondary)}
+.section-btn.locked{opacity:.55;cursor:not-allowed;background:#f1f5f9}
+.section-btn.completed{border-color:var(--success);background:#f0fdf4;color:#166534}
+.q-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:15px;border-bottom:2px solid #e2e8f0;flex-wrap:nowrap}
+.q-tab{padding:8px 14px;background:#e2e8f0;color:#334155;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;white-space:nowrap;flex-shrink:0}
+.q-tab.active{background:var(--secondary);color:#fff}
+.q-tab.answered{border-left:4px solid var(--success)}
+.q-tab.correct{background:#d1fae5;color:#065f46;border-left:4px solid var(--success)}
+.q-tab.wrong{background:#fee2e2;color:#991b1b;border-left:4px solid var(--danger)}
+.q-tab.locked{opacity:.55;cursor:not-allowed;background:#f1f5f9;color:#94a3b8;border:1px dashed #cbd5e1}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.container-wide{width:100%;margin:15px 0;padding:0 15px}
+.card{background:#fff;padding:25px;margin-bottom:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid #e2e8f0}
+.login-card{max-width:500px;margin:60px auto}
+.sec-title{color:var(--primary);font-size:1.3rem;margin-top:0;border-bottom:2px solid #e2e8f0;padding-bottom:8px}
+.fmt-p{font-size:1.05rem;font-weight:500;color:#0f172a;margin-bottom:12px;text-align:justify}
+.pron-block{background:#f0f9ff;border-left:4px solid var(--secondary);padding:15px 20px;color:#0369a1;font-style:italic;border-radius:4px;margin-bottom:20px;line-height:1.8;font-size:1.05rem}
+.trans-block{background:#f0fdf4;border-left:4px solid var(--success);padding:15px 20px;color:#15803d;border-radius:4px;margin-bottom:20px;line-height:1.8;font-size:1.05rem}
+.instr-block{background:#fff7ed;border-left:4px solid var(--accent);padding:16px;border-radius:4px;margin-bottom:15px;font-size:1rem;line-height:1.7}
+.audio-ctrl{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
+.btn-audio{border:none;padding:6px 12px;border-radius:16px;cursor:pointer;font-weight:600;font-size:.8rem;color:#fff}
+.btn-play-en{background:var(--secondary)}
+.btn-play-id{background:var(--success)}
+.btn-pause{background:var(--accent)}
+.btn-stop{background:var(--danger)}
+.speed-tag{font-size:.75rem;background:#e2e8f0;padding:3px 8px;border-radius:10px;font-weight:bold}
+.form-group{margin-bottom:15px}
+label{display:block;font-weight:600;margin-bottom:6px}
+input[type=text], input[type=password], select, textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:1rem;background:#fff}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap input{padding-right:45px}
+.toggle-pw{position:absolute;right:12px;cursor:pointer;font-size:1.2rem;color:#64748b}
+textarea{height:140px;resize:vertical}
+.char-count{font-size:.85rem;text-align:right;color:#64748b;margin-top:4px}
+.char-count.valid{color:var(--success);font-weight:bold}
+.btn-submit{background:var(--success);color:#fff;border:none;padding:12px 20px;border-radius:8px;width:100%;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:10px;font-family:inherit}
+.btn-submit:disabled{background:#cbd5e1;cursor:not-allowed}
+.btn-reupload{background:var(--accent)}
+.alert{padding:12px;border-radius:8px;margin-top:15px;display:none}
+.alert-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.alert-success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.speak-result{background:#fff7ed;border:1px solid #fdba74;padding:15px;border-radius:8px;margin-top:15px}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;justify-content:center;align-items:center}
+.modal-overlay.active{display:flex}
+.modal-content{background:#fff;border-radius:16px;padding:30px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #e2e8f0}
+.modal-title{font-size:1.3rem;color:var(--primary);margin:0}
+.modal-close{background:var(--danger);color:#fff;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.2rem}
+.drive-player iframe{width:100%;height:200px;border:none;border-radius:8px}
+.saved-preview{background:#f0fdf4;border:1px solid #86efac;padding:15px;border-radius:8px;margin-bottom:20px;border-left:4px solid var(--success)}
+.descriptive-feedback{background:#fff;border-radius:12px;padding:20px;margin-top:15px;border:2px solid #e2e8f0}
+.teacher-feedback{background:#eff6ff;border:2px solid var(--secondary);border-radius:12px;padding:20px;margin-top:20px}
+.reupload-section{background:#fef2f2;border:2px solid var(--danger);border-radius:12px;padding:20px;margin-top:20px}
+.reupload-required{background:#fee2e2;color:#991b1b;padding:12px;border-radius:8px;margin-bottom:15px;font-weight:bold}
+.recorder-box{background:#fff7ed;padding:20px;border-radius:8px;border:1px solid #fdba74}
+.btn-record{background:var(--danger);color:#fff;border:none;padding:14px 24px;border-radius:50px;font-size:1.1rem;font-weight:bold;cursor:pointer;box-shadow:0 4px 12px rgba(220,38,38,.3)}
+.btn-record.recording{background:#991b1b;animation:pulseRec 1s infinite}
+@keyframes pulseRec{0%,100%{opacity:1}50%{opacity:.6}}
+.btn-record:disabled{background:#cbd5e1;cursor:not-allowed}
+.transcript-box{background:#f0f9ff;border-left:4px solid var(--secondary);padding:12px 16px;margin-top:15px;border-radius:4px;min-height:50px;font-size:1.1rem;color:#0c4a6e;font-weight:500}
+.rec-status{font-size:.95rem;margin-top:10px;color:#7c2d12;font-weight:600}
+.rec-status.recording{color:var(--danger)}
+.rec-status.done{color:var(--success)}
+.audio-playback{width:100%;margin-top:15px;display:none}
+.quiz-card{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:20px}
+.quiz-card.correct{border-color:var(--success);background:#f0fdf4}
+.quiz-card.wrong{border-color:var(--danger);background:#fef2f2}
+.quiz-q-text{font-size:1.05rem;font-weight:600;color:#0f172a;margin-bottom:15px;line-height:1.6}
+.quiz-opt{display:block;width:100%;text-align:left;padding:12px 16px;margin-bottom:10px;border:2px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer;font-size:.95rem;font-family:inherit;transition:.15s}
+.quiz-opt:hover:not(:disabled){border-color:var(--secondary);background:#f0f9ff}
+.quiz-opt.selected{border-color:var(--secondary);background:#dbeafe;font-weight:600}
+.quiz-opt.correct-opt{border-color:var(--success);background:#d1fae5}
+.quiz-opt.wrong-opt{border-color:var(--danger);background:#fee2e2}
+.quiz-opt:disabled{cursor:not-allowed;opacity:.85}
+.tf-btns{display:flex;gap:15px;margin-top:15px}
+.tf-btn{flex:1;padding:16px;border:2px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer;font-size:1.1rem;font-weight:600;font-family:inherit;transition:.15s}
+.tf-btn:hover:not(:disabled){border-color:var(--secondary);background:#f0f9ff}
+.tf-btn.selected{border-color:var(--secondary);background:#dbeafe}
+.tf-btn.correct-tf{border-color:var(--success);background:#d1fae5;color:#065f46}
+.tf-btn.wrong-tf{border-color:var(--danger);background:#fee2e2;color:#991b1b}
+.tf-btn:disabled{cursor:not-allowed;opacity:.85}
+.quiz-feedback{margin-top:15px;padding:15px;border-radius:8px;font-size:.95rem;line-height:1.7}
+.quiz-feedback.correct{background:#d1fae5;border-left:4px solid var(--success)}
+.quiz-feedback.wrong{background:#fee2e2;border-left:4px solid var(--danger)}
+.score-badge{display:inline-block;padding:6px 14px;background:var(--secondary);color:#fff;border-radius:20px;font-weight:bold;font-size:.9rem;margin-left:10px}
+.score-badge.success{background:var(--success)}
+.score-badge.danger{background:var(--danger)}
+.quiz-header{background:#eff6ff;border-radius:12px;padding:15px;margin-bottom:20px;border:1px solid #bfdbfe}
+.quiz-header h3{margin:0 0 8px;color:var(--primary);font-size:1.1rem}
+.quiz-header p{margin:0;font-size:.9rem;color:#475569}
+.locked-msg{background:#fef3c7;border:2px dashed #f59e0b;border-radius:12px;padding:30px;text-align:center;color:#92400e;margin:20px 0}
+.locked-msg h3{margin:0 0 10px;color:#b45309}
+.no-copy{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;cursor:default}
+.login-error-box{background:#fef2f2;color:#991b1b;border:2px solid #fecaca;padding:15px;border-radius:8px;margin-top:15px;white-space:pre-line;font-weight:600;display:none;line-height:1.7}
 
-/* ========================================= */
 /* TAMPILAN VERTIKAL UNTUK PILIHAN A, B, C, D, E atau 1, 2, 3, 4 */
-/* ========================================= */
-.vertical-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 12px 0;
-}
-.vertical-options .opt-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  line-height: 1.6;
-}
-.vertical-options .opt-item .opt-letter {
-  font-weight: bold;
-  color: var(--secondary);
-  min-width: 32px;
-  font-size: 1rem;
-}
-.vertical-options .opt-item .opt-text {
-  flex: 1;
-  color: #334155;
-  font-size: .98rem;
-  white-space: pre-wrap;
-}
-.vertical-options .opt-item.correct-opt { background: #d1fae5; border-color: #16a34a; }
-.vertical-options .opt-item.correct-opt .opt-letter { color: #065f46; }
-.vertical-options .opt-item.wrong-opt { background: #fee2e2; border-color: #dc2626; }
-.vertical-options .opt-item.wrong-opt .opt-letter { color: #991b1b; }
+.vertical-options{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.vertical-options .opt-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;line-height:1.6}
+.vertical-options .opt-item .opt-letter{font-weight:bold;color:var(--secondary);min-width:32px;font-size:1rem}
+.vertical-options .opt-item .opt-text{flex:1;color:#334155;font-size:.98rem;white-space:pre-wrap}
+.vertical-options .opt-item.correct-opt{background:#d1fae5;border-color:#16a34a}
+.vertical-options .opt-item.correct-opt .opt-letter{color:#065f46}
+.vertical-options .opt-item.wrong-opt{background:#fee2e2;border-color:#dc2626}
+.vertical-options .opt-item.wrong-opt .opt-letter{color:#991b1b}
 
 /* Kotak referensi jawaban saat re-upload */
-.reference-box {
-  background: #f0f9ff;
-  border: 2px solid var(--secondary);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.reference-box h4 {
-  color: var(--primary);
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.1rem;
-}
-.reference-box .ref-section {
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px dashed #cbd5e1;
-}
-.reference-box .ref-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-.reference-box .ref-label {
-  font-weight: bold;
-  color: var(--secondary);
-  font-size: .95rem;
-  margin-bottom: 6px;
-  display: block;
-}
+.reference-box{background:#f0f9ff;border:2px solid var(--secondary);border-radius:12px;padding:20px;margin-bottom:20px}
+.reference-box h4{color:var(--primary);margin-top:0;margin-bottom:12px;font-size:1.1rem}
+.reference-box .ref-section{margin-bottom:15px;padding-bottom:15px;border-bottom:1px dashed #cbd5e1}
+.reference-box .ref-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.reference-box .ref-label{font-weight:bold;color:var(--secondary);font-size:.95rem;margin-bottom:6px;display:block}
 
-.floating-answer-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #ffffff;
-  border-top: 4px solid var(--primary);
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-  padding: 15px 30px;
-  z-index: 9999;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.floating-answer-bar textarea {
-  width: 100%;
-  height: 90px;
-  padding: 12px;
-  font-size: 1.05rem;
-  border: 2px solid var(--secondary);
-  border-radius: 8px;
-  resize: none;
-}
-.floating-answer-bar textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(217,119,6,0.2);
-}
-.floating-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+.floating-answer-bar{position:fixed;bottom:0;left:0;width:100%;background:#ffffff;border-top:4px solid var(--primary);box-shadow:0 -4px 20px rgba(0,0,0,0.15);padding:15px 30px;z-index:9999;box-sizing:border-box;display:flex;flex-direction:column;gap:10px}
+.floating-answer-bar textarea{width:100%;height:90px;padding:12px;font-size:1.05rem;border:2px solid var(--secondary);border-radius:8px;resize:none}
+.floating-answer-bar textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 3px rgba(217,119,6,0.2)}
+.floating-controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 </style>
 </head>
 <body>
-
 <div class="header-banner">
-  <h1>🎓 Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</h1>
+  <h1>Lopo Pelajar 2 - Analisis Descriptive Text (HOTS)</h1>
   <p>Teks Analisis | 10 Analisis Struktur | PG | MCMA | True/False</p>
 </div>
 
 <div id="login-container" class="container">
   <div class="card login-card">
     <h2 class="sec-title">Masuk Portal Siswa</h2>
-    <div style="background:#f0f9ff; padding:15px; border-radius:8px; margin-bottom:20px; border-left:4px solid var(--secondary); color:#0369a1; font-size:0.9rem; line-height:1.6">
-      <strong style="color:#b45309; font-size:1rem">📌 Pemberitahuan Penting:</strong><br>
+    <div style="background:#f0f9ff;padding:15px;border-radius:8px;margin-bottom:20px;border-left:4px solid var(--secondary);color:#0369a1;font-size:0.9rem;line-height:1.6">
+      <strong style="color:#b45309;font-size:1rem">Pemberitahuan Penting:</strong><br>
       1. Wajib mengetik <b>Nama Lengkap</b> sesuai data sekolah.<br>
       2. Jika sudah pernah mendaftar, silakan masukkan <b>Password</b> yang sama seperti sebelumnya.<br>
       3. Sistem menerapkan aturan <b>Satu Siswa = Satu Kelas</b>. Jika Anda sudah terdaftar di Kelas A, maka Anda <b>WAJIB</b> masuk ke Kelas A. Sistem akan menolak tegas jika Anda mencoba masuk ke kelas lain untuk mencegah bukti belajar ganda.
@@ -663,7 +172,7 @@ textarea { height: 140px; resize: vertical; }
         <label>Password</label>
         <div class="pw-wrap">
           <input type="password" id="inputPass" placeholder="Ketik password Anda..." required>
-          <span class="toggle-pw" id="toggleEye" onclick="togglePw()">👁</span>
+          <span class="toggle-pw" id="toggleEye" onclick="togglePw()">👁️</span>
         </div>
       </div>
       <button type="submit" class="btn-submit" id="btnLogin">Masuk</button>
@@ -680,35 +189,35 @@ textarea { height: 140px; resize: vertical; }
 <div id="audioModal" class="modal-overlay" onclick="closeAudioModalOnOverlay(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <h3 class="modal-title">🎧 Rekaman Suara Anda</h3>
+      <h3 class="modal-title">Rekaman Suara Anda</h3>
       <button class="modal-close" onclick="closeAudioModal()">✕</button>
     </div>
     <div class="drive-player">
-      <p style="margin:0 0 10px; font-weight:600">Dengarkan rekaman Anda:</p>
+      <p style="margin:0 0 10px;font-weight:600">Dengarkan rekaman Anda:</p>
       <iframe id="driveAudioFrame" src="" allow="autoplay"></iframe>
     </div>
   </div>
 </div>
 
 <script>
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyVi2uuoJGZNg6sawMi8RfytfkBaU1NAljLys90YyIccay8Kdp3tv9QjFV1-0DhKFEu-Q/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwZzwkqeouXMWLXCcCDy-vxhxXv9SY5n-t1hrsjbscVMphNatgJSoCQqMqaidUfPstyeQ/exec';
 
-let activeUser = { nama: '', kelas: '' };
-let currentSheet = '';
+let activeUser = { nama: "", kelas: "" };
+let currentSheet = "";
 let currentSection = 'analisis';
 let currentAnalysisNum = 1;
 let currentSheetData = null;
 let availableVoices = [];
-let originalEnglishText = '';
-let submittedAnswerText = '';
-let currentAudioUrl = '';
-let mediaRecorder = null, audioChunks = [], recognition = null, finalTranscript = '', isRecording = false, recordStartTime = 0, audioBlobGlobal = null;
-let mrReupload = null, chunksReupload = [], recogReupload = null, finalTransReup = '', isRecReup = false, recStartReup = 0, blobReup = null;
+let originalEnglishText = "";
+let submittedAnswerText = "";
+let currentAudioUrl = "";
+let mediaRecorder = null, audioChunks = [], recognition = null, finalTranscript = "", isRecording = false, recordStartTime = 0, audioBlobGlobal = null;
+let mrReupload = null, chunksReupload = [], recogReupload = null, finalTransReup = "", isRecReup = false, recStartReup = 0, blobReup = null;
 let pgLocalAnswers = {}, mcmaLocalAnswers = {}, tfLocalAnswers = {};
 
 function removeEmoji(text) {
-  if (!text) return '';
-  let result = text;
+  if (!text) return "";
+  var result = text;
   result = result.replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
     .replace(/[\u{2600}-\u{27BF}]/gu, '')
     .replace(/[\u{FE00}-\u{FE0F}]/gu, '')
@@ -716,6 +225,7 @@ function removeEmoji(text) {
     .replace(/[\u{2300}-\u{23FF}]/gu, '')
     .replace(/[\u{2B00}-\u{2BFF}]/gu, '')
     .replace(/[\u{2700}-\u{27BF}]/gu, '')
+    .replace(/[\u{2702}-\u{27B0}]/gu, '')
     .replace(/[\u{1F600}-\u{1F64F}]/gu, '')
     .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')
     .replace(/[\u{1F1E0}-\u{1F1FF}]/gu, '')
@@ -726,13 +236,9 @@ function removeEmoji(text) {
   return result;
 }
 
-function loadVoices() {
-  availableVoices = window.speechSynthesis.getVoices();
-}
+function loadVoices() { availableVoices = window.speechSynthesis.getVoices(); }
 loadVoices();
-if (window.speechSynthesis.onvoiceschanged !== undefined) {
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-}
+if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = loadVoices;
 
 function getIDVoice() {
   return availableVoices.find(x => x.lang === 'id-ID' && x.name.toLowerCase().includes('google')) ||
@@ -748,21 +254,17 @@ function getENVoice() {
 
 function togglePw() {
   const p = document.getElementById('inputPass'), e = document.getElementById('toggleEye');
-  if (p.type === 'password') { p.type = 'text'; e.innerText = '🙈'; }
-  else { p.type = 'password'; e.innerText = '👁'; }
+  if (p.type === 'password') { p.type = 'text'; e.innerText = '🙈'; } else { p.type = 'password'; e.innerText = '👁️'; }
 }
 
 function parseAccuracy(val) {
-  if (val === null || val === undefined || val === '') return 0;
-  let s = String(val).trim();
-  if (s === '') return 0;
-  let hasP = s.indexOf('%') !== -1;
-  let n = hasP ? parseFloat(s.replace('%', '').trim()) : parseFloat(s);
+  if (val === null || val === undefined || val === "") return 0;
+  var s = String(val).trim(); if (s === "") return 0;
+  var hasP = s.indexOf('%') !== -1;
+  var n = hasP ? parseFloat(s.replace('%', '').trim()) : parseFloat(s);
   if (isNaN(n)) return 0;
   if (!hasP && n > 0 && n <= 1) n = n * 100;
-  n = Math.round(n);
-  if (n > 100) n = 100;
-  if (n < 0) n = 0;
+  n = Math.round(n); if (n > 100) n = 100; if (n < 0) n = 0;
   return n;
 }
 
@@ -782,8 +284,7 @@ async function callGas(action, payload) {
     const res = await fetch(GAS_API_URL, { method: 'POST', body: formData, signal: controller.signal });
     clearTimeout(timeoutId);
     const text = await res.text();
-    try { return JSON.parse(text); }
-    catch (e) { return { success: false, message: 'Response server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' }; }
+    try { return JSON.parse(text); } catch(e) { return { success: false, message: 'Respon server tidak valid. Pastikan GAS di-deploy sebagai "Anyone".' }; }
   } catch (err) {
     return { success: false, message: 'Koneksi gagal/timeout: ' + err.message };
   }
@@ -795,12 +296,11 @@ async function executeLogin(e) {
   const pass = document.getElementById('inputPass').value;
   const kelas = document.getElementById('inputKelas').value;
   const btn = document.getElementById('btnLogin'), err = document.getElementById('loginError');
-  
   btn.disabled = true; btn.innerText = 'Memuat...'; err.style.display = 'none';
-  
+
   const res = await callGas('login', { nama, password: pass, kelas: kelas });
   btn.disabled = false; btn.innerText = 'Masuk';
-  
+
   if (res.success) {
     activeUser.nama = res.nama;
     activeUser.kelas = res.kelas || kelas;
@@ -820,12 +320,11 @@ async function executeLogin(e) {
 }
 
 function buildNavTabs(sheets) {
-  const nav = document.getElementById('navTabs');
-  nav.innerHTML = '';
+  const nav = document.getElementById('navTabs'); nav.innerHTML = "";
   sheets.forEach(function(name, idx) {
     const tab = document.createElement('div');
     tab.className = 'nav-tab' + (idx === 0 ? ' active' : '');
-    tab.innerText = '📖 ' + name;
+    tab.innerText = '📚 ' + name;
     tab.onclick = function() {
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
@@ -848,18 +347,15 @@ async function loadSheet(sheetName) {
   currentAnalysisNum = 1;
   speechStop();
   cleanupFloatingBar();
-  document.getElementById('mainContent').innerHTML = '<div class="card"><p style="text-align:center">⏳ Memuat data secara real-time...</p></div>';
-  
+  document.getElementById('mainContent').innerHTML = '<div class="card"><p style="text-align:center">Memuat data secara real-time...</p></div>';
+
   const data = await callGas('getSheetData', { sheetName, studentName: activeUser.nama });
   if (!data || data.success === false || !data.materi) {
-    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red; text-align:center; font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem; text-align:center; color:#666">' + (data && data.message ? data.message : 'Coba refresh halaman.') + '</p></div>';
+    document.getElementById('mainContent').innerHTML = '<div class="card"><p style="color:red;text-align:center;font-weight:bold">❌ Gagal memuat data.</p><p style="font-size:0.9rem;text-align:center;color:#666">' + (data && data.message ? data.message : 'Coba refresh halaman.') + '</p></div>';
     return;
   }
-  
   currentSheetData = data;
-  pgLocalAnswers = {};
-  mcmaLocalAnswers = {};
-  tfLocalAnswers = {};
+  pgLocalAnswers = {}; mcmaLocalAnswers = {}; tfLocalAnswers = {};
   renderTab();
 }
 
@@ -869,7 +365,7 @@ function isSectionUnlocked(section) {
   const subs = currentSheetData.submissions || {};
   const pgSubs = currentSheetData.pgSubmissions || {};
   const mcmaSubs = currentSheetData.mcmaSubmissions || {};
-  
+
   if (section === 'pg') {
     const all = currentSheetData.analyses || [];
     if (all.length === 0) return true;
@@ -894,30 +390,17 @@ function isSectionCompleted(section) {
   const pgSubs = currentSheetData.pgSubmissions || {};
   const mcmaSubs = currentSheetData.mcmaSubmissions || {};
   const tfSubs = currentSheetData.tfSubmissions || {};
-  
-  if (section === 'analisis') {
-    const all = currentSheetData.analyses || [];
-    return all.length > 0 && all.every(a => !!subs[a.num]);
-  }
-  if (section === 'pg') {
-    const all = currentSheetData.pg || [];
-    return all.length > 0 && all.every(q => !!pgSubs[q.num]);
-  }
-  if (section === 'mcma') {
-    const all = currentSheetData.mcma || [];
-    return all.length > 0 && all.every(q => !!mcmaSubs[q.num]);
-  }
-  if (section === 'tf') {
-    const all = currentSheetData.tf || [];
-    return all.length > 0 && all.every(q => !!tfSubs[q.num]);
-  }
+
+  if (section === 'analisis') { const all = currentSheetData.analyses || []; return all.length > 0 && all.every(a => !!subs[a.num]); }
+  if (section === 'pg') { const all = currentSheetData.pg || []; return all.length > 0 && all.every(q => !!pgSubs[q.num]); }
+  if (section === 'mcma') { const all = currentSheetData.mcma || []; return all.length > 0 && all.every(q => !!mcmaSubs[q.num]); }
+  if (section === 'tf') { const all = currentSheetData.tf || []; return all.length > 0 && all.every(q => !!tfSubs[q.num]); }
   return false;
 }
 
 function renderTab() {
   cleanupFloatingBar();
-  const c = document.getElementById('mainContent');
-  c.innerHTML = '';
+  const c = document.getElementById('mainContent'); c.innerHTML = "";
   renderMateriCard(c);
   renderSectionNav(c);
   renderSectionContent(c);
@@ -927,83 +410,54 @@ function renderMateriCard(c) {
   const container = document.createElement('div');
   container.className = 'card';
   const data = currentSheetData.materi;
-  
+
   if (data.materiEn) {
-    const titleEn = document.createElement('h3');
-    titleEn.innerText = "📖 Teks Deskripsi (English)";
-    titleEn.style.color = 'var(--primary)';
-    titleEn.style.marginTop = '0';
+    const titleEn = document.createElement('h3'); titleEn.innerText = "📖 Teks Deskripsi (English)"; titleEn.style.color = 'var(--primary)'; titleEn.style.marginTop = '0';
     container.appendChild(titleEn);
-    
-    const enParas = (data.materiEn || '').split(/\n+/).filter(p => p.trim());
+    const enParas = (data.materiEn || "").split(/\n+/).filter(p => p.trim());
     enParas.forEach(function(para) {
       const el = renderParaOrMedia(para);
       if (el) { el.classList.add('no-copy'); container.appendChild(el); }
     });
-    
-    const acEn = document.createElement('div');
-    acEn.className = 'audio-ctrl';
-    const bEn = document.createElement('button');
-    bEn.className = 'btn-audio btn-play-en';
-    bEn.innerHTML = '▶ Play Audio EN';
+    const acEn = document.createElement('div'); acEn.className = 'audio-ctrl';
+    const bEn = document.createElement('button'); bEn.className = 'btn-audio btn-play-en';
+    bEn.innerHTML = '🔊 Play Audio EN';
     bEn.onclick = function() { playText(data.materiEn, 'en-US', 0.75); };
-    const pEn = document.createElement('button');
-    pEn.className = 'btn-audio btn-pause';
-    pEn.innerHTML = '⏸ Pause';
-    pEn.onclick = speechPause;
-    const rEn = document.createElement('button');
-    rEn.className = 'btn-audio btn-play-en';
-    rEn.innerHTML = '▶ Resume';
-    rEn.onclick = speechResume;
-    const sEn = document.createElement('button');
-    sEn.className = 'btn-audio btn-stop';
-    sEn.innerHTML = '⏹ Stop';
-    sEn.onclick = speechStop;
+    const pEn = document.createElement('button'); pEn.className = 'btn-audio btn-pause';
+    pEn.innerHTML = '⏸ Pause'; pEn.onclick = speechPause;
+    const rEn = document.createElement('button'); rEn.className = 'btn-audio btn-play-en';
+    rEn.innerHTML = '▶ Resume'; rEn.onclick = speechResume;
+    const sEn = document.createElement('button'); sEn.className = 'btn-audio btn-stop';
+    sEn.innerHTML = '⏹ Stop'; sEn.onclick = speechStop;
     acEn.appendChild(bEn); acEn.appendChild(pEn); acEn.appendChild(rEn); acEn.appendChild(sEn);
     container.appendChild(acEn);
   }
-  
+
   if (data.materiPronounce) {
-    const t2 = document.createElement('h3');
-    t2.innerText = "🔊 Cara Pengucapan";
-    t2.style.color = 'var(--secondary)';
-    t2.style.marginTop = '30px';
+    const t2 = document.createElement('h3'); t2.innerText = "🗣️ Cara Pengucapan"; t2.style.color = 'var(--secondary)'; t2.style.marginTop = '30px';
     container.appendChild(t2);
-    const pPron = document.createElement('div');
-    pPron.className = 'pron-block no-copy';
+    const pPron = document.createElement('div'); pPron.className = 'pron-block no-copy';
     pPron.innerHTML = renderTextWithVerticalOptions(data.materiPronounce);
     container.appendChild(pPron);
   }
-  
+
   if (data.materiId) {
-    const t3 = document.createElement('h3');
-    t3.innerText = "🌐 Terjemahan Bahasa Indonesia";
-    t3.style.color = 'var(--success)';
-    t3.style.marginTop = '30px';
+    const t3 = document.createElement('h3'); t3.innerText = "🇮🇩 Terjemahan Bahasa Indonesia"; t3.style.color = 'var(--success)'; t3.style.marginTop = '30px';
     container.appendChild(t3);
-    const pId = document.createElement('div');
-    pId.className = 'trans-block no-copy';
+    const pId = document.createElement('div'); pId.className = 'trans-block no-copy';
     pId.innerHTML = renderTextWithVerticalOptions(data.materiId);
     container.appendChild(pId);
-    
-    const acId = document.createElement('div');
-    acId.className = 'audio-ctrl';
-    const bId = document.createElement('button');
-    bId.className = 'btn-audio btn-play-id';
-    bId.innerHTML = '▶ Play Audio ID';
+
+    const acId = document.createElement('div'); acId.className = 'audio-ctrl';
+    const bId = document.createElement('button'); bId.className = 'btn-audio btn-play-id';
+    bId.innerHTML = '🔊 Play Audio ID';
     bId.onclick = function() { playText(data.materiId, 'id-ID', 0.85); };
-    const pId2 = document.createElement('button');
-    pId2.className = 'btn-audio btn-pause';
-    pId2.innerHTML = '⏸ Pause';
-    pId2.onclick = speechPause;
-    const rId = document.createElement('button');
-    rId.className = 'btn-audio btn-play-id';
-    rId.innerHTML = '▶ Resume';
-    rId.onclick = speechResume;
-    const sId = document.createElement('button');
-    sId.className = 'btn-audio btn-stop';
-    sId.innerHTML = '⏹ Stop';
-    sId.onclick = speechStop;
+    const pId2 = document.createElement('button'); pId2.className = 'btn-audio btn-pause';
+    pId2.innerHTML = '⏸ Pause'; pId2.onclick = speechPause;
+    const rId = document.createElement('button'); rId.className = 'btn-audio btn-play-id';
+    rId.innerHTML = '▶ Resume'; rId.onclick = speechResume;
+    const sId = document.createElement('button'); sId.className = 'btn-audio btn-stop';
+    sId.innerHTML = '⏹ Stop'; sId.onclick = speechStop;
     acId.appendChild(bId); acId.appendChild(pId2); acId.appendChild(rId); acId.appendChild(sId);
     container.appendChild(acId);
   }
@@ -1011,13 +465,12 @@ function renderMateriCard(c) {
 }
 
 function renderSectionNav(c) {
-  const nav = document.createElement('div');
-  nav.className = 'section-nav';
+  const nav = document.createElement('div'); nav.className = 'section-nav';
   const sections = [
-    { id: 'analisis', label: '🔍 10 Analisis HOTS' },
+    { id: 'analisis', label: '✍️ 10 Analisis HOTS' },
     { id: 'pg', label: '📝 Pilihan Ganda (10)' },
-    { id: 'mcma', label: '☑ Pilihan Ganda Kompleks (5)' },
-    { id: 'tf', label: '✔ True or False (5)' }
+    { id: 'mcma', label: '☑️ Pilihan Ganda Kompleks (5)' },
+    { id: 'tf', label: '✔️ True or False (5)' }
   ];
   sections.forEach(function(s) {
     const btn = document.createElement('button');
@@ -1040,10 +493,7 @@ function renderSectionNav(c) {
       }
       currentSection = s.id;
       renderTab();
-      setTimeout(() => {
-        const el = document.querySelector('.section-nav');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
+      setTimeout(() => { const el = document.querySelector('.section-nav'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
     };
     nav.appendChild(btn);
   });
@@ -1052,11 +502,9 @@ function renderSectionNav(c) {
 
 function renderSectionContent(c) {
   if (!isSectionUnlocked(currentSection)) {
-    const warn = document.createElement('div');
-    warn.className = 'locked-msg';
+    const warn = document.createElement('div'); warn.className = 'locked-msg';
     warn.innerHTML = '<h3>🔒 Halaman Ini Masih Terkunci</h3><p>Selesaikan tugas pada halaman sebelumnya terlebih dahulu, ya.</p>';
-    c.appendChild(warn);
-    return;
+    c.appendChild(warn); return;
   }
   if (currentSection === 'analisis') renderAnalisis(c);
   else if (currentSection === 'pg') renderPG(c);
@@ -1064,85 +512,94 @@ function renderSectionContent(c) {
   else if (currentSection === 'tf') renderTF(c);
 }
 
-// ============================================================
-// FUNGSI UTAMA: Render teks dengan opsi VERTIKAL yang DIPERBAIKI
-// Mendukung pola: A..../ A).../ 1..../ 1).../ a..../ a).../ 10. / 11. 
-// Juga mendukung emoji bullet (✅, 🔹, ▫, dll) di awal baris
-// ============================================================
+// RENDER TEKS DENGAN OPSI VERTIKAL (Mendukung A., B., 1., 2., dst.)
 function renderTextWithVerticalOptions(text) {
-  if (!text) return '';
-  let cleanText = String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-  
-  // Deteksi apakah ada opsi vertikal (angka berapapun, huruf, atau emoji/dash)
-  const hasNumberedList = /(^|\n)\s*\d+[\.\)]\s+/.test(cleanText);
-  const hasLetteredList = /(^|\n)\s*[A-Za-z][\.\)]\s+/.test(cleanText);
-  const hasEmojiList = /(^|\n)\s*(✅|❌|🔹|🔸|▫|▪|➤|►|•|●|○|★|☆|✦|✧|➜|➔|➝|➞|➟|➠|➡|➢|➣|➤|➥|➦|➧|➨|➩|➪|➫|➬|➭|➮|➯|➱|➲|➳|➴|➵|➶|➷|➸|➹|➺|➻|➼|➽|➾|\-|\*)\s+/.test(cleanText);
-  
-  const isVerticalList = hasNumberedList || hasLetteredList || hasEmojiList;
+  if (!text) return "";
+  var lines = text.split(/\n/);
+  var optionPattern = /^\s*([A-Ea-e])[\.\)]\s+(.+)$/;
+  var emojiBulletPattern = /^\s*([⭐✨🔥📌💡⚠️✔️❌])\s*(.+)$/;
+  var numberedPattern = /^\s*(\d{1,2})[\.\)]\s+(.+)$/;
 
-  if (isVerticalList) {
-    let lines = cleanText.split('\n');
-    let html = '';
-    let inList = false;
+  var hasOptions = false;
+  var hasEmojiBullets = false;
+  var hasNumberedEmoji = false;
 
-    for (let i = 0; i < lines.length; i++) {
-      let line = lines[i].trim();
-      if (line === '') {
-        if (inList) {
-          html += '</div>';
-          inList = false;
-        }
-        html += '<div style="margin:8px 0">&nbsp;</div>';
-        continue;
-      }
-
-      let match = line.match(/^\s*(\d+|[A-Za-z])[\.\)]\s+(.+)$/i) || 
-                  line.match(/^\s*(✅|❌|🔹|🔸|▫|▪|➤|►|•|●|○|★|☆|✦|✧|➜|➔|➝|➞|➟|➠|➡|➢|➣|➤|➥|➦|➧|➨|➩|➪|➫|➬|➭|➮|➯|➱|➲|➳|➴|➵|➶|➷|➸|➹|➺|➻|➼|➽|➾|\-|\*)\s+(.+)$/);
-      
-      if (match) {
-        if (!inList) {
-          html += '<div class="vertical-options">';
-          inList = true;
-        }
-        let marker = match[1];
-        let content = match[2];
-        html += '<div class="opt-item"><span class="opt-letter">' + escapeHtml(marker) + '</span><span class="opt-text">' + escapeHtml(content) + '</span></div>';
-      } else {
-        if (inList) {
-          html += '</div>';
-          inList = false;
-        }
-        html += '<div style="margin:8px 0">' + escapeHtml(line) + '</div>';
-      }
-    }
-    if (inList) html += '</div>';
-    return html;
-  } else {
-    // Jika tidak ada pola vertikal, tampilkan sebagai paragraf biasa
-    return cleanText.replace(/\n/g, '<br>');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (optionPattern.test(line)) { hasOptions = true; break; }
+    if (emojiBulletPattern.test(line)) { hasEmojiBullets = true; }
+    if (numberedPattern.test(line)) { hasNumberedEmoji = true; }
   }
+
+  if (!hasOptions && !hasEmojiBullets && !hasNumberedEmoji) {
+    return text.replace(/\n/g, '<br>');
+  }
+
+  var html = "";
+  var inOptions = false;
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var trimmed = line.trim();
+    if (trimmed === '') {
+      if (inOptions) {
+        html += '</div>';
+        inOptions = false;
+      }
+      html += '<div style="margin:8px 0">&nbsp;</div>';
+      continue;
+    }
+
+    var matchOpt = trimmed.match(optionPattern);
+    var matchEmoji = trimmed.match(emojiBulletPattern);
+    var matchNum = trimmed.match(numberedPattern);
+
+    if (matchOpt) {
+      if (!inOptions) {
+        html += '<div class="vertical-options">';
+        inOptions = true;
+      }
+      html += '<div class="opt-item"><span class="opt-letter">' + escapeHtml(matchOpt[1]) + '.</span><span class="opt-text">' + escapeHtml(matchOpt[2]) + '</span></div>';
+    } else if (matchEmoji) {
+      if (!inOptions) {
+        html += '<div class="vertical-options">';
+        inOptions = true;
+      }
+      html += '<div class="opt-item"><span class="opt-letter">' + matchEmoji[1] + '</span><span class="opt-text">' + escapeHtml(matchEmoji[2]) + '</span></div>';
+    } else if (matchNum) {
+      if (!inOptions) {
+        html += '<div class="vertical-options">';
+        inOptions = true;
+      }
+      html += '<div class="opt-item"><span class="opt-letter">' + matchNum[1] + '.</span><span class="opt-text">' + escapeHtml(matchNum[2]) + '</span></div>';
+    } else {
+      if (inOptions) {
+        html += '</div>';
+        inOptions = false;
+      }
+      html += '<div style="margin:8px 0">' + escapeHtml(trimmed) + '</div>';
+    }
+  }
+  if (inOptions) {
+    html += '</div>';
+    inOptions = false;
+  }
+  return html;
 }
 
 function escapeHtml(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  return String(s || "").replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function renderParaOrMedia(text) {
-  const t = text.trim();
-  if (!t) return null;
+  const t = text.trim(); if (!t) return null;
   const isUrl = /^(https?:\/\/[^\s]+)$/i.test(t);
   if (isUrl) {
     const w = document.createElement('div');
-    const yt = t.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
-    if (yt) {
-      w.innerHTML = '<iframe src="https://www.youtube.com/embed/' + yt[1] + '" allowfullscreen style="width:100%;height:380px;border:none;border-radius:10px"></iframe>';
-      return w;
-    }
+    const yt = t.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
+    if (yt) { w.innerHTML = '<iframe src="https://www.youtube.com/embed/' + yt[1] + '" allowfullscreen style="width:100%;height:380px;border:none;border-radius:10px"></iframe>'; return w; }
     const dm = t.match(/\/d\/([a-zA-Z0-9_-]+)/i) || t.match(/id=([a-zA-Z0-9_-]+)/i);
-    if (dm) {
-      w.innerHTML = '<iframe src="https://drive.google.com/file/d/' + dm[1] + '/preview" allow="autoplay" style="width:100%;height:380px;border:none;border-radius:10px"></iframe>';
-      return w;
-    }
+    if (dm) { w.innerHTML = '<iframe src="https://drive.google.com/file/d/' + dm[1] + '/preview" allow="autoplay" style="width:100%;height:380px;border:none;border-radius:10px"></iframe>'; return w; }
   }
   const p = document.createElement('div');
   p.className = 'fmt-p';
@@ -1151,20 +608,15 @@ function renderParaOrMedia(text) {
 }
 
 function renderAnalisis(c) {
-  if (!currentSheetData.analyses || !currentSheetData.analyses.length) {
-    c.innerHTML += '<div class="card"><p>Tidak ada data analisis.</p></div>';
-    return;
-  }
+  if (!currentSheetData.analyses || !currentSheetData.analyses.length) { c.innerHTML += '<div class="card"><p>Tidak ada data analisis.</p></div>'; return; }
   const subs = currentSheetData.submissions || {};
   if (currentAnalysisNum !== 1 && !subs[currentAnalysisNum - 1]) currentAnalysisNum = 1;
-  
-  const w = document.createElement('div');
-  w.className = 'card';
-  w.innerHTML = '<h2 class="sec-title">🔍 Analisis HOTS Teks Descriptive</h2>' +
-                '<p style="font-size:.88rem;color:#64748b;margin:-6px 0 14px">📌 Analisis harus diselesaikan berurutan. Selesaikan Analisis 1 dahulu untuk membuka Analisis 2, dan seterusnya.</p>';
-  
-  const pills = document.createElement('div');
-  pills.className = 'q-tabs';
+
+  const w = document.createElement('div'); w.className = 'card';
+  w.innerHTML = '<h2 class="sec-title">✍️ Analisis HOTS Teks Descriptive</h2>' +
+                '<p style="font-size:.88rem;color:#64748b;margin:-6px 0 14px">Analisis harus diselesaikan berurutan. Selesaikan Analisis 1 dahulu untuk membuka Analisis 2, dan seterusnya.</p>';
+
+  const pills = document.createElement('div'); pills.className = 'q-tabs';
   currentSheetData.analyses.forEach(function(a) {
     const isAns = !!subs[a.num];
     const isUnlocked = (a.num === 1) || !!subs[a.num - 1];
@@ -1186,289 +638,154 @@ function renderAnalisis(c) {
     pills.appendChild(btn);
   });
   w.appendChild(pills);
-  
+
   const a = currentSheetData.analyses.find(x => x.num === currentAnalysisNum);
   if (!a) { c.appendChild(w); return; }
-  
-  const title = document.createElement('h3');
-  title.style.color = 'var(--primary)';
-  title.style.marginTop = '15px';
-  title.innerText = 'Analisis ' + a.num + ': ' + a.name;
-  w.appendChild(title);
-  
-  const instr = document.createElement('div');
-  instr.className = 'instr-block';
-  instr.innerHTML = renderTextWithVerticalOptions(a.instructionEn || '');
-  w.appendChild(instr);
-  
+
+  const title = document.createElement('h3'); title.style.color = 'var(--primary)'; title.style.marginTop = '15px';
+  title.innerText = 'Analisis ' + a.num + ': ' + a.name; w.appendChild(title);
+
+  const instr = document.createElement('div'); instr.className = 'instr-block';
+  instr.innerHTML = renderTextWithVerticalOptions(a.instructionEn || ""); w.appendChild(instr);
+
   if (a.instructionId) {
-    const ac = document.createElement('div');
-    ac.className = 'audio-ctrl';
-    const bEn = document.createElement('button');
-    bEn.className = 'btn-audio btn-play-en';
-    bEn.innerHTML = '▶ Play EN';
-    bEn.onclick = function() { playText(a.instructionEn, 'en-US', 0.75); };
-    ac.appendChild(bEn);
-    const bId = document.createElement('button');
-    bId.className = 'btn-audio btn-play-id';
-    bId.innerHTML = '▶ Play ID';
-    bId.onclick = function() { playText(a.instructionId, 'id-ID', 0.85); };
-    ac.appendChild(bId);
-    const s = document.createElement('button');
-    s.className = 'btn-audio btn-stop';
-    s.innerHTML = '⏹ Stop';
-    s.onclick = speechStop;
-    ac.appendChild(s);
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
+    const bEn = document.createElement('button'); bEn.className = 'btn-audio btn-play-en';
+    bEn.innerHTML = '🔊 Play EN';
+    bEn.onclick = function() { playText(a.instructionEn, 'en-US', 0.75); }; ac.appendChild(bEn);
+    const bId = document.createElement('button'); bId.className = 'btn-audio btn-play-id';
+    bId.innerHTML = '🔊 Play ID';
+    bId.onclick = function() { playText(a.instructionId, 'id-ID', 0.85); }; ac.appendChild(bId);
+    const s = document.createElement('button'); s.className = 'btn-audio btn-stop';
+    s.innerHTML = '⏹ Stop'; s.onclick = speechStop; ac.appendChild(s);
     w.appendChild(ac);
-    
-    const p = document.createElement('div');
-    p.className = 'trans-block';
-    p.innerHTML = renderTextWithVerticalOptions(a.instructionId);
-    w.appendChild(p);
+
+    const p = document.createElement('div'); p.className = 'trans-block'; p.innerHTML = renderTextWithVerticalOptions(a.instructionId); w.appendChild(p);
   }
-  
-  const area = document.createElement('div');
-  area.id = 'analysisArea';
-  area.style.marginTop = '20px';
-  w.appendChild(area);
-  
+
+  const area = document.createElement('div'); area.id = 'analysisArea'; area.style.marginTop = '20px'; w.appendChild(area);
   const sub = currentSheetData.submissions[a.num];
   if (sub && sub.jawabanId) showSavedAnalysis(sub, a.num, area);
   else showAnalysisForm(a.num, area);
-  
+
   c.appendChild(w);
 }
 
 function showAnalysisForm(num, area) {
-  area.innerHTML = '';
+  area.innerHTML = "";
   cleanupFloatingBar();
-  
+
   const floatingBar = document.createElement('div');
   floatingBar.id = 'floatingAnswerBar';
   floatingBar.className = 'floating-answer-bar';
-  floatingBar.innerHTML = '<div class="floating-controls" style="margin-bottom:5px">' +
-    '<label style="font-weight:bold;color:var(--primary);margin:0;font-size:1.05rem">Tuliskan Jawaban Anda (Bahasa Indonesia — Minimal 300 Karakter):</label>' +
-    '<div id="charCount' + num + '" class="char-count" style="margin:0;font-size:1rem">0/300 Karakter Minimum</div>' +
-    '</div>' +
-    '<textarea id="ansInput' + num + '" oninput="checkLen(' + num + ')" onpaste="return false" oncopy="return false" oncut="return false" oncontextmenu="return false" ondragover="return false" ondrop="return false" placeholder="Ketik jawaban analitis Anda dengan nalar sendiri di sini..."></textarea>' +
-    '<div class="floating-controls">' +
-    '<div style="font-size:.85rem;color:#94a3b8">🚫 Copy-Paste dinonaktifkan. Jawablah dengan nalar dan pemahamanmu sendiri.</div>' +
-    '<button type="button" id="btnGetTrans' + num + '" class="btn-submit" onclick="requestTranslation(' + num + ')" disabled style="width:auto;margin:0;padding:12px 30px;background:var(--secondary);font-size:1.05rem">📤 Kirimkan Jawaban Kamu!</button>' +
-    '</div>';
+  floatingBar.innerHTML = '<div class="floating-controls" style="margin-bottom:5px"><label style="font-weight:bold;color:var(--primary);margin:0;font-size:1.05rem">Tuliskan Jawaban Anda (Bahasa Indonesia - Minimal 300 Karakter):</label><div id="charCount' + num + '" class="char-count" style="margin:0;font-size:1rem">0 / 300 Karakter Minimum</div></div><textarea id="ansInput' + num + '" oninput="checkLen(' + num + ')" onpaste="return false" oncopy="return false" oncut="return false" oncontextmenu="return false" ondragover="return false" ondrop="return false" placeholder="Ketik jawaban analitis Anda dengan nalar sendiri di sini..."></textarea><div class="floating-controls"><div style="font-size:.85rem;color:#94a3b8">⚠️ Copy-Paste dinonaktifkan. Jawablah dengan nalar dan pemahamanmu sendiri.</div><button type="button" id="btnGetTrans' + num + '" class="btn-submit" onclick="requestTranslation(' + num + ')" disabled style="width:auto;margin:0;padding:12px 30px;background:var(--secondary);font-size:1.05rem">🚀 Kirimkan Jawaban Kamu!</button></div>';
+
   document.body.appendChild(floatingBar);
   document.body.style.paddingBottom = '220px';
-  
-  const hist = document.createElement('div');
-  hist.id = 'ansHist' + num;
+
+  const hist = document.createElement('div'); hist.id = 'ansHist' + num;
   area.appendChild(hist);
-  
-  const speak = document.createElement('div');
-  speak.id = 'speakArea' + num;
-  speak.style.display = 'none';
-  speak.style.marginTop = '25px';
-  speak.style.borderTop = '2px dashed #cbd5e1';
-  speak.style.paddingTop = '20px';
-  speak.innerHTML = '<h3 style="color:var(--primary);margin-top:0">📖 Terjemahan Bahasa Inggris (Baca dengan Lantang):</h3>' +
-    '<div id="previewEn' + num + '" style="background:#f0f9ff;padding:15px;border-radius:8px;border-left:4px solid var(--secondary);margin-bottom:10px"></div>' +
-    '<div id="previewPron' + num + '" class="pron-block"></div>' +
-    '<div class="recorder-box">' +
-    '<label style="color:#c2410c;font-weight:bold;font-size:1.1rem">🎙 Rekam Suara Anda (Langsung di Browser)</label>' +
-    '<p style="font-size:.95rem;color:#7c2d12;margin-top:0">1. Klik MULAI REKAM<br>2. Baca teks EN dengan lantang<br>3. Transkrip muncul otomatis di bawah<br>4. Klik SELESAI REKAM<br>5. Periksa Transkrip & Kirim Jawaban</p>' +
-    '<div style="text-align:center;margin:20px 0"><button type="button" id="btnRec' + num + '" class="btn-record" onclick="toggleRecording(' + num + ')">🎙 MULAI REKAM</button></div>' +
-    '<div id="recStatus' + num + '" class="rec-status" style="text-align:center">Siap merekam.</div>' +
-    '<div id="liveBox' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP (CEK KATA YANG ANDA UCAPKAN):</span><div id="liveText' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>' +
-    '<audio id="audioPb' + num + '" controls class="audio-playback"></audio>' +
-    '<input type="hidden" id="audioData' + num + '">' +
-    '<input type="hidden" id="audioMime' + num + '">' +
-    '<input type="hidden" id="audioDur' + num + '">' +
-    '<input type="hidden" id="speechTrans' + num + '">' +
-    '</div>' +
-    '<button type="button" id="btnSubmitFinal' + num + '" class="btn-submit" onclick="submitFinal(' + num + ',false)" disabled style="background:var(--primary);margin-top:15px">✅ Kirim Jawaban & Penilaian ke Guru</button>';
+
+  const speak = document.createElement('div'); speak.id = 'speakArea' + num;
+  speak.style.display = 'none'; speak.style.marginTop = '25px'; speak.style.borderTop = '2px dashed #cbd5e1'; speak.style.paddingTop = '20px';
+  speak.innerHTML = '<h3 style="color:var(--primary);margin-top:0">🎙️ Terjemahan Bahasa Inggris (Baca dengan Lantang):</h3><div id="previewEn' + num + '" style="background:#f0f9ff;padding:15px;border-radius:8px;border-left:4px solid var(--secondary);margin-bottom:10px"></div><div id="previewPron' + num + '" class="pron-block"></div><div class="recorder-box"><label style="color:#c2410c;font-weight:bold;font-size:1.1rem">🔴 Rekam Suara Anda (Langsung di Browser)</label><p style="font-size:.95rem;color:#7c2d12;margin-top:0">1. Klik MULAI REKAM<br>2. Baca teks EN dengan lantang<br>3. Transkrip muncul otomatis di bawah<br>4. Klik SELESAI REKAM<br>5. Periksa Transkrip & Kirim Jawaban</p><div style="text-align:center;margin:20px 0"><button type="button" id="btnRec' + num + '" class="btn-record" onclick="toggleRecording(' + num + ')">🎙️ MULAI REKAM</button></div><div id="recStatus' + num + '" class="rec-status" style="text-align:center">Siap merekam.</div><div id="liveBox' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">TRANSKRIP (CEK KATA YANG ANDA UCAPKAN):</span><div id="liveText' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div><audio id="audioPb' + num + '" controls class="audio-playback"></audio><input type="hidden" id="audioData' + num + '"><input type="hidden" id="audioMime' + num + '"><input type="hidden" id="audioDur' + num + '"><input type="hidden" id="speechTrans' + num + '"></div><button type="button" id="btnSubmitFinal' + num + '" class="btn-submit" onclick="submitFinal(' + num + ', false)" disabled style="background:var(--primary);margin-top:15px">📤 Kirim Jawaban & Penilaian ke Guru</button>';
   area.appendChild(speak);
-  
-  const reup = document.createElement('div');
-  reup.id = 'reupArea' + num;
-  reup.style.display = 'none';
-  reup.style.marginTop = '25px';
-  reup.style.borderTop = '2px dashed var(--danger)';
-  reup.style.paddingTop = '20px';
-  reup.innerHTML = '<h3 style="color:var(--danger);margin-top:0">🔄 Form Kirim Ulang Audio</h3>' +
-    '<p style="color:var(--danger);font-weight:bold">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p>' +
-    '<div class="recorder-box" style="background:#fef2f2;border:1px solid #fecaca">' +
-    '<label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🎙 Rekam Ulang</label>' +
-    '<div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup' + num + '" class="btn-record" onclick="toggleRecReup(' + num + ')">🎙 MULAI REKAM ULANG</button></div>' +
-    '<div id="recStatusReup' + num + '" class="rec-status" style="text-align:center">Siap merekam ulang.</div>' +
-    '<div id="liveBoxReup' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP:</span><div id="liveTextReup' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>' +
-    '<audio id="audioPbReup' + num + '" controls class="audio-playback"></audio>' +
-    '<input type="hidden" id="audioDataReup' + num + '">' +
-    '<input type="hidden" id="audioMimeReup' + num + '">' +
-    '<input type="hidden" id="audioDurReup' + num + '">' +
-    '<input type="hidden" id="speechTransReup' + num + '">' +
-    '</div>' +
-    '<button type="button" id="btnSubmitReup' + num + '" class="btn-submit btn-reupload" onclick="submitFinal(' + num + ',true)" disabled>🔄 Kirim Ulang Audio untuk Diperiksa</button>';
+
+  const reup = document.createElement('div'); reup.id = 'reupArea' + num;
+  reup.style.display = 'none'; reup.style.marginTop = '25px'; reup.style.borderTop = '2px dashed var(--danger)'; reup.style.paddingTop = '20px';
+  reup.innerHTML = '<h3 style="color:var(--danger);margin-top:0">🔄 Form Kirim Ulang Audio</h3><p style="color:var(--danger);font-weight:bold">Audio sebelumnya belum sesuai. Silakan rekam ulang.</p><div class="recorder-box" style="background:#fef2f2;border:1px solid #fecaca"><label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🔴 Rekam Ulang</label><div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup' + num + '" class="btn-record" onclick="toggleRecReup(' + num + ')">🎙️ MULAI REKAM ULANG</button></div><div id="recStatusReup' + num + '" class="rec-status" style="text-align:center">Siap merekam ulang.</div><div id="liveBoxReup' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">TRANSKRIP:</span><div id="liveTextReup' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div><audio id="audioPbReup' + num + '" controls class="audio-playback"></audio><input type="hidden" id="audioDataReup' + num + '"><input type="hidden" id="audioMimeReup' + num + '"><input type="hidden" id="audioDurReup' + num + '"><input type="hidden" id="speechTransReup' + num + '"></div><button type="button" id="btnSubmitReup' + num + '" class="btn-submit btn-reupload" onclick="submitFinal(' + num + ', true)" disabled>📤 Kirim Ulang Audio untuk Diperiksa</button>';
   area.appendChild(reup);
-  
-  const err = document.createElement('div');
-  err.id = 'ansError' + num;
-  err.className = 'alert alert-danger';
-  area.appendChild(err);
+
+  const err = document.createElement('div'); err.id = 'ansError' + num; err.className = 'alert alert-danger'; area.appendChild(err);
 }
 
 function checkLen(num) {
   const v = document.getElementById('ansInput' + num).value;
   const cnt = document.getElementById('charCount' + num);
   const btn = document.getElementById('btnGetTrans' + num);
-  cnt.innerText = v.length + ' / 300 Karakter Minimum';
-  if (v.length >= 300) {
-    cnt.className = 'char-count valid';
-    btn.disabled = false;
-  } else {
-    cnt.className = 'char-count';
-    btn.disabled = true;
-  }
+  cnt.innerText = v.length + '/300 Karakter Minimum';
+  if (v.length >= 300) { cnt.className = 'char-count valid'; btn.disabled = false; } else { cnt.className = 'char-count'; btn.disabled = true; }
 }
 
 async function requestTranslation(num) {
   const text = document.getElementById('ansInput' + num).value;
   const btn = document.getElementById('btnGetTrans' + num);
   const err = document.getElementById('ansError' + num);
-  
-  if (text.length < 300) {
-    err.innerText = 'Jawaban wajib minimal 300 karakter!';
-    err.style.display = 'block';
-    return;
-  }
-  
-  var cleanText = text.toLowerCase().replace(/[^a-z\s]/g, ' ');
-  var words = cleanText.split(/\s+/).filter(Boolean);
-  var isGibberish = false;
-  for (var i = 0; i < words.length; i++) {
-    if (words[i].length > 15) { isGibberish = true; break; }
-  }
-  if (words.length < 20) isGibberish = true;
-  if (cleanText.match(/[bcdfghjklmnpqrstvwxyz]{4,}/g)) isGibberish = true;
-  var vowels = cleanText.match(/[aeiou]/g) || [];
-  if (vowels.length / cleanText.length < 0.25) isGibberish = true;
-  
-  if (isGibberish) {
-    err.innerText = '🚫 Jawaban terdeteksi acak/tidak jelas. Silakan ketik jawaban yang benar dan bernalar.';
-    err.style.display = 'block';
-    alert('🚫 PERINGATAN: Jawaban Anda terdeteksi acak. Harap menjawab dengan kalimat yang benar.');
-    return;
-  }
-  
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Memproses...';
-  err.style.display = 'none';
-  
+  if (text.length < 300) { err.innerText = 'Jawaban wajib minimal 300 karakter!'; err.style.display = 'block'; return; }
+
+  btn.disabled = true; btn.innerHTML = '⏳ Memproses...'; err.style.display = 'none';
   submittedAnswerText = text;
+
   const res = await callGas('getInstantTranslation', {
     text: text,
     materiEn: currentSheetData.materi.materiEn,
     materiId: currentSheetData.materi.materiId
   });
-  
-  btn.disabled = false;
-  btn.innerHTML = '📤 Kirimkan Jawaban Kamu!';
-  
+
+  btn.disabled = false; btn.innerHTML = '🚀 Kirimkan Jawaban Kamu!';
   if (res.success) {
     cleanupFloatingBar();
     originalEnglishText = res.jawabanEn;
     const hist = document.getElementById('ansHist' + num);
-    const blk = document.createElement('div');
-    blk.className = 'saved-preview';
+    const blk = document.createElement('div'); blk.className = 'saved-preview';
     blk.innerHTML = '<h4 style="margin-top:0">✅ Jawaban Anda Terkirim:</h4><div class="fmt-p">' + renderTextWithVerticalOptions(text) + '</div>';
     hist.appendChild(blk);
-    
+
     document.getElementById('speakArea' + num).style.display = 'block';
-    
-    const pEn = document.getElementById('previewEn' + num);
-    pEn.innerHTML = '';
-    const d = document.createElement('div');
-    d.className = 'fmt-p';
-    // PENTING: Gunakan renderTextWithVerticalOptions agar format vertikal/paragraf sama dengan jawaban ID
-    d.innerHTML = renderTextWithVerticalOptions(res.jawabanEn);
-    pEn.appendChild(d);
-    
-    const ac = document.createElement('div');
-    ac.className = 'audio-ctrl';
-    const bp = document.createElement('button');
-    bp.className = 'btn-audio btn-play-en';
-    bp.innerHTML = '▶ Play';
-    bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); };
-    const bpa = document.createElement('button');
-    bpa.className = 'btn-audio btn-pause';
-    bpa.innerHTML = '⏸ Pause';
-    bpa.onclick = speechPause;
-    const br = document.createElement('button');
-    br.className = 'btn-audio btn-play-en';
-    br.innerHTML = '▶ Resume';
-    br.onclick = speechResume;
-    const bs = document.createElement('button');
-    bs.className = 'btn-audio btn-stop';
-    bs.innerHTML = '⏹ Stop';
-    bs.onclick = speechStop;
+    const pEn = document.getElementById('previewEn' + num); pEn.innerHTML = "";
+    const d = document.createElement('div'); d.className = 'fmt-p'; d.innerHTML = renderTextWithVerticalOptions(res.jawabanEn); pEn.appendChild(d);
+
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
+    const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en';
+    bp.innerHTML = '🔊 Play'; bp.onclick = function() { playText(res.jawabanEn, 'en-US', 0.75); };
+    const bpa = document.createElement('button'); bpa.className = 'btn-audio btn-pause';
+    bpa.innerHTML = '⏸ Pause'; bpa.onclick = speechPause;
+    const br = document.createElement('button'); br.className = 'btn-audio btn-play-en';
+    br.innerHTML = '▶ Resume'; br.onclick = speechResume;
+    const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop';
+    bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
     ac.appendChild(bp); ac.appendChild(bpa); ac.appendChild(br); ac.appendChild(bs);
-    const tag = document.createElement('span');
-    tag.className = 'speed-tag';
-    tag.innerText = '0.75x';
-    ac.appendChild(tag);
+    const tag = document.createElement('span'); tag.className = 'speed-tag'; tag.innerText = '0.75x'; ac.appendChild(tag);
     pEn.appendChild(ac);
-    
-    // PENTING: Gunakan renderTextWithVerticalOptions untuk Pronunciation agar konsisten
+
     document.getElementById('previewPron' + num).innerHTML = renderTextWithVerticalOptions(res.jawabanPronounce);
-    
     document.getElementById('speakArea' + num).scrollIntoView({ behavior: 'smooth' });
   } else {
     err.innerText = res.message;
     err.style.display = 'block';
-    alert('🚫 PERINGATAN TEGAS: ' + res.message);
+    alert('⚠️ PERINGATAN: ' + res.message);
   }
 }
 
 function checkBrowser() {
-  if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
-    alert('Browser tidak mendukung Web Speech API. Gunakan Chrome/Edge terbaru.');
-    return false;
-  }
-  if (!window.MediaRecorder) {
-    alert('Browser tidak mendukung MediaRecorder. Gunakan Chrome/Edge.');
-    return false;
-  }
+  if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) { alert('Browser tidak mendukung Web Speech API. Gunakan Chrome/Edge terbaru.'); return false; }
+  if (!window.MediaRecorder) { alert('Browser tidak mendukung Media Recorder. Gunakan Chrome/Edge.'); return false; }
   return true;
 }
 
 function startRec(num) {
   if (!checkBrowser()) return;
-  finalTranscript = '';
-  audioChunks = [];
-  isRecording = true;
-  recordStartTime = Date.now();
-  
+  finalTranscript = ""; audioChunks = []; isRecording = true; recordStartTime = Date.now();
   document.getElementById('recStatus' + num).innerText = '🔴 SEDANG MEREKAM... Bacalah dengan lantang!';
   document.getElementById('recStatus' + num).className = 'rec-status recording';
   document.getElementById('btnRec' + num).innerText = '⏹ SELESAI REKAM';
   document.getElementById('btnRec' + num).classList.add('recording');
-  
+
   const liveBox = document.getElementById('liveBox' + num);
   liveBox.style.display = 'block';
   liveBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   document.getElementById('liveText' + num).innerText = 'Mulai bicara...';
-  
+
   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.ondataavailable = function(e) {
-      if (e.data && e.data.size > 0) audioChunks.push(e.data);
-    };
+    mediaRecorder.ondataavailable = function(e) { if (e.data && e.data.size > 0) audioChunks.push(e.data); };
     mediaRecorder.onstop = function() {
       var mime = mediaRecorder.mimeType || 'audio/webm';
       audioBlobGlobal = new Blob(audioChunks, { type: mime });
       var url = URL.createObjectURL(audioBlobGlobal);
       var pb = document.getElementById('audioPb' + num);
-      pb.src = url;
-      pb.style.display = 'block';
+      pb.src = url; pb.style.display = 'block';
       stream.getTracks().forEach(function(t) { t.stop(); });
-      
       var r = new FileReader();
       r.onload = function(e) {
         document.getElementById('audioData' + num).value = e.target.result.split(',')[1];
@@ -1479,41 +796,25 @@ function startRec(num) {
       r.readAsDataURL(audioBlobGlobal);
     };
     mediaRecorder.start();
-    
+
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SR();
-    recognition.lang = 'en-US';
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    
+    recognition.lang = 'en-US'; recognition.continuous = true; recognition.interimResults = true;
     recognition.onresult = function(ev) {
-      var interim = '';
+      var interim = "";
       for (var i = ev.resultIndex; i < ev.results.length; i++) {
         var tp = ev.results[i][0].transcript;
-        if (ev.results[i].isFinal) finalTranscript += ' ' + tp;
-        else interim += tp;
+        if (ev.results[i].isFinal) finalTranscript += ' ' + tp; else interim += tp;
       }
       var d = (finalTranscript + ' ' + interim).trim();
-      if (d) {
-        var box = document.getElementById('liveText' + num);
-        box.innerText = d;
-        box.style.color = '#0c4a6e';
-        box.style.fontStyle = 'normal';
-        box.style.fontWeight = 'bold';
-      }
+      if (d) { var box = document.getElementById('liveText' + num); box.innerText = d; box.style.color = '#0c4a6e'; box.style.fontStyle = 'normal'; box.style.fontWeight = 'bold'; }
     };
-    
-    recognition.onend = function() {
-      if (isRecording) {
-        try { recognition.start(); } catch (e) {}
-      }
-    };
-    
-    try { recognition.start(); } catch (e) {}
+    recognition.onend = function() { if (isRecording) { try { recognition.start(); } catch(e){} } };
+    try { recognition.start(); } catch(e){}
   }).catch(function(err) {
     alert('Tidak bisa akses mikrofon: ' + err.message);
     isRecording = false;
-    document.getElementById('btnRec' + num).innerText = '🎙 MULAI REKAM';
+    document.getElementById('btnRec' + num).innerText = '🎙️ MULAI REKAM';
     document.getElementById('btnRec' + num).classList.remove('recording');
     document.getElementById('recStatus' + num).innerText = 'Gagal mengakses mikrofon.';
     document.getElementById('recStatus' + num).className = 'rec-status';
@@ -1524,60 +825,39 @@ function stopRec(num) {
   if (!isRecording) return;
   isRecording = false;
   if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-  if (recognition) {
-    try { recognition.stop(); } catch (e) {}
-  }
-  
+  if (recognition) { try { recognition.stop(); } catch(e){} }
   document.getElementById('recStatus' + num).innerText = '✅ Rekaman selesai. Periksa transkrip di atas, dengarkan audio, lalu klik Kirim.';
   document.getElementById('recStatus' + num).className = 'rec-status done';
-  document.getElementById('btnRec' + num).innerText = '🎙 REKAM ULANG';
+  document.getElementById('btnRec' + num).innerText = '🔄 REKAM ULANG';
   document.getElementById('btnRec' + num).classList.remove('recording');
-  document.getElementById('speechTrans' + num).value = (finalTranscript || '').trim();
-  
-  if (finalTranscript.trim() === '') {
-    document.getElementById('liveText' + num).innerText = '⚠ Tidak ada suara yang terdeteksi. Silakan rekam ulang.';
-    document.getElementById('liveText' + num).style.color = 'var(--danger)';
-  } else {
-    document.getElementById('liveText' + num).style.color = '#0c4a6e';
-  }
+  document.getElementById('speechTrans' + num).value = (finalTranscript || "").trim();
 }
 
-function toggleRecording(num) {
-  if (isRecording) stopRec(num);
-  else startRec(num);
-}
+function toggleRecording(num) { if (isRecording) stopRec(num); else startRec(num); }
 
 function startRecReup(num) {
   if (!checkBrowser()) return;
-  finalTransReup = '';
-  chunksReupload = [];
-  isRecReup = true;
-  recStartReup = Date.now();
-  
+  finalTransReup = ""; chunksReupload = []; isRecReup = true; recStartReup = Date.now();
   document.getElementById('recStatusReup' + num).innerText = '🔴 SEDANG MEREKAM ULANG...';
   document.getElementById('recStatusReup' + num).className = 'rec-status recording';
   document.getElementById('btnRecReup' + num).innerText = '⏹ SELESAI REKAM';
   document.getElementById('btnRecReup' + num).classList.add('recording');
-  
+
   const liveBoxReup = document.getElementById('liveBoxReup' + num);
   liveBoxReup.style.display = 'block';
   liveBoxReup.scrollIntoView({ behavior: 'smooth', block: 'center' });
   document.getElementById('liveTextReup' + num).innerText = 'Mulai bicara...';
-  
+
   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     mrReupload = new MediaRecorder(stream);
-    mrReupload.ondataavailable = function(e) {
-      if (e.data && e.data.size > 0) chunksReupload.push(e.data);
-    };
+    mrReupload.ondataavailable = function(e) { if (e.data && e.data.size > 0) chunksReupload.push(e.data); };
     mrReupload.onstop = function() {
       var mime = mrReupload.mimeType || 'audio/webm';
       blobReup = new Blob(chunksReupload, { type: mime });
       var url = URL.createObjectURL(blobReup);
       var pb = document.getElementById('audioPbReup' + num);
-      pb.src = url;
-      pb.style.display = 'block';
+      pb.src = url; pb.style.display = 'block';
       stream.getTracks().forEach(function(t) { t.stop(); });
-      
       var r = new FileReader();
       r.onload = function(e) {
         document.getElementById('audioDataReup' + num).value = e.target.result.split(',')[1];
@@ -1588,41 +868,25 @@ function startRecReup(num) {
       r.readAsDataURL(blobReup);
     };
     mrReupload.start();
-    
+
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     recogReupload = new SR();
-    recogReupload.lang = 'en-US';
-    recogReupload.continuous = true;
-    recogReupload.interimResults = true;
-    
+    recogReupload.lang = 'en-US'; recogReupload.continuous = true; recogReupload.interimResults = true;
     recogReupload.onresult = function(ev) {
-      var interim = '';
+      var interim = "";
       for (var i = ev.resultIndex; i < ev.results.length; i++) {
         var tp = ev.results[i][0].transcript;
-        if (ev.results[i].isFinal) finalTransReup += ' ' + tp;
-        else interim += tp;
+        if (ev.results[i].isFinal) finalTransReup += ' ' + tp; else interim += tp;
       }
       var d = (finalTransReup + ' ' + interim).trim();
-      if (d) {
-        var box = document.getElementById('liveTextReup' + num);
-        box.innerText = d;
-        box.style.color = '#0c4a6e';
-        box.style.fontStyle = 'normal';
-        box.style.fontWeight = 'bold';
-      }
+      if (d) { var box = document.getElementById('liveTextReup' + num); box.innerText = d; box.style.color = '#0c4a6e'; box.style.fontStyle = 'normal'; box.style.fontWeight = 'bold'; }
     };
-    
-    recogReupload.onend = function() {
-      if (isRecReup) {
-        try { recogReupload.start(); } catch (e) {}
-      }
-    };
-    
-    try { recogReupload.start(); } catch (e) {}
+    recogReupload.onend = function() { if (isRecReup) { try { recogReupload.start(); } catch(e){} } };
+    try { recogReupload.start(); } catch(e){}
   }).catch(function(err) {
     alert('Tidak bisa akses mikrofon: ' + err.message);
     isRecReup = false;
-    document.getElementById('btnRecReup' + num).innerText = '🎙 MULAI REKAM ULANG';
+    document.getElementById('btnRecReup' + num).innerText = '🎙️ MULAI REKAM ULANG';
     document.getElementById('btnRecReup' + num).classList.remove('recording');
   });
 }
@@ -1631,28 +895,15 @@ function stopRecReup(num) {
   if (!isRecReup) return;
   isRecReup = false;
   if (mrReupload && mrReupload.state !== 'inactive') mrReupload.stop();
-  if (recogReupload) {
-    try { recogReupload.stop(); } catch (e) {}
-  }
-  
+  if (recogReupload) { try { recogReupload.stop(); } catch(e){} }
   document.getElementById('recStatusReup' + num).innerText = '✅ Rekaman ulang selesai. Klik Kirim Ulang.';
   document.getElementById('recStatusReup' + num).className = 'rec-status done';
-  document.getElementById('btnRecReup' + num).innerText = '🎙 REKAM ULANG LAGI';
+  document.getElementById('btnRecReup' + num).innerText = '🔄 REKAM ULANG LAGI';
   document.getElementById('btnRecReup' + num).classList.remove('recording');
-  document.getElementById('speechTransReup' + num).value = (finalTransReup || '').trim();
-  
-  if (finalTransReup.trim() === '') {
-    document.getElementById('liveTextReup' + num).innerText = '⚠ Tidak ada suara yang terdeteksi. Silakan rekam ulang.';
-    document.getElementById('liveTextReup' + num).style.color = 'var(--danger)';
-  } else {
-    document.getElementById('liveTextReup' + num).style.color = '#0c4a6e';
-  }
+  document.getElementById('speechTransReup' + num).value = (finalTransReup || "").trim();
 }
 
-function toggleRecReup(num) {
-  if (isRecReup) stopRecReup(num);
-  else startRecReup(num);
-}
+function toggleRecReup(num) { if (isRecReup) stopRecReup(num); else startRecReup(num); }
 
 async function submitFinal(num, isReup) {
   isReup = isReup || false;
@@ -1660,140 +911,97 @@ async function submitFinal(num, isReup) {
   const err = document.getElementById('ansError' + num);
   const audioData = document.getElementById(isReup ? 'audioDataReup' + num : 'audioData' + num).value;
   const dur = document.getElementById(isReup ? 'audioDurReup' + num : 'audioDur' + num).value;
-  const trans = document.getElementById(isReup ? 'speechTransReup' + num : 'speechTrans' + num).value || '';
-  
-  if (!audioData) {
-    err.innerText = 'Rekam suara terlebih dahulu!';
-    err.style.display = 'block';
-    return;
-  }
-  
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Mengunggah & Menganalisis...';
-  err.style.display = 'none';
-  
+  const trans = document.getElementById(isReup ? 'speechTransReup' + num : 'speechTrans' + num).value || "";
+
+  if (!audioData) { err.innerText = 'Rekam suara terlebih dahulu!'; err.style.display = 'block'; return; }
+  btn.disabled = true; btn.innerHTML = '⏳ Mengunggah & Menganalisis...'; err.style.display = 'none';
+
   const fname = activeUser.nama + '_A' + num + (isReup ? '_REUP_' : '_') + Date.now() + '.webm';
   const mime = document.getElementById(isReup ? 'audioMimeReup' + num : 'audioMime' + num).value || 'audio/webm';
-  
+
   const up = await callGas('uploadAudioToDrive', { base64Data: audioData, fileName: fname, mimeType: mime });
   if (!up.success) {
-    btn.disabled = false;
-    btn.innerHTML = isReup ? '🔄 Kirim Ulang Audio' : '✅ Kirim Jawaban';
-    err.innerText = 'Gagal unggah audio: ' + up.message;
-    err.style.display = 'block';
+    btn.disabled = false; btn.innerHTML = isReup ? '📤 Kirim Ulang Audio' : '📤 Kirim Jawaban';
+    err.innerText = 'Gagal unggah audio: ' + up.message; err.style.display = 'block';
     return;
   }
-  
+
   const res = await callGas('submitStudentAnswer', {
-    sheetName: currentSheet,
-    studentName: activeUser.nama,
-    questionNum: num,
-    jawabanText: submittedAnswerText,
-    audioUrl: up.url,
-    recordingDuration: dur || "0",
-    originalEnglishText: originalEnglishText,
-    fileName: fname,
-    isReupload: isReup,
-    fileSizeBytes: up.sizeBytes,
-    speechTranscript: trans
+    sheetName: currentSheet, studentName: activeUser.nama, questionNum: num,
+    jawabanText: submittedAnswerText, audioUrl: up.url, recordingDuration: dur || "0",
+    originalEnglishText: originalEnglishText, fileName: fname, isReupload: isReup,
+    fileSizeBytes: up.sizeBytes, speechTranscript: trans
   });
-  
-  btn.disabled = false;
-  btn.innerHTML = isReup ? '🔄 Kirim Ulang Audio' : '✅ Kirim Jawaban';
-  
+
+  btn.disabled = false; btn.innerHTML = isReup ? '📤 Kirim Ulang Audio' : '📤 Kirim Jawaban';
+
   if (res.success) {
     const subData = {
-      jawabanId: submittedAnswerText,
-      jawabanEn: res.jawabanEn,
-      jawabanPronounce: res.jawabanPronounce,
-      audioUrl: up.downloadUrl,
-      transkrip: res.speechTranscript || res.jawabanEn,
-      penilaianAI: res.speakingAssessment,
-      akurasi: res.similarityScore + '%',
-      feedbackEn: res.feedbackEn,
-      feedbackPronounce: res.feedbackPronounce,
-      feedbackId: res.feedbackId,
-      category: res.category,
-      requiresReupload: res.requiresReupload,
-      rerecordMessage: res.rerecordMessage
+      jawabanId: submittedAnswerText, jawabanEn: res.jawabanEn, jawabanPronounce: res.jawabanPronounce,
+      audioUrl: up.downloadUrl, transkrip: res.speechTranscript || res.jawabanEn, penilaianAi: res.speakingAssessment,
+      akurasi: res.similarityScore + '%', feedbackEn: res.feedbackEn, feedbackPronounce: res.feedbackPronounce,
+      feedbackId: res.feedbackId, category: res.category, requiresReupload: res.requiresReupload, rerecordMessage: res.rerecordMessage
     };
     if (!currentSheetData.submissions) currentSheetData.submissions = {};
     currentSheetData.submissions[num] = subData;
     renderTab();
-    
-    if (res.requiresReupload && !isReup) alert('⚠ PERHATIAN: ' + res.rerecordMessage);
-    else if (!res.requiresReupload) alert('✅ Kerja bagus! Audio sesuai.');
+
+    if (res.requiresReupload && !isReup) alert('⚠️ PERHATIAN: ' + res.rerecordMessage);
+    else if (!res.requiresReupload) alert('🎉 Kerja bagus! Audio sesuai.');
   } else {
     err.innerText = res.message;
     err.style.display = 'block';
-    alert('🚫 PERINGATAN TEGAS: ' + res.message);
+    alert('⚠️ PERINGATAN TEGAS: ' + res.message);
   }
 }
 
 function showSavedAnalysis(sub, num, area) {
   cleanupFloatingBar();
-  area.innerHTML = '';
-  
+  area.innerHTML = "";
   const wrap = document.createElement('div');
-  // PENTING: Semua bagian (ID, EN, Pronounce) menggunakan renderTextWithVerticalOptions agar formatnya SAMA PERSIS
-  wrap.innerHTML = '<div class="saved-preview">' +
-    '<h3 style="color:var(--primary);margin-top:0">✅ Jawaban Anda (ID):</h3>' +
-    '<div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanId || '') + '</div>' +
-    '<h3 style="color:var(--primary);margin-top:20px">🌐 Terjemahan (EN):</h3>' +
-    '<div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanEn || '') + '</div>' +
-    '</div>';
-    
+  wrap.innerHTML = '<div class="saved-preview"><h3 style="color:var(--primary);margin-top:0">✅ Jawaban Anda (ID):</h3><div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanId || "") + '</div><h3 style="color:var(--primary);margin-top:20px">🌐 Terjemahan (EN):</h3><div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanEn || "") + '</div></div>';
+
   if (sub.jawabanPronounce) {
     const p = document.createElement('div');
     p.className = 'pron-block';
     p.innerHTML = renderTextWithVerticalOptions(sub.jawabanPronounce);
     wrap.appendChild(p);
   }
-  
+
   const acc = parseAccuracy(sub.akurasi);
   const cat = determineCat(acc);
   const isBad = (cat === 1 || cat === 2);
-  
-  if (sub.penilaianAI) {
-    const sr = document.createElement('div');
-    sr.className = 'speak-result';
-    sr.innerHTML = '<h4 style="margin-top:0;color:var(--accent)">🎙 Ulasan Pengucapan Audio:</h4><div class="descriptive-feedback">' + (sub.penilaianAI || '') + '</div>';
+
+  if (sub.penilaianAi) {
+    const sr = document.createElement('div'); sr.className = 'speak-result';
+    sr.innerHTML = '<h4 style="margin-top:0;color:var(--accent)">📊 Ulasan Pengucapan Audio:</h4><div class="descriptive-feedback">' + (sub.penilaianAi || "") + '</div>';
     const audioToPlay = sub.audioUrl;
     if (audioToPlay) {
       currentAudioUrl = audioToPlay;
-      const btnW = document.createElement('div');
-      btnW.style.textAlign = 'center';
-      btnW.style.marginTop = '20px';
-      const b = document.createElement('button');
-      b.className = 'btn-submit';
-      b.style.background = 'var(--accent)';
-      b.style.maxWidth = '300px';
-      b.style.margin = '0 auto';
+      const btnW = document.createElement('div'); btnW.style.textAlign = 'center'; btnW.style.marginTop = '20px';
+      const b = document.createElement('button'); b.className = 'btn-submit';
+      b.style.background = 'var(--accent)'; b.style.maxWidth = '300px'; b.style.margin = '0 auto';
       b.innerText = '🎧 Dengarkan Suara Kamu!';
       b.onclick = openAudioModal;
-      btnW.appendChild(b);
-      sr.appendChild(btnW);
+      btnW.appendChild(b); sr.appendChild(btnW);
     }
     wrap.appendChild(sr);
   }
-  
+
   if (!isBad && (sub.feedbackEn || sub.feedbackId)) {
-    const tf = document.createElement('div');
-    tf.className = 'teacher-feedback';
-    let html = '<h3 style="color:var(--secondary);margin-top:0">🏫 Feedback Konstruktif & Apresiasi Guru:</h3>';
+    const tf = document.createElement('div'); tf.className = 'teacher-feedback';
+    let html = '<h3 style="color:var(--secondary);margin-top:0">👨‍🏫 Feedback Konstruktif & Apresiasi Guru:</h3>';
     if (sub.feedbackEn) {
-      html += '<div style="margin-bottom:18px"><strong style="color:var(--secondary);font-size:1.05rem">󰏅 English Feedback:</strong>';
-      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-en" data-text="' + escapeAttr(sub.feedbackEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">▶ Play EN</button>';
+      html += '<div style="margin-bottom:18px"><strong style="color:var(--secondary);font-size:1.05rem">English Feedback:</strong>';
+      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-en" data-text="' + escapeAttr(sub.feedbackEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">🔊 Play</button>';
       html += '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>';
       html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.75x</span></div>';
       html += '<div class="fmt-p" style="margin-top:8px">' + renderTextWithVerticalOptions(sub.feedbackEn) + '</div></div>';
     }
-    if (sub.feedbackPronounce) {
-      html += '<div class="pron-block" style="margin-bottom:18px">' + renderTextWithVerticalOptions(sub.feedbackPronounce) + '</div>';
-    }
+    if (sub.feedbackPronounce) html += '<div class="pron-block" style="margin-bottom:18px">' + renderTextWithVerticalOptions(sub.feedbackPronounce) + '</div>';
     if (sub.feedbackId) {
-      html += '<div style="margin-bottom:18px"><strong style="color:var(--success);font-size:1.05rem">󰏙 Terjemahan:</strong>';
-      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-id" data-text="' + escapeAttr(sub.feedbackId) + '" data-lang="id-ID" data-rate="0.85" onclick="playFromData(this)">▶ Play ID</button>';
+      html += '<div style="margin-bottom:18px"><strong style="color:var(--success);font-size:1.05rem">Terjemahan:</strong>';
+      html += '<div class="audio-ctrl"><button class="btn-audio btn-play-id" data-text="' + escapeAttr(sub.feedbackId) + '" data-lang="id-ID" data-rate="0.85" onclick="playFromData(this)">🔊 Play</button>';
       html += '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>';
       html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button><span class="speed-tag">0.85x</span></div>';
       html += '<div class="trans-block" style="margin-top:8px">' + renderTextWithVerticalOptions(sub.feedbackId) + '</div></div>';
@@ -1801,101 +1009,58 @@ function showSavedAnalysis(sub, num, area) {
     tf.innerHTML = html;
     wrap.appendChild(tf);
   }
-  
+
   if (isBad) {
-    const ru = document.createElement('div');
-    ru.className = 'reupload-section';
+    const ru = document.createElement('div'); ru.className = 'reupload-section';
     const msg = sub.rerecordMessage || "Audio belum sesuai. Silakan rekam ulang dengan membaca teks secara perlahan dan jelas.";
-    ru.innerHTML = '<h3>⚠ Perhatian Khusus dari Guru</h3>' +
-      '<div class="reupload-required">⚠ REKAM ULANG DIPERLUKAN (Kategori ' + cat + '/4): ' + msg + '</div>' +
-      '<p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p>' +
-      '<button class="btn-submit btn-reupload" onclick="showReuploadForm(' + num + ')">🔄 Kirim Ulang Audio</button>';
+    ru.innerHTML = '<h3>⚠️ Perhatian Khusus dari Guru</h3><div class="reupload-required">⚠️ REKAM ULANG DIPERLUKAN (Kategori ' + cat + '/4): ' + msg + '</div><p>Silakan rekam ulang audio Anda dengan membaca teks bahasa Inggris di atas secara perlahan dan jelas, lalu dengarkan kembali sebelum mengirim.</p><button class="btn-submit btn-reupload" onclick="showReuploadForm(' + num + ')">🔄 Kirim Ulang Audio</button>';
     wrap.appendChild(ru);
   }
-  
   area.appendChild(wrap);
 }
 
 function showReuploadForm(num) {
   cleanupFloatingBar();
   const area = document.getElementById('analysisArea');
-  area.innerHTML = '';
-  
+  area.innerHTML = "";
   const sub = currentSheetData.submissions[num];
   if (!sub) {
     area.innerHTML = '<div class="alert alert-danger">Data jawaban tidak ditemukan.</div>';
     return;
   }
-  
+
   const wrap = document.createElement('div');
-  var refHtml = '<div class="reference-box">' +
-    '<h4>📚 Referensi Jawaban Anda (Baca & Dengarkan Sebelum Merekam Ulang)</h4>' +
-    '<div class="ref-section">' +
-    '<span class="ref-label">󰏙 Jawaban Anda (Bahasa Indonesia):</span>' +
-    '<div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanId || '') + '</div>' +
-    '</div>' +
-    '<div class="ref-section">' +
-    '<span class="ref-label">󰏅 Terjemahan (English):</span>' +
-    '<div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanEn || '') + '</div>' +
-    '<div class="audio-ctrl" style="margin-top:8px">' +
-    '<button class="btn-audio btn-play-en" data-text="' + escapeAttr(sub.jawabanEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">▶ Play EN</button>' +
-    '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>' +
-    '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>' +
-    '<span class="speed-tag">0.75x</span>' +
-    '</div>' +
-    '</div>';
-    
+  var refHtml = '<div class="reference-box">';
+  refHtml += '<h4>📌 Referensi Jawaban Anda (Baca & Dengarkan Sebelum Merekam Ulang)</h4>';
+  refHtml += '<div class="ref-section"><span class="ref-label">🇮🇩 Jawaban Anda (Bahasa Indonesia):</span><div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanId || "") + '</div></div>';
+  refHtml += '<div class="ref-section"><span class="ref-label">🌐 Terjemahan (English):</span><div class="fmt-p">' + renderTextWithVerticalOptions(sub.jawabanEn || "") + '</div>';
+  refHtml += '<div class="audio-ctrl" style="margin-top:8px">';
+  refHtml += '<button class="btn-audio btn-play-en" data-text="' + escapeAttr(sub.jawabanEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">🔊 Play EN</button>';
+  refHtml += '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>';
+  refHtml += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>';
+  refHtml += '<span class="speed-tag">0.75x</span></div></div>';
+
   if (sub.jawabanPronounce) {
-    refHtml += '<div class="ref-section">' +
-      '<span class="ref-label">🔊 Cara Pengucapan (Pronunciation):</span>' +
-      '<div class="pron-block">' + renderTextWithVerticalOptions(sub.jawabanPronounce) + '</div>' +
-      '</div>';
+    refHtml += '<div class="ref-section"><span class="ref-label">🗣️ Cara Pengucapan (Pronunciation):</span><div class="pron-block">' + renderTextWithVerticalOptions(sub.jawabanPronounce) + '</div></div>';
   }
   refHtml += '</div>';
   wrap.innerHTML = refHtml;
-  
-  const reupTitle = document.createElement('h3');
-  reupTitle.style.color = 'var(--danger)';
-  reupTitle.style.marginTop = '0';
-  reupTitle.innerText = '🔄 Form Kirim Ulang Audio';
+
+  const reupTitle = document.createElement('h3'); reupTitle.style.color = 'var(--danger)'; reupTitle.style.marginTop = '0'; reupTitle.innerText = '🔄 Form Kirim Ulang Audio';
   wrap.appendChild(reupTitle);
-  
-  const reupDesc = document.createElement('p');
-  reupDesc.style.color = 'var(--danger)';
-  reupDesc.style.fontWeight = 'bold';
-  reupDesc.innerText = 'Audio sebelumnya belum sesuai. Silakan dengarkan referensi di atas, lalu rekam ulang dengan membaca teks bahasa Inggris secara perlahan dan jelas.';
+  const reupDesc = document.createElement('p'); reupDesc.style.color = 'var(--danger)'; reupDesc.style.fontWeight = 'bold'; reupDesc.innerText = 'Audio sebelumnya belum sesuai. Silakan dengarkan referensi di atas, lalu rekam ulang dengan membaca teks bahasa Inggris secara perlahan dan jelas.';
   wrap.appendChild(reupDesc);
-  
-  const box = document.createElement('div');
-  box.className = 'recorder-box';
-  box.style.background = '#fef2f2';
-  box.style.border = '1px solid #fecaca';
-  box.innerHTML = '<label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🎙 Rekam Ulang</label>' +
-    '<div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup' + num + '" class="btn-record" onclick="toggleRecReup(' + num + ')">🎙 MULAI REKAM ULANG</button></div>' +
-    '<div id="recStatusReup' + num + '" class="rec-status" style="text-align:center">Siap merekam ulang.</div>' +
-    '<div id="liveBoxReup' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">📝 TRANSKRIP:</span><div id="liveTextReup' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div>' +
-    '<audio id="audioPbReup' + num + '" controls class="audio-playback"></audio>' +
-    '<input type="hidden" id="audioDataReup' + num + '">' +
-    '<input type="hidden" id="audioMimeReup' + num + '">' +
-    '<input type="hidden" id="audioDurReup' + num + '">' +
-    '<input type="hidden" id="speechTransReup' + num + '">';
+
+  const box = document.createElement('div'); box.className = 'recorder-box'; box.style.background = '#fef2f2'; box.style.border = '1px solid #fecaca';
+  box.innerHTML = '<label style="color:#991b1b;font-weight:bold;font-size:1.1rem">🔴 Rekam Ulang</label><div style="text-align:center;margin:20px 0"><button type="button" id="btnRecReup' + num + '" class="btn-record" onclick="toggleRecReup(' + num + ')">🎙️ MULAI REKAM ULANG</button></div><div id="recStatusReup' + num + '" class="rec-status" style="text-align:center">Siap merekam ulang.</div><div id="liveBoxReup' + num + '" class="transcript-box" style="display:none"><span style="font-weight:bold;color:var(--secondary);font-size:.85rem;display:block;margin-bottom:4px">TRANSKRIP:</span><div id="liveTextReup' + num + '" style="color:#64748b;font-style:italic">Mulai bicara...</div></div><audio id="audioPbReup' + num + '" controls class="audio-playback"></audio><input type="hidden" id="audioDataReup' + num + '"><input type="hidden" id="audioMimeReup' + num + '"><input type="hidden" id="audioDurReup' + num + '"><input type="hidden" id="speechTransReup' + num + '">';
   wrap.appendChild(box);
-  
-  const submit = document.createElement('button');
-  submit.id = 'btnSubmitReup' + num;
-  submit.className = 'btn-submit btn-reupload';
-  submit.disabled = true;
-  submit.innerText = '🔄 Kirim Ulang Audio';
+
+  const submit = document.createElement('button'); submit.id = 'btnSubmitReup' + num; submit.className = 'btn-submit btn-reupload'; submit.disabled = true; submit.innerText = '📤 Kirim Ulang Audio';
   submit.onclick = function() { submitFinal(num, true); };
   wrap.appendChild(submit);
-  
-  const err = document.createElement('div');
-  err.id = 'ansError' + num;
-  err.className = 'alert alert-danger';
-  wrap.appendChild(err);
-  
+  const err = document.createElement('div'); err.id = 'ansError' + num; err.className = 'alert alert-danger'; wrap.appendChild(err);
+
   area.appendChild(wrap);
-  
   submittedAnswerText = sub.jawabanId;
   originalEnglishText = sub.jawabanEn;
   document.getElementById('analysisArea').scrollIntoView({ behavior: 'smooth' });
@@ -1903,77 +1068,58 @@ function showReuploadForm(num) {
 
 function renderPG(c) {
   cleanupFloatingBar();
-  if (!currentSheetData.pg || !currentSheetData.pg.length) {
-    c.innerHTML += '<div class="card"><p>Tidak ada data PG.</p></div>';
-    return;
-  }
+  if (!currentSheetData.pg || !currentSheetData.pg.length) { c.innerHTML += '<div class="card"><p>Tidak ada data PG.</p></div>'; return; }
   const w = document.createElement('div');
-  const header = document.createElement('div');
-  header.className = 'quiz-header';
+  const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.pgSubmissions && currentSheetData.pgSubmissions._score !== undefined ? currentSheetData.pgSubmissions._score : 0;
   header.innerHTML = '<h3>📝 Pilihan Ganda (10 Soal)</h3><p>Pilih satu jawaban yang paling tepat. Setelah dipilih, jawaban tidak bisa diubah.</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + '/10</strong><span class="score-badge">Pilihan Ganda</span></p>';
   w.appendChild(header);
-  
+
   currentSheetData.pg.forEach(function(q) {
-    const card = document.createElement('div');
-    card.className = 'quiz-card';
-    card.id = 'pgCard' + q.num;
-    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.questionEn || '') + '</div>';
-    
-    const ac = document.createElement('div');
-    ac.className = 'audio-ctrl';
+    const card = document.createElement('div'); card.className = 'quiz-card'; card.id = 'pgCard' + q.num;
+    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.questionEn || "") + '</div>';
+
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
     if (q.questionEn) {
-      const bp = document.createElement('button');
-      bp.className = 'btn-audio btn-play-en';
-      bp.innerHTML = '▶ Play EN';
-      bp.onclick = function() { playText(q.questionEn, 'en-US', 0.75); };
-      const bs = document.createElement('button');
-      bs.className = 'btn-audio btn-stop';
-      bs.innerHTML = '⏹ Stop';
-      bs.onclick = speechStop;
+      const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en';
+      bp.innerHTML = '🔊 Play EN'; bp.onclick = function() { playText(q.questionEn, 'en-US', 0.75); };
+      const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop';
+      bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
       ac.appendChild(bp); ac.appendChild(bs);
     }
     if (q.questionId) {
-      const bi = document.createElement('button');
-      bi.className = 'btn-audio btn-play-id';
-      bi.innerHTML = '▶ Terjemahan ID';
-      bi.onclick = function() { playText(q.questionId, 'id-ID', 0.85); };
+      const bi = document.createElement('button'); bi.className = 'btn-audio btn-play-id';
+      bi.innerHTML = '🔊 Terjemahan ID'; bi.onclick = function() { playText(q.questionId, 'id-ID', 0.85); };
       ac.appendChild(bi);
     }
     if (ac.children.length) card.appendChild(ac);
-    
+
     if (q.questionId) {
-      const t = document.createElement('div');
-      t.className = 'trans-block';
-      t.innerHTML = renderTextWithVerticalOptions(q.questionId);
-      card.appendChild(t);
+      const t = document.createElement('div'); t.className = 'trans-block';
+      t.innerHTML = renderTextWithVerticalOptions(q.questionId); card.appendChild(t);
     }
-    
-    const optText = (q.questionEn || '');
+
+    const optText = (q.questionEn || "");
     const lines = optText.split(/\n/).map(s => s.trim()).filter(s => s);
     const opts = [];
     lines.forEach(function(ln) {
       const m = ln.match(/^([A-E])[\.\)]\s*(.+)$/);
       if (m) opts.push({ letter: m[1], text: m[2] });
     });
-    
-    const existing = currentSheetData.pgSubmissions && currentSheetData.pgSubmissions[q.num] ? String(currentSheetData.pgSubmissions[q.num].jawaban) : '';
-    const localSel = pgLocalAnswers[q.num] || existing || '';
-    
+
+    const existing = currentSheetData.pgSubmissions && currentSheetData.pgSubmissions[q.num] ? String(currentSheetData.pgSubmissions[q.num].jawaban) : "";
+    const localSel = pgLocalAnswers[q.num] || existing || "";
+
     if (opts.length > 0) {
-      const optWrap = document.createElement('div');
-      optWrap.className = 'vertical-options';
+      const optWrap = document.createElement('div'); optWrap.className = 'vertical-options';
       opts.forEach(function(o) {
         const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quiz-opt';
-        btn.dataset.qnum = q.num;
-        btn.dataset.letter = o.letter;
+        btn.type = 'button'; btn.className = 'quiz-opt'; btn.dataset.qnum = q.num; btn.dataset.letter = o.letter;
         btn.innerText = o.letter + '. ' + o.text;
         if (existing) {
           btn.disabled = true;
           if (o.letter === existing) btn.classList.add('selected');
-          if (o.letter === q.correctAnswer && existing === q.correctAnswer) btn.classList.add('correct-opt');
+          if (o.letter === q.correctAnswer) btn.classList.add('correct-opt');
           if (o.letter === existing && existing !== q.correctAnswer) btn.classList.add('wrong-opt');
         } else if (localSel === o.letter) {
           btn.classList.add('selected');
@@ -1983,17 +1129,16 @@ function renderPG(c) {
       });
       card.appendChild(optWrap);
     }
-    
+
     if (existing) {
       const fb = document.createElement('div');
-      fb.className = 'quiz-feedback' + (existing === q.correctAnswer ? ' correct' : ' wrong');
-      let html = '<strong>' + (existing === q.correctAnswer ? '✅ Benar! ' : '❌ Belum tepat. ') + '</strong>';
-      html += 'Jawaban benar: <strong>' + q.correctAnswer + '</strong>. ';
+      fb.className = 'quiz-feedback ' + (existing === q.correctAnswer ? 'correct' : 'wrong');
+      let html = '<strong>' + (existing === q.correctAnswer ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
+      html += ' Jawaban benar: <strong>' + q.correctAnswer + '</strong>.';
       html += buildTeacherFeedbackBlock(q, 'pg');
       fb.innerHTML = html;
       card.appendChild(fb);
-      if (existing === q.correctAnswer) card.classList.add('correct');
-      else card.classList.add('wrong');
+      if (existing === q.correctAnswer) card.classList.add('correct'); else card.classList.add('wrong');
     }
     w.appendChild(card);
   });
@@ -2007,28 +1152,11 @@ function selectPG(num, letter) {
 }
 
 async function submitQuiz(type, num, answer) {
-  const res = await callGas('submitQuizAnswer', {
-    sheetName: currentSheet,
-    studentName: activeUser.nama,
-    quizType: type,
-    questionNum: num,
-    studentAnswer: answer
-  });
-  
+  const res = await callGas('submitQuizAnswer', { sheetName: currentSheet, studentName: activeUser.nama, quizType: type, questionNum: num, studentAnswer: answer });
   if (res.success) {
-    if (type === 'pg') {
-      if (!currentSheetData.pgSubmissions) currentSheetData.pgSubmissions = {};
-      currentSheetData.pgSubmissions[num] = { jawaban: answer };
-      currentSheetData.pgSubmissions._score = res.totalScore;
-    } else if (type === 'mcma') {
-      if (!currentSheetData.mcmaSubmissions) currentSheetData.mcmaSubmissions = {};
-      currentSheetData.mcmaSubmissions[num] = { jawaban: answer };
-      currentSheetData.mcmaSubmissions._score = res.totalScore;
-    } else if (type === 'tf') {
-      if (!currentSheetData.tfSubmissions) currentSheetData.tfSubmissions = {};
-      currentSheetData.tfSubmissions[num] = { jawaban: answer };
-      currentSheetData.tfSubmissions._score = res.totalScore;
-    }
+    if (type === 'pg') { if (!currentSheetData.pgSubmissions) currentSheetData.pgSubmissions = {}; currentSheetData.pgSubmissions[num] = { jawaban: answer }; currentSheetData.pgSubmissions._score = res.totalScore; }
+    else if (type === 'mcma') { if (!currentSheetData.mcmaSubmissions) currentSheetData.mcmaSubmissions = {}; currentSheetData.mcmaSubmissions[num] = { jawaban: answer }; currentSheetData.mcmaSubmissions._score = res.totalScore; }
+    else if (type === 'tf') { if (!currentSheetData.tfSubmissions) currentSheetData.tfSubmissions = {}; currentSheetData.tfSubmissions[num] = { jawaban: answer }; currentSheetData.tfSubmissions._score = res.totalScore; }
     renderTab();
   } else {
     alert('Gagal submit: ' + res.message);
@@ -2037,12 +1165,12 @@ async function submitQuiz(type, num, answer) {
 
 function buildTeacherFeedbackBlock(q, type) {
   var html = '<div style="margin-top:14px;padding:14px;background:#eff6ff;border-radius:8px;border-left:4px solid #0066cc">';
-  html += '<strong style="color:#1e40af;font-size:1.02rem">🏫 Penjelasan & Feedback Guru</strong>';
+  html += '<strong style="color:#1e40af;font-size:1.02rem">👨‍🏫 Penjelasan & Feedback Guru</strong>';
   if (q.feedbackEn) {
     html += '<div style="margin-top:10px">';
-    html += '<div style="font-weight:600;color:#1e40af;margin-bottom:4px">󰏅 English Feedback:</div>';
+    html += '<div style="font-weight:600;color:#1e40af;margin-bottom:4px">English Feedback:</div>';
     html += '<div class="audio-ctrl" style="margin:6px 0">';
-    html += '<button class="btn-audio btn-play-en" data-text="' + escapeAttr(q.feedbackEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">▶ Play</button>';
+    html += '<button class="btn-audio btn-play-en" data-text="' + escapeAttr(q.feedbackEn) + '" data-lang="en-US" data-rate="0.75" onclick="playFromData(this)">🔊 Play</button>';
     html += '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>';
     html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>';
     html += '</div>';
@@ -2050,9 +1178,9 @@ function buildTeacherFeedbackBlock(q, type) {
   }
   if (q.feedbackId) {
     html += '<div style="margin-top:10px">';
-    html += '<div style="font-weight:600;color:#15803d;margin-bottom:4px">󰏙 Terjemahan Bahasa Indonesia:</div>';
+    html += '<div style="font-weight:600;color:#15803d;margin-bottom:4px">Terjemahan Bahasa Indonesia:</div>';
     html += '<div class="audio-ctrl" style="margin:6px 0">';
-    html += '<button class="btn-audio btn-play-id" data-text="' + escapeAttr(q.feedbackId) + '" data-lang="id-ID" data-rate="0.85" onclick="playFromData(this)">▶ Play</button>';
+    html += '<button class="btn-audio btn-play-id" data-text="' + escapeAttr(q.feedbackId) + '" data-lang="id-ID" data-rate="0.85" onclick="playFromData(this)">🔊 Play</button>';
     html += '<button class="btn-audio btn-pause" onclick="speechPause()">⏸ Pause</button>';
     html += '<button class="btn-audio btn-stop" onclick="speechStop()">⏹ Stop</button>';
     html += '</div>';
@@ -2064,80 +1192,59 @@ function buildTeacherFeedbackBlock(q, type) {
 
 function renderMCMA(c) {
   cleanupFloatingBar();
-  if (!currentSheetData.mcma || !currentSheetData.mcma.length) {
-    c.innerHTML += '<div class="card"><p>Tidak ada data MCMA.</p></div>';
-    return;
-  }
+  if (!currentSheetData.mcma || !currentSheetData.mcma.length) { c.innerHTML += '<div class="card"><p>Tidak ada data MCMA.</p></div>'; return; }
   const w = document.createElement('div');
-  const header = document.createElement('div');
-  header.className = 'quiz-header';
+  const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.mcmaSubmissions && currentSheetData.mcmaSubmissions._score !== undefined ? currentSheetData.mcmaSubmissions._score : 0;
-  header.innerHTML = '<h3>☑ Pilihan Ganda Kompleks (5 Soal)</h3><p>' + (currentSheetData.mcmaInstruction.instructionEn || 'Pilih LEBIH DARI SATU jawaban benar.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + '/5</strong><span class="score-badge">MCMA</span></p>';
+  header.innerHTML = '<h3>☑️ Pilihan Ganda Kompleks (5 Soal)</h3><p>' + (currentSheetData.mcmaInstruction.instructionEn || 'Pilih LEBIH DARI SATU jawaban benar.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + '/5</strong><span class="score-badge">MCMA</span></p>';
   w.appendChild(header);
-  
+
   if (currentSheetData.mcmaInstruction.instructionId) {
-    const t = document.createElement('div');
-    t.className = 'trans-block';
-    t.innerHTML = renderTextWithVerticalOptions(currentSheetData.mcmaInstruction.instructionId);
+    const t = document.createElement('div'); t.className = 'trans-block'; t.innerHTML = renderTextWithVerticalOptions(currentSheetData.mcmaInstruction.instructionId);
     w.appendChild(t);
   }
-  
+
   currentSheetData.mcma.forEach(function(q) {
-    const card = document.createElement('div');
-    card.className = 'quiz-card';
-    card.id = 'mcmaCard' + q.num;
-    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.questionEn || '') + '</div>';
-    
-    const ac = document.createElement('div');
-    ac.className = 'audio-ctrl';
+    const card = document.createElement('div'); card.className = 'quiz-card'; card.id = 'mcmaCard' + q.num;
+    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.questionEn || "") + '</div>';
+
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
     if (q.questionEn) {
-      const bp = document.createElement('button');
-      bp.className = 'btn-audio btn-play-en';
-      bp.innerHTML = '▶ Play EN';
-      bp.onclick = function() { playText(q.questionEn, 'en-US', 0.75); };
-      const bs = document.createElement('button');
-      bs.className = 'btn-audio btn-stop';
-      bs.innerHTML = '⏹ Stop';
-      bs.onclick = speechStop;
+      const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en';
+      bp.innerHTML = '🔊 Play EN'; bp.onclick = function() { playText(q.questionEn, 'en-US', 0.75); };
+      const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop';
+      bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
       ac.appendChild(bp); ac.appendChild(bs);
     }
     if (q.questionId) {
-      const bi = document.createElement('button');
-      bi.className = 'btn-audio btn-play-id';
-      bi.innerHTML = '▶ Terjemahan ID';
-      bi.onclick = function() { playText(q.questionId, 'id-ID', 0.85); };
+      const bi = document.createElement('button'); bi.className = 'btn-audio btn-play-id';
+      bi.innerHTML = '🔊 Terjemahan ID'; bi.onclick = function() { playText(q.questionId, 'id-ID', 0.85); };
       ac.appendChild(bi);
     }
     if (ac.children.length) card.appendChild(ac);
-    
+
     if (q.questionId) {
-      const t = document.createElement('div');
-      t.className = 'trans-block';
-      t.innerHTML = renderTextWithVerticalOptions(q.questionId);
-      card.appendChild(t);
+      const t = document.createElement('div'); t.className = 'trans-block';
+      t.innerHTML = renderTextWithVerticalOptions(q.questionId); card.appendChild(t);
     }
-    
-    const optText = (q.questionEn || '');
+
+    const optText = (q.questionEn || "");
     const lines = optText.split(/\n/).map(s => s.trim()).filter(s => s);
     const opts = [];
     lines.forEach(function(ln) {
       const m = ln.match(/^([A-E])[\.\)]\s*(.+)$/);
       if (m) opts.push({ letter: m[1], text: m[2] });
     });
-    
-    const existing = currentSheetData.mcmaSubmissions && currentSheetData.mcmaSubmissions[q.num] ? String(currentSheetData.mcmaSubmissions[q.num].jawaban) : '';
+
+    const existing = currentSheetData.mcmaSubmissions && currentSheetData.mcmaSubmissions[q.num] ? String(currentSheetData.mcmaSubmissions[q.num].jawaban) : "";
     const existingArr = existing ? existing.split(',').map(x => x.trim()).filter(x => x) : [];
     const localSel = mcmaLocalAnswers[q.num] || existingArr;
-    
+
     if (opts.length > 0) {
-      const optWrap = document.createElement('div');
-      optWrap.className = 'vertical-options';
+      const optWrap = document.createElement('div'); optWrap.className = 'vertical-options';
       opts.forEach(function(o) {
         const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quiz-opt';
-        btn.dataset.qnum = q.num;
-        btn.dataset.letter = o.letter;
+        btn.type = 'button'; btn.className = 'quiz-opt'; btn.dataset.qnum = q.num; btn.dataset.letter = o.letter;
         btn.innerText = o.letter + '. ' + o.text;
         if (existing) {
           btn.disabled = true;
@@ -2153,11 +1260,10 @@ function renderMCMA(c) {
         optWrap.appendChild(btn);
       });
       card.appendChild(optWrap);
-      
+
       if (!existing) {
         const submitBtn = document.createElement('button');
-        submitBtn.className = 'btn-submit';
-        submitBtn.innerText = '📤 Kunci Jawaban Ini';
+        submitBtn.className = 'btn-submit'; submitBtn.innerText = '🔒 Kunci Jawaban Ini';
         submitBtn.style.marginTop = '10px';
         submitBtn.onclick = function() {
           const arr = mcmaLocalAnswers[q.num] || [];
@@ -2167,18 +1273,17 @@ function renderMCMA(c) {
         card.appendChild(submitBtn);
       }
     }
-    
+
     if (existing) {
       const isCorrect = Array.isArray(q.correctAnswer) ? q.correctAnswer.slice().sort().join(',') === existingArr.slice().sort().join(',') : false;
       const fb = document.createElement('div');
-      fb.className = 'quiz-feedback' + (isCorrect ? ' correct' : ' wrong');
-      let html = '<strong>' + (isCorrect ? '✅ Benar! ' : '❌ Belum tepat. ') + '</strong>';
-      html += 'Jawaban benar: <strong>' + (Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : '') + '</strong>. ';
+      fb.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'wrong');
+      let html = '<strong>' + (isCorrect ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
+      html += ' Jawaban benar: <strong>' + (Array.isArray(q.correctAnswer) ? q.correctAnswer.join(', ') : "") + '</strong>.';
       html += buildTeacherFeedbackBlock(q, 'mcma');
       fb.innerHTML = html;
       card.appendChild(fb);
-      if (isCorrect) card.classList.add('correct');
-      else card.classList.add('wrong');
+      if (isCorrect) card.classList.add('correct'); else card.classList.add('wrong');
     }
     w.appendChild(card);
   });
@@ -2190,76 +1295,56 @@ function toggleMCMA(num, letter) {
   if (!mcmaLocalAnswers[num]) mcmaLocalAnswers[num] = [];
   const arr = mcmaLocalAnswers[num];
   const idx = arr.indexOf(letter);
-  if (idx === -1) arr.push(letter);
-  else arr.splice(idx, 1);
+  if (idx === -1) arr.push(letter); else arr.splice(idx, 1);
   renderTab();
 }
 
 function renderTF(c) {
   cleanupFloatingBar();
-  if (!currentSheetData.tf || !currentSheetData.tf.length) {
-    c.innerHTML += '<div class="card"><p>Tidak ada data True/False.</p></div>';
-    return;
-  }
+  if (!currentSheetData.tf || !currentSheetData.tf.length) { c.innerHTML += '<div class="card"><p>Tidak ada data True/False.</p></div>'; return; }
   const w = document.createElement('div');
-  const header = document.createElement('div');
-  header.className = 'quiz-header';
+  const header = document.createElement('div'); header.className = 'quiz-header';
   const score = currentSheetData.tfSubmissions && currentSheetData.tfSubmissions._score !== undefined ? currentSheetData.tfSubmissions._score : 0;
-  header.innerHTML = '<h3>✔ True or False (5 Soal)</h3><p>' + (currentSheetData.tfInstruction.instructionEn || 'Tentukan apakah pernyataan TRUE atau FALSE.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + '/5</strong><span class="score-badge">True/False</span></p>';
+  header.innerHTML = '<h3>✔️ True or False (5 Soal)</h3><p>' + (currentSheetData.tfInstruction.instructionEn || 'Tentukan apakah pernyataan TRUE atau FALSE.') + '</p><p style="margin-top:10px"><strong>Skor Anda: ' + score + '/5</strong><span class="score-badge">True/False</span></p>';
   w.appendChild(header);
-  
+
   if (currentSheetData.tfInstruction.instructionId) {
-    const t = document.createElement('div');
-    t.className = 'trans-block';
-    t.innerHTML = renderTextWithVerticalOptions(currentSheetData.tfInstruction.instructionId);
+    const t = document.createElement('div'); t.className = 'trans-block'; t.innerHTML = renderTextWithVerticalOptions(currentSheetData.tfInstruction.instructionId);
     w.appendChild(t);
   }
-  
+
   currentSheetData.tf.forEach(function(q) {
-    const card = document.createElement('div');
-    card.className = 'quiz-card';
-    card.id = 'tfCard' + q.num;
-    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.statementEn || '') + '</div>';
-    
-    const ac = document.createElement('div');
-    ac.className = 'audio-ctrl';
+    const card = document.createElement('div'); card.className = 'quiz-card'; card.id = 'tfCard' + q.num;
+    card.innerHTML = '<div class="quiz-q-text">' + q.num + '. ' + renderTextWithVerticalOptions(q.statementEn || "") + '</div>';
+
+    const ac = document.createElement('div'); ac.className = 'audio-ctrl';
     if (q.statementEn) {
-      const bp = document.createElement('button');
-      bp.className = 'btn-audio btn-play-en';
-      bp.innerHTML = '▶ Play EN';
-      bp.onclick = function() { playText(q.statementEn, 'en-US', 0.75); };
-      const bs = document.createElement('button');
-      bs.className = 'btn-audio btn-stop';
-      bs.innerHTML = '⏹ Stop';
-      bs.onclick = speechStop;
+      const bp = document.createElement('button'); bp.className = 'btn-audio btn-play-en';
+      bp.innerHTML = '🔊 Play EN'; bp.onclick = function() { playText(q.statementEn, 'en-US', 0.75); };
+      const bs = document.createElement('button'); bs.className = 'btn-audio btn-stop';
+      bs.innerHTML = '⏹ Stop'; bs.onclick = speechStop;
       ac.appendChild(bp); ac.appendChild(bs);
     }
     if (q.statementId) {
-      const bi = document.createElement('button');
-      bi.className = 'btn-audio btn-play-id';
-      bi.innerHTML = '▶ Terjemahan ID';
-      bi.onclick = function() { playText(q.statementId, 'id-ID', 0.85); };
+      const bi = document.createElement('button'); bi.className = 'btn-audio btn-play-id';
+      bi.innerHTML = '🔊 Terjemahan ID'; bi.onclick = function() { playText(q.statementId, 'id-ID', 0.85); };
       ac.appendChild(bi);
     }
     if (ac.children.length) card.appendChild(ac);
-    
+
     if (q.statementId) {
-      const t = document.createElement('div');
-      t.className = 'trans-block';
-      t.innerHTML = renderTextWithVerticalOptions(q.statementId);
-      card.appendChild(t);
+      const t = document.createElement('div'); t.className = 'trans-block';
+      t.innerHTML = renderTextWithVerticalOptions(q.statementId); card.appendChild(t);
     }
-    
-    const existing = currentSheetData.tfSubmissions && currentSheetData.tfSubmissions[q.num] ? String(currentSheetData.tfSubmissions[q.num].jawaban) : '';
-    const localSel = tfLocalAnswers[q.num] || existing || '';
-    
-    const btnWrap = document.createElement('div');
-    btnWrap.className = 'tf-btns';
+
+    const existing = currentSheetData.tfSubmissions && currentSheetData.tfSubmissions[q.num] ? String(currentSheetData.tfSubmissions[q.num].jawaban) : "";
+    const localSel = tfLocalAnswers[q.num] || existing || "";
+    const btnWrap = document.createElement('div'); btnWrap.className = 'tf-btns';
+
     ['T', 'F'].forEach(function(letter) {
       const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'tf-btn';
-      btn.innerText = letter === 'T' ? '✅ TRUE' : '❌ FALSE';
+      btn.type = 'button'; btn.className = 'tf-btn';
+      btn.innerText = letter === 'T' ? '✔️ TRUE' : '❌ FALSE';
       if (existing) {
         btn.disabled = true;
         if (letter === existing) btn.classList.add('selected');
@@ -2272,18 +1357,17 @@ function renderTF(c) {
       btnWrap.appendChild(btn);
     });
     card.appendChild(btnWrap);
-    
+
     if (existing) {
       const isCorr = existing === q.correctAnswer;
       const fb = document.createElement('div');
-      fb.className = 'quiz-feedback' + (isCorr ? ' correct' : ' wrong');
-      let html = '<strong>' + (isCorr ? '✅ Benar! ' : '❌ Belum tepat. ') + '</strong>';
-      html += 'Jawaban benar: <strong>' + (q.correctAnswer === 'T' ? 'TRUE' : 'FALSE') + '</strong>. ';
+      fb.className = 'quiz-feedback ' + (isCorr ? 'correct' : 'wrong');
+      let html = '<strong>' + (isCorr ? '✅ Benar!' : '❌ Belum tepat.') + '</strong>';
+      html += ' Jawaban benar: <strong>' + (q.correctAnswer === 'T' ? 'TRUE' : 'FALSE') + '</strong>.';
       html += buildTeacherFeedbackBlock(q, 'tf');
       fb.innerHTML = html;
       card.appendChild(fb);
-      if (isCorr) card.classList.add('correct');
-      else card.classList.add('wrong');
+      if (isCorr) card.classList.add('correct'); else card.classList.add('wrong');
     }
     w.appendChild(card);
   });
@@ -2301,11 +1385,11 @@ function playText(text, lang, rate) {
   if (!text || !text.trim()) return;
   var cleanText = removeEmoji(text);
   if (!cleanText) return;
-  
+
   var textToRead = cleanText.replace(/\b[A-Z]{2,}\b/g, function(match) {
     return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
   });
-  
+
   if (!availableVoices.length) loadVoices();
   const u = new SpeechSynthesisUtterance(textToRead);
   u.rate = rate || 0.85;
@@ -2316,21 +1400,14 @@ function playText(text, lang, rate) {
 }
 
 function speechPause() {
-  if (window.speechSynthesis && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-    window.speechSynthesis.pause();
-  }
+  if (window.speechSynthesis && window.speechSynthesis.speaking && !window.speechSynthesis.paused) window.speechSynthesis.pause();
 }
-
 function speechResume() {
-  if (window.speechSynthesis && window.speechSynthesis.paused) {
-    window.speechSynthesis.resume();
-  }
+  if (window.speechSynthesis && window.speechSynthesis.paused) window.speechSynthesis.resume();
 }
-
 function speechStop() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
 }
-
 function playFromData(btn) {
   var text = btn.getAttribute('data-text');
   var lang = btn.getAttribute('data-lang') || 'en-US';
@@ -2339,7 +1416,7 @@ function playFromData(btn) {
 }
 
 function escapeAttr(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return String(s || "").replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function openAudioModal() {
@@ -2351,11 +1428,9 @@ function openAudioModal() {
   }
   document.getElementById('audioModal').classList.add('active');
 }
-
 function closeAudioModal() {
   document.getElementById('audioModal').classList.remove('active');
 }
-
 function closeAudioModalOnOverlay(e) {
   if (e.target.id === 'audioModal') closeAudioModal();
 }
